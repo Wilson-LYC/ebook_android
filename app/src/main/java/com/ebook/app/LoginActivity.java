@@ -13,11 +13,19 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import java.io.IOException;
+
+import cn.hutool.http.HttpUtil;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
 public class LoginActivity extends AppCompatActivity {
     private TextView email;//邮箱输入框
     private TextView captch;//验证码输入框
     private CheckBox autoRegister;//自动注册协议复选框
-    Button getCaptch;//获取验证码按钮
+    private Button getCaptch;//获取验证码按钮
+    final private OkHttpClient client = new OkHttpClient();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,7 +62,19 @@ public class LoginActivity extends AppCompatActivity {
      * @param view 点击的视图
      */
     public void onGetCaptchClick(View view) {
-
+        //向localhost:8080/v1/test发送get请求
+        new Thread(() -> {
+            Request request = new Request.Builder()
+                    .url("http://10.0.2.2:8080/v1/test")
+                    .build();
+            try (Response response = client.newCall(request).execute()) {
+                if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+                String responseText = response.body().string();
+                runOnUiThread(() -> email.setText(responseText));
+            } catch (IOException e) {
+                email.setText(e.getMessage());
+            }
+        }).start();
         //按钮倒计时60s
         getCaptchStartCountdown();
     }
