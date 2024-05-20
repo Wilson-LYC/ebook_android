@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Ebook">ebook</style>
+
 
     <!--颜色-->
     <color name="ebook_white">#FFFFFF</color>
@@ -15,37 +15,39 @@
     <color name="ebook_brand_6">#176C40</color>
     <color name="ebook_brand_hover">#358556</color>
 
+    <!--样式-->
+    <style name="Ebook">
+        <item name="android:layout_height">50dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
     <!--输入框-->
     <style name="Ebook.input">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">50dp</item>
         <item name="background">@drawable/ebook_input</item>
         <item name="android:paddingLeft">15dp</item>
         <item name="android:paddingRight">15dp</item>
         <item name="android:paddingTop">10dp</item>
         <item name="android:paddingBottom">10dp</item>
-        <item name="android:textSize">16sp</item>
+        <item name="android:ems">10</item>
+        <item name="android:inputType">text</item>
     </style>
 
     <!--按钮-->
-    <style name="Ebook.button">
-        <item name="android:layout_width">200dp</item>
-        <item name="android:layout_height">50dp</item>
+    <style name="Ebook.button" parent="Ebook">
         <item name="android:background">@drawable/ebook_button</item>
         <item name="android:textColor">@color/ebook_white</item>
-        <item name="android:textSize">16sp</item>
     </style>
 
-    <style name="Ebook.button.disable" parent="Ebook.button">
-        <item name="android:background">@drawable/ebook_button_disabled</item>
-    </style>
-
-    <!--checkbox-->
-    <style name="Ebook.CheckBox">
+    <!--复选框-->
+    <style name="Ebook.CheckBox" parent="Ebook">
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_width">match_parent</item>
         <item name="android:buttonTint">@color/ebook_brand_6</item>
         <item name="android:textColor">@color/ebook_grey_6</item>
         <item name="android:textSize">15sp</item>
+    </style>
+    <!--TabItem-->
+    <style name="Ebook.TabLayout" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">50sp</item>
     </style>
 </resources>
