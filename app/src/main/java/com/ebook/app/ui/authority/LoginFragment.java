@@ -16,17 +16,7 @@ import android.widget.EditText;
 import com.ebook.app.R;
 import com.ebook.app.api.UserService;
 import com.ebook.app.api.impl.UserServiceImpl;
-import com.ebook.app.dto.ResponseDto;
-import com.ebook.app.pojo.User;
 import com.ebook.app.util.AlertUtil;
-
-import java.io.IOException;
-
-import okhttp3.FormBody;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
 
 public class LoginFragment extends Fragment {
 
@@ -98,7 +88,7 @@ public class LoginFragment extends Fragment {
                     return;
                 }
                 //登录
-
+                AlertUtil.showToast(getContext(),"正在登录...");
             }
         });
     }

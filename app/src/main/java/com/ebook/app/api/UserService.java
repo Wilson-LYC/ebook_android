@@ -1,7 +1,7 @@
 package com.ebook.app.api;
 
-import com.ebook.app.dto.ResponseDto;
+import com.alibaba.fastjson.JSONObject;
 
 public interface UserService {
-    ResponseDto login(String email, String password);
+    JSONObject login(String email, String password);
 }
