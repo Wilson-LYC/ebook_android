@@ -1,13 +1,10 @@
-package com.ebook.app.authority;
+package com.ebook.app.ui.authority;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
-
-import com.ebook.app.LoginFragment;
-import com.ebook.app.RegisterFragment;
 
 public class AuthorityPagerAdapter extends FragmentStateAdapter {
 

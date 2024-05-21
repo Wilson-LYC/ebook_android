@@ -1,4 +1,4 @@
-package com.ebook.app;
+package com.ebook.app.ui.authority;
 
 import android.os.Bundle;
 
@@ -6,25 +6,34 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.alibaba.fastjson.JSONObject;
+import com.ebook.app.R;
+import com.ebook.app.api.UserService;
+import com.ebook.app.api.impl.UserServiceImpl;
+import com.ebook.app.dto.ResponseDto;
+import com.ebook.app.pojo.User;
+import com.ebook.app.util.AlertUtil;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link LoginFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.io.IOException;
+
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+
 public class LoginFragment extends Fragment {
 
     private EditText edEmail, edPassword;
     private Button btnLogin;
+
+    private final UserService userService = new UserServiceImpl();
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -38,16 +47,7 @@ public class LoginFragment extends Fragment {
     public LoginFragment() {
         // Required empty public constructor
     }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment LoginFragment.
-     */
-    // TODO: Rename and change types and number of parameters
+    
     public static LoginFragment newInstance(String param1, String param2) {
         LoginFragment fragment = new LoginFragment();
         Bundle args = new Bundle();
@@ -82,17 +82,24 @@ public class LoginFragment extends Fragment {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // 获取邮箱输入框的内容
+                //获取邮箱和密码
                 String email = edEmail.getText().toString().trim();
                 String password = edPassword.getText().toString().trim();
-                login(email, password);
+                //判断邮箱和密码是否为空
+                if (email.isEmpty() || password.isEmpty()) {
+                    Log.w("Login", "邮箱或密码为空，拒绝登录");
+                    AlertUtil.showErrorDialog(getContext(), "邮箱或密码不能为空");
+                    return;
+                }
+                //判断邮箱格式是否正确
+                if (!email.matches("^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\\.[a-zA-Z0-9_-]+)+$")) {
+                    Log.w("Login", "邮箱格式错误，拒绝登录");
+                    AlertUtil.showErrorDialog(getContext(), "邮箱格式错误");
+                    return;
+                }
+                //登录
+                ResponseDto loginRes=userService.login(email,password);
             }
         });
     }
-
-    private JSONObject login(String email, String password) {
-        // 这里可以继续您的登录逻辑
-        return null;
-    }
-
 }
