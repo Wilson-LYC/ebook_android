@@ -4,6 +4,9 @@ import android.content.Context;
 import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 
+/**
+ * 提示弹窗工具类。
+ */
 public class AlertUtil {
 
     /**

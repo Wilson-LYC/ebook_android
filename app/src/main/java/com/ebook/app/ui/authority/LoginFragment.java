@@ -98,7 +98,7 @@ public class LoginFragment extends Fragment {
                     return;
                 }
                 //登录
-                ResponseDto loginRes=userService.login(email,password);
+
             }
         });
     }
