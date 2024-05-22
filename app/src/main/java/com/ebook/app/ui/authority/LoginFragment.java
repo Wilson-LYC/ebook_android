@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,16 +15,16 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.ebook.app.R;
-import com.ebook.app.api.UserService;
-import com.ebook.app.api.impl.UserServiceImpl;
+import com.ebook.app.model.LoginViewModel;
 import com.ebook.app.util.AlertUtil;
 
 public class LoginFragment extends Fragment {
 
+    // UI
     private EditText edEmail, edPassword;
     private Button btnLogin;
-
-    private final UserService userService = new UserServiceImpl();
+    // Model
+    private LoginViewModel loginViewModel;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -66,10 +67,16 @@ public class LoginFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        loginViewModel= new ViewModelProvider(this).get(LoginViewModel.class);
+
+        //获取控件
         edEmail = getView().findViewById(R.id.login_ed_email);
         edPassword = getView().findViewById(R.id.login_ed_password);
         btnLogin= getView().findViewById(R.id.login_btn_login);
+
         btnLogin.setOnClickListener(new View.OnClickListener() {
+            //登录按钮点击事件
             @Override
             public void onClick(View v) {
                 //获取邮箱和密码
@@ -88,7 +95,15 @@ public class LoginFragment extends Fragment {
                     return;
                 }
                 //登录
-                AlertUtil.showToast(getContext(),"正在登录...");
+                loginViewModel.login(email, password).observe(getViewLifecycleOwner(), res -> {
+                    if (res.contains("200")) {
+                        Log.i("Login", "登录成功\n"+res);
+                        AlertUtil.showToast(getContext(), "登录成功");
+                    } else {
+                        Log.w("Login", "登录失败\n"+res);
+                        AlertUtil.showToast(getContext(), "登录失败");
+                    }
+                });
             }
         });
     }
