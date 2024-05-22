@@ -96,7 +96,7 @@ public class LoginFragment extends Fragment {
                 }
                 //登录
                 loginViewModel.login(email, password).observe(getViewLifecycleOwner(), res -> {
-                    if (res.contains("200")) {
+                    if (res.getCode()==200) {
                         Log.i("Login", "登录成功\n"+res);
                         AlertUtil.showToast(getContext(), "登录成功");
                     } else {
