@@ -1,4 +1,4 @@
-package com.ebook.app.ui.authority;
+package com.ebook.app.views.authority;
 
 import android.os.Bundle;
 

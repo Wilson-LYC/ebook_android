@@ -1,4 +1,4 @@
-package com.ebook.app.ui.authority;
+package com.ebook.app.views.authority;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;

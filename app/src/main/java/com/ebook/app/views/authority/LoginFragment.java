@@ -1,10 +1,11 @@
-package com.ebook.app.ui.authority;
+package com.ebook.app.views.authority;
 
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.util.Log;
@@ -15,16 +16,16 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.ebook.app.R;
-import com.ebook.app.model.LoginViewModel;
+import com.ebook.app.dtos.ResponseDto;
+import com.ebook.app.viewmodel.LoginViewModel;
 import com.ebook.app.util.AlertUtil;
 
 public class LoginFragment extends Fragment {
 
-    // UI
     private EditText edEmail, edPassword;
     private Button btnLogin;
-    // Model
     private LoginViewModel loginViewModel;
+    Observer<ResponseDto> observer;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -64,47 +65,71 @@ public class LoginFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_login, container, false);
     }
 
+    /**
+     * 视图创建时调用
+     */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        loginViewModel= new ViewModelProvider(this).get(LoginViewModel.class);
-
-        //获取控件
+        loginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
         edEmail = getView().findViewById(R.id.login_ed_email);
         edPassword = getView().findViewById(R.id.login_ed_password);
         btnLogin= getView().findViewById(R.id.login_btn_login);
-
+        observer = new Observer<ResponseDto>() {
+            @Override
+            public void onChanged(ResponseDto response) {
+                Log.d("LoginFragment", response.getMsg());
+                switch (response.getCode()){
+                    case 200:
+                        AlertUtil.showToast(getContext(),"登录成功");
+                        break;
+                    case 400:
+                        AlertUtil.showErrorDialog(getContext(),"用户名或密码错误");
+                        break;
+                    case 500:
+                        AlertUtil.showErrorDialog(getContext(),"服务器错误");
+                        break;
+                    default:
+                        AlertUtil.showErrorDialog(getContext(),"未知错误");
+                }
+            }
+        };
+        loginViewModel.getLiveData().observe(getViewLifecycleOwner(), observer);
         btnLogin.setOnClickListener(new View.OnClickListener() {
-            //登录按钮点击事件
             @Override
             public void onClick(View v) {
-                //获取邮箱和密码
                 String email = edEmail.getText().toString().trim();
                 String password = edPassword.getText().toString().trim();
-                //判断邮箱和密码是否为空
-                if (email.isEmpty() || password.isEmpty()) {
-                    Log.w("Login", "邮箱或密码为空，拒绝登录");
-                    AlertUtil.showErrorDialog(getContext(), "邮箱或密码不能为空");
+                ResponseDto parmsValidate = verifyValidLogin(email,password);
+                if (parmsValidate.getCode() != 200) {
+                    AlertUtil.showErrorDialog(getContext(), parmsValidate.getMsg());
                     return;
                 }
-                //判断邮箱格式是否正确
-                if (!email.matches("^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\\.[a-zA-Z0-9_-]+)+$")) {
-                    Log.w("Login", "邮箱格式错误，拒绝登录");
-                    AlertUtil.showErrorDialog(getContext(), "邮箱格式错误");
-                    return;
-                }
-                //登录
-                loginViewModel.login(email, password).observe(getViewLifecycleOwner(), res -> {
-                    if (res.getCode()==200) {
-                        Log.i("Login", "登录成功\n"+res);
-                        AlertUtil.showToast(getContext(), "登录成功");
-                    } else {
-                        Log.w("Login", "登录失败\n"+res);
-                        AlertUtil.showToast(getContext(), "登录失败");
-                    }
-                });
+                loginViewModel.login(email,password);
             }
         });
+    }
+
+    /**
+     * 销毁时调用
+     */
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        // 移除观察者
+        loginViewModel.getLiveData().removeObserver(observer);
+    }
+
+    private ResponseDto verifyValidLogin(String email,String password) {
+        //校验邮箱密码是否为空
+        if (email.isEmpty() || password.isEmpty()) {
+            return new ResponseDto(400,"邮箱或密码不能为空");
+        }
+        //校验邮箱格式
+        if (!email.matches("^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\\.[a-zA-Z0-9_-]+)+$")) {
+            return new ResponseDto(400,"请输入正确的邮箱地址");
+        }
+        return new ResponseDto(200,"校验成功");
     }
 }

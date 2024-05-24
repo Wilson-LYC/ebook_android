@@ -1,4 +1,4 @@
-package com.ebook.app.ui;
+package com.ebook.app.views.main;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,7 +10,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.ebook.app.R;
-import com.ebook.app.ui.authority.AuthorityActivity;
+import com.ebook.app.views.authority.AuthorityActivity;
 
 public class MainActivity extends AppCompatActivity {
 

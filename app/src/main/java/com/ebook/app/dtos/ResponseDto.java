@@ -1,0 +1,26 @@
+package com.ebook.app.dtos;
+
+import com.alibaba.fastjson.JSONObject;
+
+public class ResponseDto extends JSONObject {
+    public ResponseDto() {
+    }
+
+    public ResponseDto(int code, String msg) {
+        super();
+        this.put("code",code);
+        this.put("msg",msg);
+    }
+    public ResponseDto(int code,String msg,JSONObject data) {
+        super();
+        this.put("code",code);
+        this.put("msg",msg);
+        this.put("data",data);
+    }
+    public int getCode() {
+        return this.getInteger("code");
+    }
+    public String getMsg() {
+        return this.getString("msg");
+    }
+}

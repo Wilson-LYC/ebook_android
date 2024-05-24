@@ -8,7 +8,7 @@
     android:orientation="vertical"
     android:paddingLeft="30dp"
     android:paddingRight="30dp"
-    tools:context=".ui.authority.LoginFragment">
+    tools:context=".views.authority.LoginFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -37,7 +37,7 @@
             android:background="@drawable/ebook_input"
             android:ems="10"
             android:hint="@string/password"
-            android:inputType="text" />
+            android:inputType="textPassword" />
 
         <Space
             android:layout_width="match_parent"
