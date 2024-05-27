@@ -1,5 +1,8 @@
 package com.ebook.app.views.authority;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -8,24 +11,32 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.ebook.app.R;
 import com.ebook.app.dtos.ResponseDto;
+import com.ebook.app.util.SharedPrefsUtil;
 import com.ebook.app.viewmodel.LoginViewModel;
 import com.ebook.app.util.AlertUtil;
+import com.ebook.app.views.main.MainActivity;
 
 public class LoginFragment extends Fragment {
-
+    final String TAG = "LoginFragment";
+    private SharedPrefsUtil prefsUtil;
+    private TextView tvForgotPwd;
     private EditText edEmail, edPassword;
     private Button btnLogin;
     private LoginViewModel loginViewModel;
-    Observer<ResponseDto> observer;
+    Observer<ResponseDto> loginObserver;//登录观察者
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -70,43 +81,28 @@ public class LoginFragment extends Fragment {
      */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        Log.d(TAG, "onViewCreated");
         super.onViewCreated(view, savedInstanceState);
-
+        // 获取视图模型
         loginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
+        // 获取组件
         edEmail = getView().findViewById(R.id.login_ed_email);
         edPassword = getView().findViewById(R.id.login_ed_password);
         btnLogin= getView().findViewById(R.id.login_btn_login);
-        observer = new Observer<ResponseDto>() {
+        tvForgotPwd=getView().findViewById(R.id.login_tv_forgot_pwd);
+        prefsUtil=SharedPrefsUtil.with(getActivity());
+        // 登录响应观察者
+        loginObserver = new Observer<ResponseDto>() {
             @Override
             public void onChanged(ResponseDto response) {
-                Log.d("LoginFragment", response.getMsg());
-                switch (response.getCode()){
-                    case 200:
-                        AlertUtil.showToast(getContext(),"登录成功");
-                        break;
-                    case 400:
-                        AlertUtil.showErrorDialog(getContext(),"用户名或密码错误");
-                        break;
-                    case 500:
-                        AlertUtil.showErrorDialog(getContext(),"服务器错误");
-                        break;
-                    default:
-                        AlertUtil.showErrorDialog(getContext(),"未知错误");
-                }
+                loginResponse(response);//登录响应
             }
         };
-        loginViewModel.getLiveData().observe(getViewLifecycleOwner(), observer);
+        loginViewModel.getLoginLiveData().observe(getViewLifecycleOwner(), loginObserver);
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email = edEmail.getText().toString().trim();
-                String password = edPassword.getText().toString().trim();
-                ResponseDto parmsValidate = verifyValidLogin(email,password);
-                if (parmsValidate.getCode() != 200) {
-                    AlertUtil.showErrorDialog(getContext(), parmsValidate.getMsg());
-                    return;
-                }
-                loginViewModel.login(email,password);
+                login();//登录
             }
         });
     }
@@ -118,18 +114,52 @@ public class LoginFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         // 移除观察者
-        loginViewModel.getLiveData().removeObserver(observer);
+        loginViewModel.getLoginLiveData().removeObserver(loginObserver);
     }
 
-    private ResponseDto verifyValidLogin(String email,String password) {
-        //校验邮箱密码是否为空
-        if (email.isEmpty() || password.isEmpty()) {
-            return new ResponseDto(400,"邮箱或密码不能为空");
+    /**
+     * 登录
+     */
+    private void login(){
+        Log.d(TAG, "请求登录" );
+        String email = edEmail.getText().toString().trim();
+        String password = edPassword.getText().toString().trim();
+        if (!validLoginInput(email,password)) return;
+        loginViewModel.login(email,password);
+    }
+
+    /**
+     * 登录验证
+     * @param email 邮箱
+     * @param password 密码
+     * @return 验证结果
+     */
+    private boolean validLoginInput(String email,String password) {
+        //判断是否为空
+        if (email.isEmpty() || password.isEmpty()){
+            Log.w(TAG,"请输入账号和密码");
+            AlertUtil.showDialog(getContext(),"请输入账号和密码");
+            return false;
         }
-        //校验邮箱格式
-        if (!email.matches("^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\\.[a-zA-Z0-9_-]+)+$")) {
-            return new ResponseDto(400,"请输入正确的邮箱地址");
+        //判断邮箱格式
+        if (!email.matches("[\\w\\.\\-]+@([\\w\\-]+\\.)+[\\w\\-]+")){
+            Log.w(TAG,"请输入正确的邮箱");
+            AlertUtil.showDialog(getContext(),"请输入正确的邮箱");
+            return false;
         }
-        return new ResponseDto(200,"校验成功");
+        return true;
+    }
+    /**
+     * 登录响应
+     */
+    private void loginResponse(ResponseDto response){
+        Log.d(TAG, response.getMsg());
+        AlertUtil.showToast(getContext(),response.getMsg());
+        if(response.getCode()==200){
+            JSONObject data = response.getJSONObject("data");
+            String token = data.getString("token");
+            prefsUtil.putString("token", token);
+            startActivity(new Intent(getContext(), MainActivity.class));
+        }
     }
 }

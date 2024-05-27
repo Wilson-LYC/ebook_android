@@ -15,7 +15,7 @@ public class AlertUtil {
      * @param context 上下文环境
      * @param errorMessage 错误信息
      */
-    public static void showErrorDialog(Context context, String errorMessage) {
+    public static void showDialog(Context context, String errorMessage) {
         // 确保在主线程执行UI操作
         new AlertDialog.Builder(context)
                 .setTitle("错误")
