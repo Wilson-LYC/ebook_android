@@ -55,6 +55,32 @@
 
         <Space
             android:layout_width="match_parent"
+            android:layout_height="25dp" />
+
+        <EditText
+            android:id="@+id/register_tv_password"
+            style="@style/Ebook.input"
+            android:layout_width="match_parent"
+            android:background="@drawable/ebook_input"
+            android:ems="10"
+            android:hint="设置密码"
+            android:inputType="text" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="25dp" />
+
+        <EditText
+            android:id="@+id/register_tv_password2"
+            style="@style/Ebook.input"
+            android:layout_width="match_parent"
+            android:background="@drawable/ebook_input"
+            android:ems="10"
+            android:hint="确认密码"
+            android:inputType="text" />
+
+        <Space
+            android:layout_width="match_parent"
             android:layout_height="30dp" />
 
         <Button

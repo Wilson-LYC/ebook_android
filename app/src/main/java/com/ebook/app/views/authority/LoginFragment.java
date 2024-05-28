@@ -1,8 +1,6 @@
 package com.ebook.app.views.authority;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,7 +9,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import android.preference.PreferenceManager;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,8 +17,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.ebook.app.R;
 import com.ebook.app.dtos.ResponseDto;
@@ -31,11 +29,11 @@ import com.ebook.app.views.main.MainActivity;
 
 public class LoginFragment extends Fragment {
     final String TAG = "LoginFragment";
-    private SharedPrefsUtil prefsUtil;
+    private SharedPrefsUtil prefsUtil;//SharedPreferences工具
     private TextView tvForgotPwd;
     private EditText edEmail, edPassword;
     private Button btnLogin;
-    private LoginViewModel loginViewModel;
+    private LoginViewModel loginViewModel;//登录视图模型
     Observer<ResponseDto> loginObserver;//登录观察者
 
     // TODO: Rename parameter arguments, choose names that match
@@ -83,15 +81,13 @@ public class LoginFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         Log.d(TAG, "onViewCreated");
         super.onViewCreated(view, savedInstanceState);
-        // 获取视图模型
+        // 初始化
         loginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
-        // 获取组件
         edEmail = getView().findViewById(R.id.login_ed_email);
         edPassword = getView().findViewById(R.id.login_ed_password);
         btnLogin= getView().findViewById(R.id.login_btn_login);
         tvForgotPwd=getView().findViewById(R.id.login_tv_forgot_pwd);
         prefsUtil=SharedPrefsUtil.with(getActivity());
-        // 登录响应观察者
         loginObserver = new Observer<ResponseDto>() {
             @Override
             public void onChanged(ResponseDto response) {
@@ -102,7 +98,7 @@ public class LoginFragment extends Fragment {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                login();//登录
+                btnLoginClick();//登录
             }
         });
     }
@@ -120,16 +116,17 @@ public class LoginFragment extends Fragment {
     /**
      * 登录
      */
-    private void login(){
-        Log.d(TAG, "请求登录" );
+    public void btnLoginClick(){
+        Log.i(TAG, "登录按钮被点击" );
         String email = edEmail.getText().toString().trim();
         String password = edPassword.getText().toString().trim();
         if (!validLoginInput(email,password)) return;
+        lockBtnLogin();
         loginViewModel.login(email,password);
     }
 
     /**
-     * 登录验证
+     * 验证登录输入数据是否有效
      * @param email 邮箱
      * @param password 密码
      * @return 验证结果
@@ -153,6 +150,7 @@ public class LoginFragment extends Fragment {
      * 登录响应
      */
     private void loginResponse(ResponseDto response){
+        unlockBtnLogin();
         Log.d(TAG, response.getMsg());
         AlertUtil.showToast(getContext(),response.getMsg());
         if(response.getCode()==200){
@@ -161,5 +159,19 @@ public class LoginFragment extends Fragment {
             prefsUtil.putString("token", token);
             startActivity(new Intent(getContext(), MainActivity.class));
         }
+    }
+
+    private void lockBtnLogin(){
+        btnLogin.setEnabled(false);
+        btnLogin.setBackground(getResources().getDrawable(R.drawable.ebook_button_disabled));
+    }
+    private void unlockBtnLogin(){
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                btnLogin.setEnabled(true);
+                btnLogin.setBackground(getResources().getDrawable(R.drawable.ebook_button));
+            }
+        }, 3000); // 延迟2秒
     }
 }

@@ -2,6 +2,9 @@ package com.ebook.app.dtos;
 
 import com.alibaba.fastjson.JSONObject;
 
+/**
+ * 统一返回结果
+ */
 public class ResponseDto extends JSONObject {
     public ResponseDto() {
     }
@@ -22,5 +25,9 @@ public class ResponseDto extends JSONObject {
     }
     public String getMsg() {
         return this.getString("msg");
+    }
+
+    public JSONObject getData() {
+        return this.getJSONObject("data");
     }
 }

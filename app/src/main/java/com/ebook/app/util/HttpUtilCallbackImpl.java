@@ -5,11 +5,12 @@ import androidx.lifecycle.MutableLiveData;
 import com.ebook.app.dtos.ResponseDto;
 
 /**
- * viewmodel执行的回调内容一直，所以用一个类来封装
+ * Http请求回调接口实现类
+ * 基本上回调操作类似，所以做一个实现类减少代码量
  */
-public class MyCallBackImpl implements MyCallback{
+public class HttpUtilCallbackImpl implements HttpUtilCallback{
     MutableLiveData<ResponseDto> liveData;
-    public MyCallBackImpl(MutableLiveData<ResponseDto> liveData) {
+    public HttpUtilCallbackImpl(MutableLiveData<ResponseDto> liveData) {
         this.liveData = liveData;
     }
 

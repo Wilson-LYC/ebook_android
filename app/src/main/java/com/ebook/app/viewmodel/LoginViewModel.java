@@ -6,18 +6,19 @@ import androidx.lifecycle.ViewModel;
 
 import com.ebook.app.dtos.ResponseDto;
 import com.ebook.app.repositories.UserRepository;
-import com.ebook.app.util.MyCallBackImpl;
-import com.ebook.app.util.MyCallback;
+import com.ebook.app.util.HttpUtilCallbackImpl;
 
+/**
+ * 登录页面的viewmodel
+ */
 public class LoginViewModel extends ViewModel {
     final MutableLiveData<ResponseDto> loginLiveData=new MutableLiveData<>();//登录livedata
-    final UserRepository userRepository=new UserRepository();
+    final UserRepository userRepository=new UserRepository();//调用api
     public LiveData<ResponseDto> getLoginLiveData(){
-        //返回livedata供页面的observer监听
+        //返回livedata，提供给页面的observer（观察者）监听
         return loginLiveData;
     }
     public void login(String email, String password){
-        //调用api
-        userRepository.login(email, password, new MyCallBackImpl(loginLiveData));
+        userRepository.login(email, password, new HttpUtilCallbackImpl(loginLiveData));//调用api
     }
 }

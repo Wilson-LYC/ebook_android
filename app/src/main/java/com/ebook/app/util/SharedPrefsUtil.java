@@ -3,6 +3,9 @@ package com.ebook.app.util;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+/**
+ * SharedPreferences工具类 - 用于存储key-value数据
+ */
 public class SharedPrefsUtil {
 
     private static final String PREFS_NAME = "app_preferences";

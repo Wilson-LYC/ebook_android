@@ -46,7 +46,6 @@
         <Button
             android:id="@+id/login_btn_login"
             style="@style/Ebook.button"
-            android:onClick="btnLoginClick"
             android:text="@string/login" />
 
         <Space
