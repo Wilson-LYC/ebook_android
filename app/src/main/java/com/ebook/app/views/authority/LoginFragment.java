@@ -82,12 +82,12 @@ public class LoginFragment extends Fragment {
         Log.d(TAG, "onViewCreated");
         super.onViewCreated(view, savedInstanceState);
         // 初始化
-        loginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
+        prefsUtil=SharedPrefsUtil.with(getActivity());
         edEmail = getView().findViewById(R.id.login_ed_email);
         edPassword = getView().findViewById(R.id.login_ed_password);
         btnLogin= getView().findViewById(R.id.login_btn_login);
         tvForgotPwd=getView().findViewById(R.id.login_tv_forgot_pwd);
-        prefsUtil=SharedPrefsUtil.with(getActivity());
+        loginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
         loginObserver = new Observer<ResponseDto>() {
             @Override
             public void onChanged(ResponseDto response) {
@@ -121,7 +121,6 @@ public class LoginFragment extends Fragment {
         String email = edEmail.getText().toString().trim();
         String password = edPassword.getText().toString().trim();
         if (!validLoginInput(email,password)) return;
-        lockBtnLogin();
         loginViewModel.login(email,password);
     }
 
@@ -150,7 +149,6 @@ public class LoginFragment extends Fragment {
      * 登录响应
      */
     private void loginResponse(ResponseDto response){
-        unlockBtnLogin();
         Log.d(TAG, response.getMsg());
         AlertUtil.showToast(getContext(),response.getMsg());
         if(response.getCode()==200){
@@ -159,19 +157,5 @@ public class LoginFragment extends Fragment {
             prefsUtil.putString("token", token);
             startActivity(new Intent(getContext(), MainActivity.class));
         }
-    }
-
-    private void lockBtnLogin(){
-        btnLogin.setEnabled(false);
-        btnLogin.setBackground(getResources().getDrawable(R.drawable.ebook_button_disabled));
-    }
-    private void unlockBtnLogin(){
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                btnLogin.setEnabled(true);
-                btnLogin.setBackground(getResources().getDrawable(R.drawable.ebook_button));
-            }
-        }, 3000); // 延迟2秒
     }
 }

@@ -11,6 +11,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.ebook.app.R;
 import com.ebook.app.util.SharedPrefsUtil;
 
+
 public class MainActivity extends AppCompatActivity {
     private SharedPrefsUtil prefsUtil;
     @Override
@@ -18,13 +19,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.authotiry_linear_layout), (v, insets) -> {
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.authority_activity), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        prefsUtil=SharedPrefsUtil.with(this);
-        System.out.println(prefsUtil.getString("token",""));
     }
-
 }

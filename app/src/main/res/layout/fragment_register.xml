@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/register_frame"
+    android:id="@+id/register_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingLeft="30dp"
@@ -18,7 +18,7 @@
             android:layout_height="20dp" />
 
         <EditText
-            android:id="@+id/register_tv_email"
+            android:id="@+id/register_ed_email"
             style="@style/Ebook.input"
             android:background="@drawable/ebook_input"
             android:ems="10"
@@ -35,7 +35,7 @@
             android:orientation="horizontal">
 
             <EditText
-                android:id="@+id/register_tv_email2"
+                android:id="@+id/register_ed_captcha"
                 style="@style/Ebook.input"
                 android:layout_width="wrap_content"
                 android:background="@drawable/ebook_input"
@@ -44,7 +44,7 @@
                 android:inputType="text" />
 
             <Button
-                android:id="@+id/button"
+                android:id="@+id/register_btn_get_captcha"
                 style="@style/Ebook.button"
                 android:layout_width="120dp"
                 android:layout_marginLeft="20dp"
@@ -58,7 +58,7 @@
             android:layout_height="25dp" />
 
         <EditText
-            android:id="@+id/register_tv_password"
+            android:id="@+id/register_ed_password"
             style="@style/Ebook.input"
             android:layout_width="match_parent"
             android:background="@drawable/ebook_input"
@@ -71,7 +71,7 @@
             android:layout_height="25dp" />
 
         <EditText
-            android:id="@+id/register_tv_password2"
+            android:id="@+id/register_ed_confirm_password"
             style="@style/Ebook.input"
             android:layout_width="match_parent"
             android:background="@drawable/ebook_input"
@@ -84,7 +84,7 @@
             android:layout_height="30dp" />
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/register_btn_register"
             style="@style/Ebook.button"
             android:text="@string/register" />
 

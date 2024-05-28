@@ -21,7 +21,7 @@ public class AuthorityActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_authority);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.authotiry_linear_layout), (v, insets) -> {
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.authority_activity), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
@@ -41,5 +41,12 @@ public class AuthorityActivity extends AppCompatActivity {
                     break;
             }
         }).attach();
+    }
+
+    public void changeToRegister() {
+        viewPager.setCurrentItem(1);
+    }
+    public void changeToLogin() {
+        viewPager.setCurrentItem(0);
     }
 }

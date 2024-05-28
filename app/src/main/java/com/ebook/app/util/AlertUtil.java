@@ -14,10 +14,10 @@ public class AlertUtil {
     /**
      * 显示弹窗
      */
-    public static void showDialog(Context context, String errorMessage) {
+    public static void showDialog(Context context, String msg) {
         new AlertDialog.Builder(context)
                 .setTitle("错误")
-                .setMessage(errorMessage)
+                .setMessage(msg)
                 .setPositiveButton("确定", (dialog, which) -> dialog.dismiss())
                 .setCancelable(false)
                 .create()
