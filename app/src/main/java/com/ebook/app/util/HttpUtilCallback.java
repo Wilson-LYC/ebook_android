@@ -1,6 +1,6 @@
 package com.ebook.app.util;
 
-import com.ebook.app.dtos.ResponseDto;
+import com.ebook.app.dto.ResponseDto;
 
 /**
  * Http请求回调接口

@@ -2,7 +2,6 @@
     <string name="app_name">ebook</string>
     <string name="login">登录</string>
     <string name="register">注册</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="email">邮箱</string>
     <string name="password">密码</string>
     <string name="captcha">验证码</string>
@@ -12,6 +11,13 @@
     <string name="category">分类</string>
     <string name="search">搜索</string>
     <string name="mine">我的</string>
-    <string name="eai">E宝</string>
+    <string name="ai">E宝</string>
+    <string name="setting_password">设置密码</string>
+    <string name="confire_password">确认密码</string>
+    <string name="title_activity_main">title_activity_main</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="set_info">修改资料</string>
+    <string name="set_email">修改邮箱</string>
+    <string name="set_password">修改密码</string>
     <string name="weekly_article"><b>本周精选</b></string>
 </resources>

@@ -2,7 +2,7 @@ package com.ebook.app.util;
 
 import androidx.lifecycle.MutableLiveData;
 
-import com.ebook.app.dtos.ResponseDto;
+import com.ebook.app.dto.ResponseDto;
 
 /**
  * Http请求回调接口实现类

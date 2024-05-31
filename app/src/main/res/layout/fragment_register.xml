@@ -4,89 +4,88 @@
     android:id="@+id/register_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="30dp"
-    android:paddingRight="30dp"
-    tools:context=".views.authority.RegisterFragment">
+    tools:context=".view.authority.fragment.RegisterFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp">
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="20dp" />
+            android:layout_height="50dp" />
 
         <EditText
             android:id="@+id/register_ed_email"
-            style="@style/Ebook.input"
-            android:background="@drawable/ebook_input"
+            style="@style/EBook.input"
             android:ems="10"
             android:hint="@string/email"
             android:inputType="text" />
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="25dp" />
+            android:layout_height="20dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="52dp"
             android:orientation="horizontal">
+
 
             <EditText
                 android:id="@+id/register_ed_captcha"
-                style="@style/Ebook.input"
+                style="@style/EBook.input"
                 android:layout_width="wrap_content"
-                android:background="@drawable/ebook_input"
+                android:layout_weight="1"
                 android:ems="10"
                 android:hint="@string/captcha"
                 android:inputType="text" />
 
             <Button
                 android:id="@+id/register_btn_get_captcha"
-                style="@style/Ebook.button"
+                style="@style/EBook.button"
                 android:layout_width="120dp"
                 android:layout_marginLeft="20dp"
                 android:layout_weight="1"
                 android:text="@string/get_captcha" />
-
         </LinearLayout>
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="25dp" />
+            android:layout_height="20dp" />
 
         <EditText
-            android:id="@+id/register_ed_password"
-            style="@style/Ebook.input"
-            android:layout_width="match_parent"
-            android:background="@drawable/ebook_input"
+            android:id="@+id/register_ed_set_pwd"
+            style="@style/EBook.input"
+            android:layout_weight="1"
             android:ems="10"
-            android:hint="设置密码"
-            android:inputType="text" />
+            android:hint="@string/setting_password"
+            android:inputType="textPassword" />
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="25dp" />
+            android:layout_height="20dp" />
 
         <EditText
-            android:id="@+id/register_ed_confirm_password"
-            style="@style/Ebook.input"
+            android:id="@+id/register_ed_conf_pwd"
+            style="@style/EBook.input"
             android:layout_width="match_parent"
-            android:background="@drawable/ebook_input"
+            android:layout_weight="1"
             android:ems="10"
-            android:hint="确认密码"
-            android:inputType="text" />
+            android:hint="@string/confire_password"
+            android:inputType="textPassword" />
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="30dp" />
+            android:layout_height="40dp" />
 
         <Button
             android:id="@+id/register_btn_register"
-            style="@style/Ebook.button"
+            style="@style/EBook.button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:text="@string/register" />
-
     </LinearLayout>
 </FrameLayout>

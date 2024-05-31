@@ -3,7 +3,7 @@ package com.ebook.app.util;
 import android.util.Log;
 
 import com.alibaba.fastjson.JSON;
-import com.ebook.app.dtos.ResponseDto;
+import com.ebook.app.dto.ResponseDto;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;

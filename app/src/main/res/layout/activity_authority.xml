@@ -6,11 +6,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".views.authority.AuthorityActivity">
+    tools:context=".view.authority.AuthorityActivity">
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/authority_tab_layout"
-        style="@style/Ebook.TabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
