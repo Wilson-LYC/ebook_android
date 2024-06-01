@@ -83,7 +83,7 @@ public class RegisterFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_register, container, false);
     }
 
-    @Override
+    /*@Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         // 初始化
@@ -133,7 +133,7 @@ public class RegisterFragment extends Fragment {
         // 移除观察者
         registerViewModel.getRegisterLiveData().removeObserver(registerObserver);
         registerViewModel.getGetCaptchaLiveData().removeObserver(getCaptchaObserver);
-    }
+    }*/
 
     /**
      * 验证邮箱
@@ -286,7 +286,7 @@ public class RegisterFragment extends Fragment {
      */
     private void getCaptchaSuccess() {
         btnGetCaptcha.setEnabled(false);
-        btnGetCaptcha.setBackground(getResources().getDrawable(R.drawable.ebook_button_disabled));
+//        btnGetCaptcha.setBackground(getResources().getDrawable(R.drawable.ebook_button_disabled));
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -309,7 +309,7 @@ public class RegisterFragment extends Fragment {
                     public void run() {
                         btnGetCaptcha.setText("获取验证码");
                         btnGetCaptcha.setEnabled(true);
-                        btnGetCaptcha.setBackground(getResources().getDrawable(R.drawable.ebook_button));
+//                        btnGetCaptcha.setBackground(getResources().getDrawable(R.drawable.ebook_button));
                     }
                 });
             }

@@ -17,27 +17,41 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="50dp" />
+            android:layout_height="40dp" />
 
-        <EditText
-            android:id="@+id/login_ed_email"
-            style="@style/EBook.input"
-            android:background="@drawable/ebook_input"
-            android:ems="10"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/login_til_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/EBook.textInputLayout"
             android:hint="@string/email"
-            android:inputType="textEmailAddress" />
+            app:errorEnabled="true"
+            app:endIconMode="clear_text">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/login_ed_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <Space
             android:layout_width="match_parent"
             android:layout_height="20dp" />
 
-        <EditText
-            android:id="@+id/login_ed_password"
-            style="@style/EBook.input"
-            android:background="@drawable/ebook_input"
-            android:ems="10"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/login_til_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/EBook.textInputLayout"
             android:hint="@string/password"
-            android:inputType="textPassword" />
+            app:errorEnabled="true"
+            app:endIconMode="password_toggle">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/login_ed_password"
+                android:inputType="textPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <Space
             android:layout_width="match_parent"
@@ -46,18 +60,7 @@
         <Button
             android:id="@+id/login_btn_login"
             style="@style/EBook.button"
-            android:text="@string/login" />
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="15dp" />
-
-        <TextView
-            android:id="@+id/login_tv_forgot_pwd"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="忘记密码？"
-            android:textColor="@color/ebook_brand_6" />
+            android:text="@string/login"/>
 
     </LinearLayout>
 

@@ -21,7 +21,7 @@ public class AuthorityActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //隐藏toolbar
-        getSupportActionBar().hide();
+        //getSupportActionBar().hide();
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_authority);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.authority_activity), (v, insets) -> {

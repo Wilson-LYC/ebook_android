@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/register_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -15,14 +16,20 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="50dp" />
+            android:layout_height="40dp" />
 
-        <EditText
-            android:id="@+id/register_ed_email"
-            style="@style/EBook.input"
-            android:ems="10"
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/EBook.textInputLayout"
             android:hint="@string/email"
-            android:inputType="text" />
+            app:endIconMode="clear_text">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/register_ed_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.google.android.material.textfield.TextInputLayout>
+
 
         <Space
             android:layout_width="match_parent"
@@ -30,62 +37,73 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="52dp"
-            android:orientation="horizontal">
+            android:layout_height="wrap_content">
 
-
-            <EditText
-                android:id="@+id/register_ed_captcha"
-                style="@style/EBook.input"
-                android:layout_width="wrap_content"
-                android:layout_weight="1"
-                android:ems="10"
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/EBook.textInputLayout"
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="20dp"
                 android:hint="@string/captcha"
-                android:inputType="text" />
+                app:endIconMode="clear_text">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/register_ed_get_captcha"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <Button
                 android:id="@+id/register_btn_get_captcha"
                 style="@style/EBook.button"
-                android:layout_width="120dp"
-                android:layout_marginLeft="20dp"
-                android:layout_weight="1"
+                android:layout_width="match_parent"
                 android:text="@string/get_captcha" />
+
         </LinearLayout>
 
         <Space
             android:layout_width="match_parent"
             android:layout_height="20dp" />
 
-        <EditText
-            android:id="@+id/register_ed_set_pwd"
-            style="@style/EBook.input"
-            android:layout_weight="1"
-            android:ems="10"
-            android:hint="@string/setting_password"
-            android:inputType="textPassword" />
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/EBook.textInputLayout"
+            android:hint="@string/password"
+            app:endIconMode="password_toggle">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/register_ed_password"
+                android:inputType="textPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <Space
             android:layout_width="match_parent"
             android:layout_height="20dp" />
 
-        <EditText
-            android:id="@+id/register_ed_conf_pwd"
-            style="@style/EBook.input"
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_weight="1"
-            android:ems="10"
-            android:hint="@string/confire_password"
-            android:inputType="textPassword" />
+            android:layout_height="wrap_content"
+            style="@style/EBook.textInputLayout"
+            android:hint="@string/confirm_password"
+            app:endIconMode="password_toggle">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/register_ed_password_confirm"
+                android:inputType="textPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="40dp" />
+            android:layout_height="30dp" />
 
         <Button
             android:id="@+id/register_btn_register"
             style="@style/EBook.button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/register" />
+            android:text="@string/register"/>
+
     </LinearLayout>
 </FrameLayout>

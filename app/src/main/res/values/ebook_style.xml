@@ -2,41 +2,25 @@
 <resources>
 
     <!--颜色-->
-    <color name="ebook_white">#FFFFFF</color>
-    <color name="ebook_black">#000000</color>
-
-    <!--灰色-->
-    <color name="ebook_grey_2">#EEEEEE</color>
-    <color name="ebook_grey_4">#DCDCDC</color>
-    <color name="ebook_grey_6">#A6A6A6</color>
-
-    <!--品牌色-->
-    <color name="ebook_brand_3">#a7d6b3</color>
-    <color name="ebook_brand_6">#176C40</color>
-    <color name="ebook_brand_hover">#358556</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
 
     <!--EBook主题-->
     <style name="EBook">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
+    </style>
+
+    <!--textInputLayout-->
+    <style name="EBook.textInputLayout" parent="EBook">
+        <item name="shapeAppearance">?attr/shapeAppearanceCornerMedium</item>
+        <item name="boxBackgroundColor">@color/white</item>
+    </style>
+
+    <style name="EBook.button" parent="EBook">
+        <item name="android:layout_height">60dp</item>
         <item name="android:textSize">16sp</item>
-    </style>
-
-    <!--按钮-->
-    <style name="EBook.button">
-        <item name="android:layout_height">50dp</item>
-        <item name="android:background">@drawable/ebook_button</item>
-        <item name="android:textColor">@color/ebook_white</item>
-    </style>
-
-    <!--输入框-->
-    <style name="EBook.input">
-        <item name="android:layout_height">50dp</item>
-        <item name="android:background">@drawable/ebook_input</item>
-        <item name="android:paddingLeft">15dp</item>
-        <item name="android:paddingRight">15dp</item>
-        <item name="android:paddingTop">5dp</item>
-        <item name="android:paddingBottom">5dp</item>
+        <item name="shapeAppearance">?attr/shapeAppearanceLargeComponent</item>
     </style>
 
     <!-- 圆形图片 -->
@@ -50,6 +34,6 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">20sp</item>
-        <item name="android:textColor">@color/ebook_black</item>
+        <item name="android:textColor">@color/black</item>
     </style>
 </resources>

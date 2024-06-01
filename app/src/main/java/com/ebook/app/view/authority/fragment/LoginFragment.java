@@ -22,12 +22,15 @@ import com.ebook.app.dto.ResponseDto;
 import com.ebook.app.util.SharedPrefsUtil;
 import com.ebook.app.view.authority.viewmodel.LoginViewModel;
 import com.ebook.app.util.AlertUtil;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 public class LoginFragment extends Fragment {
     final String TAG = "LoginFragment";
     private SharedPrefsUtil prefsUtil;//SharedPreferences工具
     private TextView tvForgotPwd;
-    private EditText edEmail, edPassword;
+    private TextInputLayout tilEmail, tilPassword;
+    private TextInputEditText edEmail, edPassword;
     private Button btnLogin;
     private LoginViewModel loginViewModel;//登录视图模型
     Observer<ResponseDto> loginObserver;//登录观察者
@@ -76,25 +79,29 @@ public class LoginFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         Log.d(TAG, "onViewCreated");
+        //绑定页面元素
         super.onViewCreated(view, savedInstanceState);
-        // 初始化
         prefsUtil=SharedPrefsUtil.with(getActivity());
-        edEmail = getView().findViewById(R.id.login_ed_email);
-        edPassword = getView().findViewById(R.id.login_ed_password);
+        tilEmail= getView().findViewById(R.id.login_til_email);
+        tilPassword= getView().findViewById(R.id.login_til_password);
+        edEmail= getView().findViewById(R.id.login_ed_email);
+        edPassword= getView().findViewById(R.id.login_ed_password);
         btnLogin= getView().findViewById(R.id.login_btn_login);
-        tvForgotPwd=getView().findViewById(R.id.login_tv_forgot_pwd);
+        //注册viewModel
         loginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
         loginObserver = new Observer<ResponseDto>() {
+            //创建观察者-登录
             @Override
             public void onChanged(ResponseDto response) {
                 loginResponse(response);//登录响应
             }
         };
-        loginViewModel.getLoginLiveData().observe(getViewLifecycleOwner(), loginObserver);
+        loginViewModel.getLoginLiveData().observe(getViewLifecycleOwner(), loginObserver);//添加观察者
         btnLogin.setOnClickListener(new View.OnClickListener() {
+            //登录按钮点击事件
             @Override
             public void onClick(View v) {
-                btnLoginClick();//登录
+                btnLoginOnClick();//登录
             }
         });
     }
@@ -112,12 +119,47 @@ public class LoginFragment extends Fragment {
     /**
      * 登录
      */
-    public void btnLoginClick(){
+    public void btnLoginOnClick(){
         Log.i(TAG, "登录按钮被点击" );
         String email = edEmail.getText().toString().trim();
         String password = edPassword.getText().toString().trim();
         if (!validLoginInput(email,password)) return;
         loginViewModel.login(email,password);
+    }
+
+    /**
+     * 验证邮箱
+     * @param email 邮箱
+     * @return 验证结果
+     */
+    private boolean checkEmail(String email){
+        if (email.isEmpty()){
+            Log.w(TAG,"请输入邮箱");
+            tilEmail.setError("请输入邮箱");
+            return false;
+        }
+        if (!email.matches("[\\w\\.\\-]+@([\\w\\-]+\\.)+[\\w\\-]+")){
+            Log.w(TAG,"请输入正确的邮箱");
+            tilEmail.setError("请输入正确的邮箱");
+            return false;
+        }
+        tilEmail.setError(null);
+        return true;
+    }
+
+    /**
+     * 验证密码
+     * @param password 密码
+     * @return 验证结果
+     */
+    private boolean checkPassword(String password){
+        if (password.isEmpty()){
+            Log.w(TAG,"请输入密码");
+            tilPassword.setError("请输入密码");
+            return false;
+        }
+        tilPassword.setError(null);
+        return true;
     }
 
     /**
@@ -127,20 +169,11 @@ public class LoginFragment extends Fragment {
      * @return 验证结果
      */
     private boolean validLoginInput(String email,String password) {
-        //判断是否为空
-        if (email.isEmpty() || password.isEmpty()){
-            Log.w(TAG,"请输入账号和密码");
-            AlertUtil.showDialog(getContext(),"请输入账号和密码");
-            return false;
-        }
-        //判断邮箱格式
-        if (!email.matches("[\\w\\.\\-]+@([\\w\\-]+\\.)+[\\w\\-]+")){
-            Log.w(TAG,"请输入正确的邮箱");
-            AlertUtil.showDialog(getContext(),"请输入正确的邮箱");
-            return false;
-        }
-        return true;
+        boolean valid = checkEmail(email) && checkPassword(password);
+        Log.i(TAG, "validLoginInput: "+valid);
+        return valid;
     }
+
     /**
      * 登录响应
      */
