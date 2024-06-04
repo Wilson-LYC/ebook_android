@@ -19,6 +19,6 @@ public class CaptchaRepository {
         RequestBody requestBody = new FormBody.Builder()
                 .add("email", email)
                 .build();
-        httpUtil.post(GET_CAPTCHA_URL,requestBody,callback);
+//        httpUtil.post(GET_CAPTCHA_URL,requestBody,callback);
     }
 }

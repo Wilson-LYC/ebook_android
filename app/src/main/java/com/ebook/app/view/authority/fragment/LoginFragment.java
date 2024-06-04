@@ -2,8 +2,8 @@ package com.ebook.app.view.authority.fragment;
 
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -13,27 +13,25 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
 
-import com.alibaba.fastjson.JSONObject;
 import com.ebook.app.R;
+import com.ebook.app.databinding.FragmentLoginBinding;
 import com.ebook.app.dto.ResponseDto;
-import com.ebook.app.util.SharedPrefsUtil;
-import com.ebook.app.view.authority.viewmodel.LoginViewModel;
 import com.ebook.app.util.AlertUtil;
+import com.ebook.app.view.authority.viewmodel.LoginViewModel;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class LoginFragment extends Fragment {
     final String TAG = "LoginFragment";
-    private SharedPrefsUtil prefsUtil;//SharedPreferences工具
-    private TextView tvForgotPwd;
-    private TextInputLayout tilEmail, tilPassword;
-    private TextInputEditText edEmail, edPassword;
+    private static LoginViewModel loginViewModel;
     private Button btnLogin;
-    private LoginViewModel loginViewModel;//登录视图模型
-    Observer<ResponseDto> loginObserver;//登录观察者
+    private TextInputLayout tilEmail, tilPassword;
+    private TextInputEditText etEmail, etPassword;
+    private Observer<ResponseDto> loginObserver;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -70,121 +68,88 @@ public class LoginFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_login, container, false);
-    }
-
-    /**
-     * 视图创建时调用
-     */
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        Log.d(TAG, "onViewCreated");
-        //绑定页面元素
-        super.onViewCreated(view, savedInstanceState);
-        prefsUtil=SharedPrefsUtil.with(getActivity());
-        tilEmail= getView().findViewById(R.id.login_til_email);
-        tilPassword= getView().findViewById(R.id.login_til_password);
-        edEmail= getView().findViewById(R.id.login_ed_email);
-        edPassword= getView().findViewById(R.id.login_ed_password);
-        btnLogin= getView().findViewById(R.id.login_btn_login);
-        //注册viewModel
-        loginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
+        View view=inflater.inflate(R.layout.fragment_login, container, false);
+        //绑定ViewModel
+        if(loginViewModel==null)
+            loginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
+        //绑定页面组件
+        btnLogin = view.findViewById(R.id.login_btn_login);
+        tilEmail = view.findViewById(R.id.login_til_email);
+        tilPassword = view.findViewById(R.id.login_til_password);
+        etEmail = view.findViewById(R.id.login_ed_email);
+        etPassword = view.findViewById(R.id.login_ed_password);
+        //配置观察者 - 登录
         loginObserver = new Observer<ResponseDto>() {
-            //创建观察者-登录
             @Override
             public void onChanged(ResponseDto response) {
-                loginResponse(response);//登录响应
+                loginResponse(response);
             }
         };
-        loginViewModel.getLoginLiveData().observe(getViewLifecycleOwner(), loginObserver);//添加观察者
+        loginViewModel.getLoginLiveData().observe(getViewLifecycleOwner(), loginObserver);
         btnLogin.setOnClickListener(new View.OnClickListener() {
             //登录按钮点击事件
             @Override
             public void onClick(View v) {
-                btnLoginOnClick();//登录
+                String email = etEmail.getText().toString().trim();
+                String password = etPassword.getText().toString().trim();
+                btnLoginOnClick(email,password);
             }
         });
+        return view;
     }
 
-    /**
-     * 销毁时调用
-     */
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        // 移除观察者
-        loginViewModel.getLoginLiveData().removeObserver(loginObserver);
+        loginViewModel.getLoginLiveData().removeObserver(loginObserver);//移除观察者
     }
 
-    /**
-     * 登录
-     */
-    public void btnLoginOnClick(){
-        Log.i(TAG, "登录按钮被点击" );
-        String email = edEmail.getText().toString().trim();
-        String password = edPassword.getText().toString().trim();
-        if (!validLoginInput(email,password)) return;
+    private boolean checkEmail(String email) {
+        if (email==null || email.isEmpty()) {
+            Log.e(TAG, "邮箱不能为空");
+            tilEmail.setError("邮箱不能为空");
+            return false;
+        }
+        String emailRegex = "^[A-Za-z0-9+_.-]+@(.+)$";
+        Pattern pattern = Pattern.compile(emailRegex);
+        Matcher matcher = pattern.matcher(email);
+        if (!matcher.matches()) {
+            Log.e(TAG, "邮箱格式不正确");
+            tilEmail.setError("邮箱格式不正确");
+        }
+        return matcher.matches();
+    }
+    private boolean checkPassword(String password) {
+        if (password == null || password.isEmpty()) {
+            Log.e(TAG, "密码不能为空");
+            tilPassword.setError("密码不能为空");
+            return false;
+        }
+        return true;
+    }
+    private boolean checkLoginInput(String email,String password){
+        return checkEmail(email) && checkPassword(password);
+    }
+    private void btnLoginOnClick(String email,String password){
+        Log.i(TAG, "登录按钮被点击");
+        if(!checkLoginInput(email,password))
+            return;
+        btnLogin.setEnabled(false);
         loginViewModel.login(email,password);
     }
-
-    /**
-     * 验证邮箱
-     * @param email 邮箱
-     * @return 验证结果
-     */
-    private boolean checkEmail(String email){
-        if (email.isEmpty()){
-            Log.w(TAG,"请输入邮箱");
-            tilEmail.setError("请输入邮箱");
-            return false;
-        }
-        if (!email.matches("[\\w\\.\\-]+@([\\w\\-]+\\.)+[\\w\\-]+")){
-            Log.w(TAG,"请输入正确的邮箱");
-            tilEmail.setError("请输入正确的邮箱");
-            return false;
-        }
-        tilEmail.setError(null);
-        return true;
+    private void loginSuccess(){
+        Log.i(TAG, "登录成功");
     }
-
-    /**
-     * 验证密码
-     * @param password 密码
-     * @return 验证结果
-     */
-    private boolean checkPassword(String password){
-        if (password.isEmpty()){
-            Log.w(TAG,"请输入密码");
-            tilPassword.setError("请输入密码");
-            return false;
-        }
-        tilPassword.setError(null);
-        return true;
+    private void loginFailed(){
+        Log.i(TAG, "登录失败");
     }
-
-    /**
-     * 验证登录输入数据是否有效
-     * @param email 邮箱
-     * @param password 密码
-     * @return 验证结果
-     */
-    private boolean validLoginInput(String email,String password) {
-        boolean valid = checkEmail(email) && checkPassword(password);
-        Log.i(TAG, "validLoginInput: "+valid);
-        return valid;
-    }
-
-    /**
-     * 登录响应
-     */
-    private void loginResponse(ResponseDto response){
-        Log.d(TAG, response.getMsg());
-        AlertUtil.showToast(getContext(),response.getMsg());
-        if(response.getCode()==200){
-            JSONObject data = response.getJSONObject("data");
-            String token = data.getString("token");
-            prefsUtil.putString("token", token);
-//            startActivity(new Intent(getContext(), MainActivity.class));
+    private void loginResponse(ResponseDto response) {
+        btnLogin.setEnabled(true);
+        if (response.getCode() == 200) {
+            //200:登录成功
+            loginSuccess();
+        } else {
+            loginFailed();
         }
     }
 }

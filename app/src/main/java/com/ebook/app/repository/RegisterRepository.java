@@ -25,6 +25,6 @@ public class RegisterRepository {
                 .add("captcha", captcha)
                 .build();
         Log.d("RegisterRepository", "register: "+email+" "+password+" "+captcha);
-        httpUtil.post(REGISTER_URL,requestBody,callback);
+//        httpUtil.post(REGISTER_URL,requestBody,callback);
     }
 }

@@ -9,9 +9,9 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 import com.ebook.app.view.authority.fragment.LoginFragment;
 import com.ebook.app.view.authority.fragment.RegisterFragment;
 
-public class AuthorityPagerAdapter extends FragmentStateAdapter {
+public class AuthorityFragmentStateAdapter extends FragmentStateAdapter {
 
-    public AuthorityPagerAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle) {
+    public AuthorityFragmentStateAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle) {
         super(fragmentManager, lifecycle);
     }
 

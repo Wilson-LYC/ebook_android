@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/login_fragment"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -16,17 +15,17 @@
         android:paddingRight="30dp">
 
         <Space
-            android:layout_width="match_parent"
-            android:layout_height="40dp" />
+            android:layout_width="wrap_content"
+            android:layout_height="30dp" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/login_til_email"
+            style="@style/EBook.textInputLayout"
+            app:endIconMode="clear_text"
+            app:errorEnabled="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/EBook.textInputLayout"
-            android:hint="@string/email"
-            app:errorEnabled="true"
-            app:endIconMode="clear_text">
+            android:hint="@string/email">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/login_ed_email"
@@ -34,34 +33,27 @@
                 android:layout_height="wrap_content" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="20dp" />
-
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/login_til_password"
+            style="@style/EBook.textInputLayout"
+            app:endIconMode="password_toggle"
+            app:errorEnabled="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/EBook.textInputLayout"
-            android:hint="@string/password"
-            app:errorEnabled="true"
-            app:endIconMode="password_toggle">
+            android:hint="@string/password">
+
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/login_ed_password"
-                android:inputType="textPassword"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:inputType="textPassword" />
         </com.google.android.material.textfield.TextInputLayout>
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="30dp" />
 
         <Button
             android:id="@+id/login_btn_login"
             style="@style/EBook.button"
-            android:text="@string/login"/>
+            android:text="@string/login" />
 
     </LinearLayout>
 
-</FrameLayout>
+    </FrameLayout>

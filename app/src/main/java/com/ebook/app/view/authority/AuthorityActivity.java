@@ -10,7 +10,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.ebook.app.R;
-import com.ebook.app.view.authority.adapter.AuthorityPagerAdapter;
+import com.ebook.app.view.authority.adapter.AuthorityFragmentStateAdapter;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
@@ -29,8 +29,8 @@ public class AuthorityActivity extends AppCompatActivity {
         });
         viewPager = findViewById(R.id.authority_view_pager);
         tabLayout = findViewById(R.id.authority_tab_layout);
-        AuthorityPagerAdapter authorityPagerAdapter = new AuthorityPagerAdapter(getSupportFragmentManager(), getLifecycle());
-        viewPager.setAdapter(authorityPagerAdapter);
+        AuthorityFragmentStateAdapter authorityFragmentStateAdapter = new AuthorityFragmentStateAdapter(getSupportFragmentManager(), getLifecycle());
+        viewPager.setAdapter(authorityFragmentStateAdapter);
         // 使用TabLayoutMediator来连接TabLayout与ViewPager2
         new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
             switch (position) {
