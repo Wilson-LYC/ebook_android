@@ -1,5 +1,6 @@
 package com.ebook.app.view.authority.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -15,7 +16,9 @@ import android.widget.Button;
 import com.ebook.app.R;
 import com.ebook.app.dto.ResponseDto;
 import com.ebook.app.util.AlertUtil;
+import com.ebook.app.util.ResponseOperation;
 import com.ebook.app.view.authority.viewmodel.LoginViewModel;
+import com.ebook.app.view.main.MainActivity;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -23,12 +26,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class LoginFragment extends Fragment {
-    final String TAG = "LoginFragment";
+    final String TAG = "Login Page";
     private static LoginViewModel loginViewModel;
+    private Observer<ResponseDto> loginObserver;
     private Button btnLogin;
     private TextInputLayout tilEmail, tilPassword;
     private TextInputEditText etEmail, etPassword;
-    private Observer<ResponseDto> loginObserver;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -64,7 +67,7 @@ public class LoginFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+        //创建视图
         View view=inflater.inflate(R.layout.fragment_login, container, false);
         //绑定ViewModel
         if(loginViewModel==null)
@@ -73,14 +76,14 @@ public class LoginFragment extends Fragment {
         btnLogin = view.findViewById(R.id.login_btn_login);
         tilEmail = view.findViewById(R.id.login_til_email);
         tilPassword = view.findViewById(R.id.login_til_password);
-        etEmail = view.findViewById(R.id.login_ed_email);
-        etPassword = view.findViewById(R.id.login_ed_password);
+        etEmail = view.findViewById(R.id.login_et_email);
+        etPassword = view.findViewById(R.id.login_et_password);
         loginObserver = new Observer<ResponseDto>() {
             //登录观察者
             @Override
             public void onChanged(ResponseDto response) {
                 //调用登录响应
-                loginResponse(response);
+                loginResponse.onRespond(response);
             }
         };
         loginViewModel.getLoginLiveData().observe(getViewLifecycleOwner(), loginObserver);
@@ -104,6 +107,11 @@ public class LoginFragment extends Fragment {
         loginViewModel.getLoginLiveData().removeObserver(loginObserver);//移除观察者
     }
 
+    /**
+     * 校验邮箱
+     * @param email 邮箱
+     * @return 校验结果
+     */
     private boolean checkEmail(String email) {
         //校验邮箱
         if (email==null || email.isEmpty()) {
@@ -117,9 +125,18 @@ public class LoginFragment extends Fragment {
         if (!matcher.matches()) {
             Log.e(TAG, "邮箱格式不正确");
             tilEmail.setError("邮箱格式不正确");
+            return false;
+        }else {
+            tilEmail.setError(null);
+            return true;
         }
-        return matcher.matches();
     }
+
+    /**
+     * 校验密码
+     * @param password 密码
+     * @return 校验结果
+     */
     private boolean checkPassword(String password) {
         //校验密码
         if (password == null || password.isEmpty()) {
@@ -127,39 +144,50 @@ public class LoginFragment extends Fragment {
             tilPassword.setError("密码不能为空");
             return false;
         }
+        tilPassword.setError(null);
         return true;
     }
+
+    /**
+     * 校验登录数据
+     * @param email 邮箱
+     * @param password 密码
+     * @return 校验结果
+     */
     private boolean checkLoginInput(String email,String password){
         //校验登录数据
         return checkEmail(email) && checkPassword(password);
     }
+
+    /**
+     * 登录按钮点击事件
+     * @param email 邮箱
+     * @param password 密码
+     */
     private void btnLoginOnClick(String email,String password){
-        //登录按钮点击事件
-        Log.i(TAG, "登录按钮被点击");
+        Log.i(TAG, "点击“登录”按钮");
         if(!checkLoginInput(email,password))
             return;
         AlertUtil.showToast(this.getContext(),"登录中...");
         btnLogin.setEnabled(false);
         loginViewModel.login(email,password);
     }
-    private void loginSuccess(ResponseDto response){
-        //登录成功
-        Log.i(TAG, "登录成功");
-        AlertUtil.showToast(this.getContext(),"登录成功");
-    }
-    private void loginFailed(ResponseDto response){
-        //登录失败
-        Log.i(TAG, "登录失败:"+response.getMsg());
-        AlertUtil.showToast(this.getContext(),response.getMsg());
-    }
-    private void loginResponse(ResponseDto response) {
-        //登录响应
-        btnLogin.setEnabled(true);
-        if (response.getCode() == 200) {
-            //200:登录成功
-            loginSuccess(response);
-        } else {
-            loginFailed(response);
+
+    ResponseOperation loginResponse = new ResponseOperation(TAG) {
+        @Override
+        public void onSuccess(ResponseDto response) {
+            AlertUtil.showToast(getContext(),"登录成功");
+            startActivity(new Intent(getContext(), MainActivity.class));//跳转到主页面
         }
-    }
+
+        @Override
+        public void showDialog(String msg) {
+            AlertUtil.showDialog(getContext(),msg);
+        }
+
+        @Override
+        public void onCommon(ResponseDto response) {
+            btnLogin.setEnabled(true);
+        }
+    };
 }

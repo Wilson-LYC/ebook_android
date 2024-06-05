@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/register_fragment"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".view.authority.fragment.RegisterFragment">
@@ -19,13 +18,15 @@
             android:layout_height="40dp" />
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/register_til_email"
+            style="@style/EBook.textInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/EBook.textInputLayout"
             android:hint="@string/email"
             app:endIconMode="clear_text">
+
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/register_ed_email"
+                android:id="@+id/register_et_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -40,6 +41,7 @@
             android:layout_height="wrap_content">
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/register_til_captcha"
                 style="@style/EBook.textInputLayout"
                 android:layout_width="180dp"
                 android:layout_height="wrap_content"
@@ -48,7 +50,7 @@
                 app:endIconMode="clear_text">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/register_ed_get_captcha"
+                    android:id="@+id/register_et_captcha"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1" />
@@ -67,16 +69,18 @@
             android:layout_height="20dp" />
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/register_til_password"
+            style="@style/EBook.textInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/EBook.textInputLayout"
             android:hint="@string/password"
             app:endIconMode="password_toggle">
+
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/register_ed_password"
-                android:inputType="textPassword"
+                android:id="@+id/register_et_password"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:inputType="textPassword" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <Space
@@ -84,16 +88,18 @@
             android:layout_height="20dp" />
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/register_til_password_confirm"
+            style="@style/EBook.textInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/EBook.textInputLayout"
             android:hint="@string/confirm_password"
             app:endIconMode="password_toggle">
+
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/register_ed_password_confirm"
-                android:inputType="textPassword"
+                android:id="@+id/register_et_password_confirm"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:inputType="textPassword" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <Space
@@ -103,7 +109,7 @@
         <Button
             android:id="@+id/register_btn_register"
             style="@style/EBook.button"
-            android:text="@string/register"/>
+            android:text="@string/register" />
 
     </LinearLayout>
 </FrameLayout>

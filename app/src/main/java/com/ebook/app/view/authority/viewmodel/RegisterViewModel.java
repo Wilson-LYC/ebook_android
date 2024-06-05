@@ -6,21 +6,27 @@ import androidx.lifecycle.ViewModel;
 
 import com.ebook.app.dto.ResponseDto;
 import com.ebook.app.repository.CaptchaRepository;
-import com.ebook.app.repository.RegisterRepository;
-import com.ebook.app.util.HttpUtilCallbackImpl;
+import com.ebook.app.repository.UserRepository;
+import com.ebook.app.util.RequestCallback;
 
 public class RegisterViewModel extends ViewModel {
-    MutableLiveData<ResponseDto> registerLiveData = new MutableLiveData<>();//注册数据
-    MutableLiveData<ResponseDto> getCaptchaLiveData = new MutableLiveData<>();//获取验证码数据
-
-    final RegisterRepository registerRepository = new RegisterRepository();
+    MutableLiveData<ResponseDto> registerLiveData = new MutableLiveData<>();//注册
+    MutableLiveData<ResponseDto> getCaptchaLiveData = new MutableLiveData<>();//获取验证码
+    final UserRepository userRepository = new UserRepository();
     final CaptchaRepository captchaRepository = new CaptchaRepository();
     public LiveData<ResponseDto> getRegisterLiveData() {
         return registerLiveData;
     }
-
     public LiveData<ResponseDto> getGetCaptchaLiveData() {
         return getCaptchaLiveData;
+    }
+
+    /**
+     * 获取验证码
+     * @param email 邮箱
+     */
+    public void getCaptcha(String email) {
+        captchaRepository.getCaptcha(email, new RequestCallback(getCaptchaLiveData));
     }
 
     /**
@@ -30,16 +36,6 @@ public class RegisterViewModel extends ViewModel {
      * @param captcha 验证码
      */
     public void register(String email, String password, String captcha) {
-        registerRepository.register(email, password, captcha, new HttpUtilCallbackImpl(registerLiveData));
-    }
-
-    /**
-     * 获取验证码
-     * @param email 邮箱
-     */
-    public void getCaptcha(String email) {
-        //获取验证码
-        getCaptchaLiveData.postValue(new ResponseDto(0, "正在获取验证码"));
-        captchaRepository.getCaptcha(email, new HttpUtilCallbackImpl(getCaptchaLiveData));
+        userRepository.register(email, password, captcha, new RequestCallback(registerLiveData));
     }
 }

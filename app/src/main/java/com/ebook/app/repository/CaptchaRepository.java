@@ -1,7 +1,7 @@
 package com.ebook.app.repository;
 
 import com.ebook.app.util.HttpUtil;
-import com.ebook.app.util.HttpUtilCallback;
+import com.ebook.app.util.RequestCallback;
 
 import okhttp3.FormBody;
 import okhttp3.RequestBody;
@@ -15,10 +15,10 @@ public class CaptchaRepository {
      * @param email 邮箱
      * @param callback 回调函数
      */
-    public void getCaptcha(String email, HttpUtilCallback callback) {
+    public void getCaptcha(String email, RequestCallback callback) {
         RequestBody requestBody = new FormBody.Builder()
                 .add("email", email)
                 .build();
-//        httpUtil.post(GET_CAPTCHA_URL,requestBody,callback);
+        httpUtil.post(GET_CAPTCHA_URL,requestBody,callback);
     }
 }

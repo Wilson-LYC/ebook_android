@@ -8,7 +8,6 @@ import com.alibaba.fastjson.JSONObject;
 public class ResponseDto extends JSONObject {
     public ResponseDto() {
     }
-
     public ResponseDto(int code, String msg) {
         super();
         this.put("code",code);
@@ -26,7 +25,6 @@ public class ResponseDto extends JSONObject {
     public String getMsg() {
         return this.getString("msg");
     }
-
     public JSONObject getData() {
         return this.getJSONObject("data");
     }

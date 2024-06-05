@@ -18,9 +18,13 @@ import android.widget.EditText;
 import com.ebook.app.R;
 import com.ebook.app.dto.ResponseDto;
 import com.ebook.app.util.AlertUtil;
+import com.ebook.app.util.ResponseOperation;
 import com.ebook.app.util.SharedPrefsUtil;
+import com.ebook.app.view.authority.viewmodel.LoginViewModel;
 import com.ebook.app.view.authority.viewmodel.RegisterViewModel;
 import com.ebook.app.view.authority.AuthorityActivity;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -30,10 +34,10 @@ import com.ebook.app.view.authority.AuthorityActivity;
 public class RegisterFragment extends Fragment {
 
     final String TAG = "RegisterFragment";
-    private SharedPrefsUtil prefsUtil;//SharedPreferences工具
-    private EditText edEmail, edCaptcha, edPassword, edConfirmPassword;//邮箱，验证码，密码，确认密码输入框
-    private Button btnRegister, btnGetCaptcha;//注册按钮，获取验证码按钮
-    private RegisterViewModel registerViewModel;//注册视图模型
+    private TextInputEditText etEmail,etPassword,etCaptcha,etPasswordConfirm;
+    private TextInputLayout tilEmail,tilPassword,tilCaptcha,tilPasswordConfirm;
+    private Button btnRegister, btnGetCaptcha;
+    private RegisterViewModel registerViewModel;
     Observer<ResponseDto> registerObserver,getCaptchaObserver;//注册观察者，获取验证码观察者
 
     // TODO: Rename parameter arguments, choose names that match
@@ -80,51 +84,56 @@ public class RegisterFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_register, container, false);
-    }
-
-    /*@Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        // 初始化
-        prefsUtil = SharedPrefsUtil.with(getContext());
-        edEmail = view.findViewById(R.id.register_ed_email);
-        edCaptcha = view.findViewById(R.id.register_ed_captcha);
-        edPassword = view.findViewById(R.id.register_ed_set_pwd);
-        edConfirmPassword = view.findViewById(R.id.register_ed_conf_pwd);
-        btnRegister = view.findViewById(R.id.register_btn_register);
-        btnGetCaptcha = view.findViewById(R.id.register_btn_get_captcha);
-        registerViewModel = new ViewModelProvider(this).get(RegisterViewModel.class);
-        getCaptchaObserver = new Observer<ResponseDto>() {
-            @Override
-            public void onChanged(ResponseDto response) {
-                //获取验证码
-                getCaptchaResponse(response);
-            }
-        };
-        registerViewModel.getGetCaptchaLiveData().observe(getViewLifecycleOwner(), getCaptchaObserver);
+        View view=inflater.inflate(R.layout.fragment_register, container, false);
+        //绑定viewmodel
+        if(registerViewModel==null)
+            registerViewModel = new ViewModelProvider(this).get(RegisterViewModel.class);
+        //绑定组件
+        etEmail=view.findViewById(R.id.register_et_email);
+        etCaptcha=view.findViewById(R.id.register_et_captcha);
+        etPassword=view.findViewById(R.id.register_et_password);
+        etPasswordConfirm=view.findViewById(R.id.register_et_password_confirm);
+        tilEmail=view.findViewById(R.id.register_til_email);
+        tilCaptcha=view.findViewById(R.id.register_til_captcha);
+        tilPassword=view.findViewById(R.id.register_til_password);
+        tilPasswordConfirm=view.findViewById(R.id.register_til_password_confirm);
+        btnGetCaptcha=view.findViewById(R.id.register_btn_get_captcha);
+        btnRegister=view.findViewById(R.id.register_btn_register);
+        //注册观察者
         registerObserver = new Observer<ResponseDto>() {
             @Override
             public void onChanged(ResponseDto response) {
-                //注册
+                //注册响应
                 registerResponse(response);
             }
         };
         registerViewModel.getRegisterLiveData().observe(getViewLifecycleOwner(), registerObserver);
+        //获取验证码观察者
+        getCaptchaObserver = new Observer<ResponseDto>() {
+            @Override
+            public void onChanged(ResponseDto response) {
+                //获取验证码响应
+                getCaptchaResponse.onRespond(response);
+            }
+        };
+        registerViewModel.getGetCaptchaLiveData().observe(getViewLifecycleOwner(), getCaptchaObserver);
+        //注册按钮点击事件
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //注册
-                registerOnClick();
+                //注册点击事件
+                btnRegisterOnClick();
             }
         });
+        //获取验证码按钮点击事件
         btnGetCaptcha.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //获取验证码
-                getCaptchaOnClick();
+                //获取验证码点击事件
+                btnGetCaptchaOnClick();
             }
         });
+        return view;
     }
 
     @Override
@@ -133,169 +142,150 @@ public class RegisterFragment extends Fragment {
         // 移除观察者
         registerViewModel.getRegisterLiveData().removeObserver(registerObserver);
         registerViewModel.getGetCaptchaLiveData().removeObserver(getCaptchaObserver);
-    }*/
+    }
 
-    /**
-     * 验证邮箱
-     * @param email 邮箱
-     * @return 验证结果
-     */
-    private boolean validEmail(String email) {
-        boolean result = email.matches("[\\w\\.\\-]+@([\\w\\-]+\\.)+[\\w\\-]+") && !email.isEmpty();
-        if (!result) {
-            Log.w(TAG, "邮箱格式不正确");
-            AlertUtil.showDialog(getContext(), "邮箱格式不正确");
+    private boolean checkEmail(String email) {
+        // 校验邮箱
+        if (email==null || email.isEmpty()) {
+            Log.e(TAG, "邮箱不能为空");
+            tilEmail.setError("邮箱不能为空");
+            return false;
         }
-        return result;
-    }
-
-    /**
-     * 验证密码
-     * @param password 密码
-     * @return 验证结果
-     */
-    private boolean validPassword(String password) {
-        boolean result = password.length() >= 6 && password.length() <= 16;
-        if (!result){
-            Log.w(TAG, "密码长度应在6-16位之间");
-            AlertUtil.showDialog(getContext(), "密码长度应在6-16位之间");
+        String emailRegex = "^[A-Za-z0-9+_.-]+@(.+)$";
+        if (!email.matches(emailRegex)) {
+            Log.e(TAG, "邮箱格式不正确");
+            tilEmail.setError("邮箱格式不正确");
+            return false;
         }
-        return result;
+        return true;
     }
 
-    /**
-     * 验证确认密码
-     * @param password 密码
-     * @param confirmPassword 确认密码
-     * @return 验证结果
-     */
-    private boolean validConfirmPassword(String password, String confirmPassword) {
-        boolean result = password.equals(confirmPassword);
-        if (!result) {
-            Log.w(TAG, "两次密码不一致");
-            AlertUtil.showDialog(getContext(), "两次密码不一致");
+    private boolean checkPassword(String password) {
+        // 校验密码
+        if (password == null || password.isEmpty()) {
+            Log.e(TAG, "密码不能为空");
+            tilPassword.setError("密码不能为空");
+            return false;
         }
-        return result;
+        return true;
     }
 
-    /**
-     * 验证验证码
-     * @param captcha 验证码
-     * @return 验证结果
-     */
-    private boolean validCaptcha(String captcha) {
-        boolean result = !captcha.isEmpty();
-        if (!result) {
-            Log.w(TAG, "验证码不能为空");
-            AlertUtil.showDialog(getContext(), "验证码不能为空");
+    private boolean checkPasswordConfirm(String password, String passwordConfirm) {
+        // 校验确认密码
+        if (passwordConfirm == null || passwordConfirm.isEmpty()) {
+            Log.e(TAG, "确认密码不能为空");
+            tilPasswordConfirm.setError("确认密码不能为空");
+            return false;
         }
-        return result;
+        if (!password.equals(passwordConfirm)) {
+            Log.e(TAG, "两次密码不一致");
+            tilPasswordConfirm.setError("两次密码不一致");
+            return false;
+        }
+        return true;
     }
 
-    /**
-     * 验证注册输入
-     * @param email 邮箱
-     * @param password 密码
-     * @param confirmPassword 确认密码
-     * @param captcha 验证码
-     * @return 验证结果
-     */
-    private boolean validRegisterInput(String email, String password, String confirmPassword, String captcha) {
-        return validEmail(email)
-                && validPassword(password)
-                && validConfirmPassword(password, confirmPassword)
-                && validCaptcha(captcha);
+    private boolean checkCaptcha(String captcha) {
+        // 校验验证码
+        if (captcha == null || captcha.isEmpty()) {
+            Log.e(TAG, "验证码不能为空");
+            tilCaptcha.setError("验证码不能为空");
+            return false;
+        }
+        return true;
     }
 
-    /**
-     * 清空输入框
-     */
+    private boolean checkRegisterInput(String email, String password, String passwordConfirm, String captcha) {
+        // 校验注册数据
+        return checkEmail(email) && checkPassword(password) && checkPasswordConfirm(password, passwordConfirm) && checkCaptcha(captcha);
+    }
+
+
     private void clearInput() {
-        edEmail.setText("");
-        edPassword.setText("");
-        edConfirmPassword.setText("");
-        edCaptcha.setText("");
+        // 清空输入框
+        etEmail.setText("");
+        etPassword.setText("");
+        etPasswordConfirm.setText("");
+        etCaptcha.setText("");
     }
 
-    /**
-     * 注册
-     */
-    private void registerOnClick() {
-        Log.i(TAG, "点击注册");
-        String email = edEmail.getText().toString().trim();
-        String password = edPassword.getText().toString().trim();
-        String captcha = edCaptcha.getText().toString().trim();
-        String confirmPassword = edConfirmPassword.getText().toString().trim();
-        if (validRegisterInput(email, password, confirmPassword, captcha))
-            registerViewModel.register(email, password, captcha);
+    private void btnRegisterOnClick() {
+        // 点击“注册”按钮
+        Log.i(TAG, "点击“注册”按钮");
+        String email = etEmail.getText().toString().trim();
+        String password = etPassword.getText().toString().trim();
+        String captcha = etCaptcha.getText().toString().trim();
+        String passwordConfirm = etPasswordConfirm.getText().toString().trim();
+        if (!checkRegisterInput(email, password, passwordConfirm, captcha))
+            return;
+        AlertUtil.showToast(getContext(), "注册中...");
+        registerViewModel.register(email, password, captcha);
     }
-
-    /**
-     * 注册响应
-     * @param response 响应
-     */
     private void registerResponse(ResponseDto response) {
-        AlertUtil.showToast(getContext(), response.getMsg());
-        switch (response.getCode()) {
-            case 200:
-                registerSuccess();
-                break;
-            default:
-                break;
+        // 注册响应
+        if (response.getCode() == 200) {
+            registerSuccess();
+        }else {
+            registerFailed(response);
         }
     }
 
-    /**
-     * 注册成功
-     */
     private void registerSuccess() {
         // 注册成功
+        Log.i(TAG, "注册成功");
         clearInput();// 清空输入框
+        AlertUtil.showDialog(getContext(), "注册成功");
         if (getActivity() instanceof AuthorityActivity)
             ((AuthorityActivity) getActivity()).changeToLogin();// 切换到登录
     }
-
-    /**
-     * 获取验证码
-     */
-    public void getCaptchaOnClick() {
-        Log.i(TAG, "点击获取验证码");
-        String email = edEmail.getText().toString().trim();
-        if (validEmail(email))
-            registerViewModel.getCaptcha(email);
+    private void registerFailed(ResponseDto response) {
+        // 注册失败
+        Log.e(TAG, "注册失败:"+response.getMsg());
+        AlertUtil.showDialog(getContext(), response.getMsg());
     }
 
-    /**
-     * 获取验证码响应
-     * @param response 响应
-     */
-    private void getCaptchaResponse(ResponseDto response) {
-        AlertUtil.showToast(getContext(), response.getMsg());
-        switch (response.getCode()) {
-            case 200:
-                getCaptchaSuccess();
-                break;
-            default:
-                break;
+    public void btnGetCaptchaOnClick() {
+        // 点击获取验证码
+        Log.i(TAG, "点击“获取验证码”按钮");
+        AlertUtil.showToast(getContext(), "获取验证码中...");
+        String email = etEmail.getText().toString().trim();
+        if (checkEmail(email)){
+            registerViewModel.getCaptcha(email);
         }
     }
 
-    /**
-     * 发送验证码成功
-     * 禁用发送按钮60s
-     */
-    private void getCaptchaSuccess() {
+    ResponseOperation getCaptchaResponse = new ResponseOperation(TAG) {
+
+        @Override
+        public void onSuccess(ResponseDto response) {
+            // 获取验证码成功
+            Log.i(TAG, "验证码已发送");
+            AlertUtil.showToast(getContext(), "验证码已发送");
+            disableBtnGetCaptcha();
+        }
+
+        @Override
+        public void showDialog(String msg) {
+            AlertUtil.showDialog(getContext(), msg);
+        }
+    };
+
+    private void getCaptchaFailed(ResponseDto response) {
+
+    }
+
+    private void disableBtnGetCaptcha() {
+        // 设置获取验证码按钮60s倒计时
         btnGetCaptcha.setEnabled(false);
-//        btnGetCaptcha.setBackground(getResources().getDrawable(R.drawable.ebook_button_disabled));
         new Thread(new Runnable() {
             @Override
             public void run() {
-                for (int i = 60; i >= 0; i--) {
+                for (int i = 60; i > 0; i--) {
                     final int finalI = i;
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            btnGetCaptcha.setText(finalI + "s后重新获取");
+                            btnGetCaptcha.setText(finalI + "s后重发");
                         }
                     });
                     try {
@@ -309,7 +299,6 @@ public class RegisterFragment extends Fragment {
                     public void run() {
                         btnGetCaptcha.setText("获取验证码");
                         btnGetCaptcha.setEnabled(true);
-//                        btnGetCaptcha.setBackground(getResources().getDrawable(R.drawable.ebook_button));
                     }
                 });
             }
