@@ -2,8 +2,6 @@ package com.ebook.app.view.authority.fragment;
 
 import android.os.Bundle;
 
-import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -15,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.ebook.app.R;
-import com.ebook.app.databinding.FragmentLoginBinding;
 import com.ebook.app.dto.ResponseDto;
 import com.ebook.app.util.AlertUtil;
 import com.ebook.app.view.authority.viewmodel.LoginViewModel;
@@ -78,20 +75,23 @@ public class LoginFragment extends Fragment {
         tilPassword = view.findViewById(R.id.login_til_password);
         etEmail = view.findViewById(R.id.login_ed_email);
         etPassword = view.findViewById(R.id.login_ed_password);
-        //配置观察者 - 登录
         loginObserver = new Observer<ResponseDto>() {
+            //登录观察者
             @Override
             public void onChanged(ResponseDto response) {
+                //调用登录响应
                 loginResponse(response);
             }
         };
         loginViewModel.getLoginLiveData().observe(getViewLifecycleOwner(), loginObserver);
         btnLogin.setOnClickListener(new View.OnClickListener() {
-            //登录按钮点击事件
+            //监听登录点击事件
             @Override
             public void onClick(View v) {
+                //获取数据
                 String email = etEmail.getText().toString().trim();
                 String password = etPassword.getText().toString().trim();
+                //调用登录按钮点击事件
                 btnLoginOnClick(email,password);
             }
         });
@@ -105,6 +105,7 @@ public class LoginFragment extends Fragment {
     }
 
     private boolean checkEmail(String email) {
+        //校验邮箱
         if (email==null || email.isEmpty()) {
             Log.e(TAG, "邮箱不能为空");
             tilEmail.setError("邮箱不能为空");
@@ -120,6 +121,7 @@ public class LoginFragment extends Fragment {
         return matcher.matches();
     }
     private boolean checkPassword(String password) {
+        //校验密码
         if (password == null || password.isEmpty()) {
             Log.e(TAG, "密码不能为空");
             tilPassword.setError("密码不能为空");
@@ -128,28 +130,36 @@ public class LoginFragment extends Fragment {
         return true;
     }
     private boolean checkLoginInput(String email,String password){
+        //校验登录数据
         return checkEmail(email) && checkPassword(password);
     }
     private void btnLoginOnClick(String email,String password){
+        //登录按钮点击事件
         Log.i(TAG, "登录按钮被点击");
         if(!checkLoginInput(email,password))
             return;
+        AlertUtil.showToast(this.getContext(),"登录中...");
         btnLogin.setEnabled(false);
         loginViewModel.login(email,password);
     }
-    private void loginSuccess(){
+    private void loginSuccess(ResponseDto response){
+        //登录成功
         Log.i(TAG, "登录成功");
+        AlertUtil.showToast(this.getContext(),"登录成功");
     }
-    private void loginFailed(){
-        Log.i(TAG, "登录失败");
+    private void loginFailed(ResponseDto response){
+        //登录失败
+        Log.i(TAG, "登录失败:"+response.getMsg());
+        AlertUtil.showToast(this.getContext(),response.getMsg());
     }
     private void loginResponse(ResponseDto response) {
+        //登录响应
         btnLogin.setEnabled(true);
         if (response.getCode() == 200) {
             //200:登录成功
-            loginSuccess();
+            loginSuccess(response);
         } else {
-            loginFailed();
+            loginFailed(response);
         }
     }
 }

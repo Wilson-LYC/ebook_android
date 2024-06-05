@@ -24,23 +24,23 @@ public class MyCallback implements Callback {
 
     @Override
     public void onFailure(@NonNull Call call, @NonNull IOException e) {
-        Log.e("MyCallback", "请求中止\n"+e.getMessage());
-        liveData.postValue(new ResponseDto(500,"请求失败"));
+        Log.e("Callback", "请求中止\n"+e.getMessage());
+        liveData.postValue(new ResponseDto(500,"请求超时"));
     }
 
     @Override
     public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-        Log.i("MyCallback", "请求完成");
+        Log.i("Callback", "请求成功");
         try{
             if (!response.isSuccessful()) {
-                Log.e("MyCallback", "响应不成功");
-                throw new IOException("Unexpected code " + response);
+                Log.e("Callback", "响应失败");
+                throw new IOException("响应失败");
             }
             ResponseDto responseDto= JSON.parseObject(response.body().string(),ResponseDto.class);
             liveData.postValue(responseDto);
         }catch (Exception e){
-            Log.e("MyCallback", "捕捉异常\n"+e.getMessage());
-            liveData.postValue(new ResponseDto(500,"请求失败"));
+            Log.e("Callback", "捕捉到异常\n"+e.getMessage());
+            liveData.postValue(new ResponseDto(500,"请求错误"));
         }
     }
 }
