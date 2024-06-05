@@ -15,7 +15,7 @@ import okhttp3.Callback;
 import okhttp3.Response;
 
 public class RequestCallback implements Callback {
-    final static String TAG="请求回调" ;
+    final static String TAG="Callback" ;
     MutableLiveData<ResponseDto> liveData;
 
     public RequestCallback(MutableLiveData<ResponseDto> liveData) {

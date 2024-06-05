@@ -104,7 +104,7 @@ public class RegisterFragment extends Fragment {
             @Override
             public void onChanged(ResponseDto response) {
                 //注册响应
-                registerResponse(response);
+                registerResponse.onRespond(response);
             }
         };
         registerViewModel.getRegisterLiveData().observe(getViewLifecycleOwner(), registerObserver);
@@ -157,6 +157,7 @@ public class RegisterFragment extends Fragment {
             tilEmail.setError("邮箱格式不正确");
             return false;
         }
+        tilEmail.setError(null);
         return true;
     }
 
@@ -167,6 +168,7 @@ public class RegisterFragment extends Fragment {
             tilPassword.setError("密码不能为空");
             return false;
         }
+        tilPassword.setError(null);
         return true;
     }
 
@@ -182,6 +184,7 @@ public class RegisterFragment extends Fragment {
             tilPasswordConfirm.setError("两次密码不一致");
             return false;
         }
+        tilPasswordConfirm.setError(null);
         return true;
     }
 
@@ -192,21 +195,13 @@ public class RegisterFragment extends Fragment {
             tilCaptcha.setError("验证码不能为空");
             return false;
         }
+        tilCaptcha.setError(null);
         return true;
     }
 
     private boolean checkRegisterInput(String email, String password, String passwordConfirm, String captcha) {
         // 校验注册数据
         return checkEmail(email) && checkPassword(password) && checkPasswordConfirm(password, passwordConfirm) && checkCaptcha(captcha);
-    }
-
-
-    private void clearInput() {
-        // 清空输入框
-        etEmail.setText("");
-        etPassword.setText("");
-        etPasswordConfirm.setText("");
-        etCaptcha.setText("");
     }
 
     private void btnRegisterOnClick() {
@@ -221,27 +216,28 @@ public class RegisterFragment extends Fragment {
         AlertUtil.showToast(getContext(), "注册中...");
         registerViewModel.register(email, password, captcha);
     }
-    private void registerResponse(ResponseDto response) {
-        // 注册响应
-        if (response.getCode() == 200) {
-            registerSuccess();
-        }else {
-            registerFailed(response);
-        }
-    }
 
-    private void registerSuccess() {
-        // 注册成功
-        Log.i(TAG, "注册成功");
-        clearInput();// 清空输入框
-        AlertUtil.showDialog(getContext(), "注册成功");
-        if (getActivity() instanceof AuthorityActivity)
-            ((AuthorityActivity) getActivity()).changeToLogin();// 切换到登录
-    }
-    private void registerFailed(ResponseDto response) {
-        // 注册失败
-        Log.e(TAG, "注册失败:"+response.getMsg());
-        AlertUtil.showDialog(getContext(), response.getMsg());
+    private ResponseOperation registerResponse = new ResponseOperation(TAG) {
+        @Override
+        public void onSuccess(ResponseDto response) {
+            // 注册成功
+            clearInput();// 清空输入框
+            AlertUtil.showDialog(getContext(), "注册成功");
+            if (getActivity() instanceof AuthorityActivity)
+                ((AuthorityActivity) getActivity()).changeToLogin();// 切换到登录
+        }
+        @Override
+        public void showDialog(String msg) {
+            AlertUtil.showDialog(getContext(),msg);
+        }
+    };
+
+    private void clearInput() {
+        // 清空输入框
+        etEmail.setText("");
+        etPassword.setText("");
+        etPasswordConfirm.setText("");
+        etCaptcha.setText("");
     }
 
     public void btnGetCaptchaOnClick() {
@@ -269,10 +265,6 @@ public class RegisterFragment extends Fragment {
             AlertUtil.showDialog(getContext(), msg);
         }
     };
-
-    private void getCaptchaFailed(ResponseDto response) {
-
-    }
 
     private void disableBtnGetCaptcha() {
         // 设置获取验证码按钮60s倒计时
