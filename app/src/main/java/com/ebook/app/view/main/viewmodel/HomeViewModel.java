@@ -29,17 +29,12 @@ public class HomeViewModel extends ViewModel {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                try {
-                    Thread.sleep(3000);
-                    List<Article> articles = new ArrayList<>();
-                    for (int i = 1; i <= 30; i++) {
-                        id++;
-                        articles.add(new Article("文章" + id, "大家好！这是文章！你好你好！大家好"));
-                    }
-                    articlesLiveData.postValue(articles); // 使用postValue在任何线程更新数据
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                List<Article> articles = new ArrayList<>();
+                for (int i = 1; i <= 30; i++) {
+                    id++;
+                    articles.add(new Article("文章" + id, "大家好！这是文章！你好你好！大家好"));
                 }
+                articlesLiveData.postValue(articles); // 使用postValue在任何线程更新数据
             }
         }).start();
     }
