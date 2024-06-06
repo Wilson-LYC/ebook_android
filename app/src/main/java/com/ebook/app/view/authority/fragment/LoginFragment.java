@@ -3,6 +3,8 @@ package com.ebook.app.view.authority.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -16,6 +18,7 @@ import android.widget.Button;
 import com.ebook.app.R;
 import com.ebook.app.dto.ResponseDto;
 import com.ebook.app.util.AlertUtil;
+import com.ebook.app.util.CheckInputUtil;
 import com.ebook.app.util.ResponseOperation;
 import com.ebook.app.view.authority.viewmodel.LoginViewModel;
 import com.ebook.app.view.main.MainActivity;
@@ -32,18 +35,12 @@ public class LoginFragment extends Fragment {
     private Button btnLogin;
     private TextInputLayout tilEmail, tilPassword;
     private TextInputEditText etEmail, etPassword;
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
     public LoginFragment() {
-        // Required empty public constructor
     }
     
     public static LoginFragment newInstance(String param1, String param2) {
@@ -67,8 +64,12 @@ public class LoginFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        //创建视图
-        View view=inflater.inflate(R.layout.fragment_login, container, false);
+        return inflater.inflate(R.layout.fragment_login, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         //绑定ViewModel
         if(loginViewModel==null)
             loginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
@@ -98,7 +99,6 @@ public class LoginFragment extends Fragment {
                 btnLoginOnClick(email,password);
             }
         });
-        return view;
     }
 
     @Override
@@ -107,46 +107,6 @@ public class LoginFragment extends Fragment {
         loginViewModel.getLoginLiveData().removeObserver(loginObserver);//移除观察者
     }
 
-    /**
-     * 校验邮箱
-     * @param email 邮箱
-     * @return 校验结果
-     */
-    private boolean checkEmail(String email) {
-        //校验邮箱
-        if (email==null || email.isEmpty()) {
-            Log.e(TAG, "邮箱不能为空");
-            tilEmail.setError("邮箱不能为空");
-            return false;
-        }
-        String emailRegex = "^[A-Za-z0-9+_.-]+@(.+)$";
-        Pattern pattern = Pattern.compile(emailRegex);
-        Matcher matcher = pattern.matcher(email);
-        if (!matcher.matches()) {
-            Log.e(TAG, "邮箱格式不正确");
-            tilEmail.setError("邮箱格式不正确");
-            return false;
-        }else {
-            tilEmail.setError(null);
-            return true;
-        }
-    }
-
-    /**
-     * 校验密码
-     * @param password 密码
-     * @return 校验结果
-     */
-    private boolean checkPassword(String password) {
-        //校验密码
-        if (password == null || password.isEmpty()) {
-            Log.e(TAG, "密码不能为空");
-            tilPassword.setError("密码不能为空");
-            return false;
-        }
-        tilPassword.setError(null);
-        return true;
-    }
 
     /**
      * 校验登录数据
@@ -155,8 +115,13 @@ public class LoginFragment extends Fragment {
      * @return 校验结果
      */
     private boolean checkLoginInput(String email,String password){
-        //校验登录数据
-        return checkEmail(email) && checkPassword(password);
+        if(!CheckInputUtil.checkEmpty(email,tilEmail,"邮箱不能为空"))
+            return false;
+        if(!CheckInputUtil.checkEmpty(password,tilPassword,"密码不能为空"))
+            return false;
+        if(!CheckInputUtil.checkEmail(email,tilEmail))
+            return false;
+        return true;
     }
 
     /**
