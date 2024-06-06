@@ -14,12 +14,19 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ebook.app.R;
 import com.ebook.app.model.Article;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class HomeArticleAdapter extends RecyclerView.Adapter<HomeArticleHolder> {
+    final static String TAG="HomeArticleAdapter";
 
     private LayoutInflater inflater;
-    private List<Article> list;
+    private List<Article> list=new ArrayList<>();
+
+    public HomeArticleAdapter(LayoutInflater inflater) {
+        Log.i(TAG, "创建");
+        this.inflater = inflater;
+    }
 
     public HomeArticleAdapter(LayoutInflater inflater, List<Article> list) {
         this.inflater = inflater;
@@ -39,12 +46,21 @@ public class HomeArticleAdapter extends RecyclerView.Adapter<HomeArticleHolder> 
         String content=list.get(position).getContent();
         content=content.length()>50?content.substring(0,50)+"...":content;
         holder.briefContent.setText(content);
-//        holder.image.setImageResource(list.get(position).getImage());
     }
 
     @Override
     public int getItemCount() {
         return list.size();
+    }
+
+    public void addItem(Article item){
+        list.add(item);
+        notifyItemInserted(list.size()-1);
+    }
+
+    public void setList(List<Article> list){
+        this.list=list;
+        notifyDataSetChanged();
     }
 }
 

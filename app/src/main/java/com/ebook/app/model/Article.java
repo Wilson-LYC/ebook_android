@@ -1,7 +1,9 @@
 package com.ebook.app.model;
 
+import androidx.databinding.ObservableField;
+
 public class Article {
-    private String title;
+    public String title;
     private String content;
     private String author="佚名";
     private String publishedDate="未知";

@@ -5,10 +5,13 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,18 +20,21 @@ import com.ebook.app.R;
 import com.ebook.app.config.FunctionCategoryConfig;
 
 import com.ebook.app.model.Article;
+import com.ebook.app.view.authority.viewmodel.LoginViewModel;
 import com.ebook.app.view.main.adapter.HomeArticleAdapter;
 import com.ebook.app.view.main.adapter.HomeNavAdapter;
+import com.ebook.app.view.main.viewmodel.HomeViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
+    final static String TAG="HomeFragment";
     private RecyclerView navView,articleView;
     private HomeNavAdapter navAdapter;
     private HomeArticleAdapter articleAdapter;
-    private List<Article> articleList=new ArrayList<>();
-
+    private HomeViewModel homeViewModel;
+    private Observer<List<Article>> articleObserver;
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -36,7 +42,7 @@ public class HomeFragment extends Fragment {
     private String mParam2;
 
     public HomeFragment() {
-        // Required empty public constructor
+        Log.i(TAG, "构造");
     }
 
     public static HomeFragment newInstance(String param1, String param2) {
@@ -50,6 +56,7 @@ public class HomeFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        Log.i(TAG, "onCreate");
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
@@ -60,30 +67,61 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view= inflater.inflate(R.layout.fragment_home, container, false);
-        //导航栏
-        GridLayoutManager navGridLayoutManager = new GridLayoutManager(getContext(), 5);
-        navView = view.findViewById(R.id.home_nav);
-        navAdapter= new HomeNavAdapter(inflater,FunctionCategoryConfig.categories);
-        navView.setLayoutManager(navGridLayoutManager);
-        navView.setAdapter(navAdapter);
-        //本周精选文章
-        tempInitData();
-        LinearLayoutManager aritcleLayoutManager = new LinearLayoutManager(getContext());
-        articleView = view.findViewById(R.id.home_articles);
-        articleAdapter = new HomeArticleAdapter(inflater,articleList);
-        articleView.setLayoutManager(aritcleLayoutManager);
-        articleView.setAdapter(articleAdapter);
-        return view;
+        Log.i(TAG, "onCreateView");
+        return inflater.inflate(R.layout.fragment_home, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        Log.i(TAG, "onViewCreated");
         super.onViewCreated(view, savedInstanceState);
+        // 初始化ViewModel
+        if (homeViewModel==null)
+            homeViewModel= new ViewModelProvider(this).get(HomeViewModel.class);
+        initNavBar(view);// 初始化导航栏
+        initArticleList(view);// 初始化文章列表
     }
 
-    private void tempInitData(){
-        for (int i=1;i<=15;i++)
-            articleList.add(new Article("文章"+i,"大家好！这是文章！你好你好！大家好"));
+    @Override
+    public void onDestroyView() {
+        Log.i(TAG, "onDestroyView");
+        super.onDestroyView();
+        homeViewModel.getArticlesLiveData().removeObserver(articleObserver);
+    }
+
+    private void initNavBar(View view){
+        // 初始化导航栏
+        GridLayoutManager navGridLayoutManager = new GridLayoutManager(getContext(), 5){
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        };
+        navAdapter= new HomeNavAdapter(getLayoutInflater(),FunctionCategoryConfig.categories);
+        navView = view.findViewById(R.id.home_nav);
+        navView.setLayoutManager(navGridLayoutManager);
+        navView.setAdapter(navAdapter);
+    }
+
+    private void initArticleList(View view) {
+        LinearLayoutManager aricleLayoutManager = new LinearLayoutManager(getContext()){
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        };
+        articleAdapter = new HomeArticleAdapter(getLayoutInflater());
+        articleView = view.findViewById(R.id.home_articles);
+        articleView.setLayoutManager(aricleLayoutManager);
+        articleView.setAdapter(articleAdapter);
+        articleObserver = new Observer<List<Article>>() {
+            @Override
+            public void onChanged(List<Article> articles) {
+                if (articles == null)
+                    articles = new ArrayList<>();
+                articleAdapter.setList(articles);
+            }
+        };
+        homeViewModel.getArticlesLiveData().observe(getViewLifecycleOwner(), articleObserver);
     }
 }

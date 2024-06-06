@@ -65,6 +65,12 @@ public class HomeNavAdapter extends RecyclerView.Adapter<HomeNavItemHolder> {
         list.remove(position);
         notifyItemRemoved(position);
     }
+
+    public void setList(List<FunctionCategory> list) {
+        this.list = list;
+        notifyDataSetChanged();
+    }
+
 }
 
 class HomeNavItemHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
