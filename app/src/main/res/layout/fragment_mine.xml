@@ -44,7 +44,7 @@
                 android:layout_height="150dp"
                 android:layout_gravity="center"
                 android:padding="20dp"
-                android:src="@drawable/common_function_icon" />
+                android:src="@drawable/avatar" />
 
             <TextView
                 android:id="@+id/tv_user_name"
@@ -88,7 +88,7 @@
                         android:layout_height="50dp"
                         android:layout_gravity="center|start"
                         android:padding="10dp"
-                        android:src="@drawable/common_function_icon" />
+                        android:src="@drawable/avatar" />
 
                     <TextView
                         android:id="@+id/tv_user_info"
@@ -118,7 +118,7 @@
                         android:layout_height="50dp"
                         android:layout_gravity="center|start"
                         android:padding="10dp"
-                        android:src="@drawable/common_function_icon" />
+                        android:src="@drawable/avatar" />
 
                     <TextView
                         android:id="@+id/tv_account_safe"
@@ -148,7 +148,7 @@
                         android:layout_height="50dp"
                         android:layout_gravity="center|start"
                         android:padding="10dp"
-                        android:src="@drawable/common_function_icon" />
+                        android:src="@drawable/avatar" />
 
                     <TextView
                         android:id="@+id/tv_system_setting"

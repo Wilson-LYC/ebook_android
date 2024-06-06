@@ -10,262 +10,58 @@
     <!-- TODO: Update blank fragment layout -->
 
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-
-        <!--搜索框-->
         <LinearLayout
+            android:id="@+id/home_header"
             android:layout_width="match_parent"
-            android:layout_height="75dp"
+            android:layout_height="?actionBarSize"
             android:background="@color/ebook_primary"
             android:gravity="center"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <EditText
-                android:id="@+id/main_search"
-                android:layout_width="350dp"
-                android:layout_height="35dp"
+                android:id="@+id/home_et_search"
+                android:layout_width="match_parent"
+                android:layout_height="38dp"
+                android:layout_gravity="center"
                 android:background="@drawable/ebook_search"
-                android:drawableLeft="?android:attr/actionModeWebSearchDrawable"
-                android:drawablePadding="5dp"
-                android:ems="10"
                 android:hint="@string/search"
-                android:inputType="text" />
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp" />
+
         </LinearLayout>
 
-
-        <!--主要内容-->
-        <LinearLayout
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/home_nav"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/ebook_card_while"
+            android:padding="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/home_header" />
+
+        <LinearLayout
+            android:id="@+id/home_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
             android:orientation="vertical"
             android:paddingStart="10dp"
-            android:paddingEnd="10dp">
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="10dp" />
-
-            <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="wrap_content"
-                android:layout_height="115dp"
-                android:layout_gravity="center"
-                android:scaleType="centerCrop"
-                android:src="@drawable/main_picture" />
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="10dp" />
-
-            <GridLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/layout_border"
-                android:padding="10dp"
-                android:columnCount="5"
-                android:rowCount="2">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:layout_gravity="center"
-                    android:layout_rowWeight="1"
-                    android:layout_columnWeight="1">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/common_function_icon" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="Image 1" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:layout_gravity="center"
-                    android:layout_rowWeight="1"
-                    android:layout_columnWeight="1">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/common_function_icon" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="Image 1" />
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:layout_gravity="center"
-                    android:layout_rowWeight="1"
-                    android:layout_columnWeight="1">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/common_function_icon" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="Image 1" />
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:layout_gravity="center"
-                    android:layout_rowWeight="1"
-                    android:layout_columnWeight="1">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/common_function_icon" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="Image 1" />
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:layout_gravity="center"
-                    android:layout_rowWeight="1"
-                    android:layout_columnWeight="1">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/common_function_icon" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="Image 1" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:layout_gravity="center"
-                    android:layout_rowWeight="1"
-                    android:layout_columnWeight="1">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/common_function_icon" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="Image 1" />
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:layout_gravity="center"
-                    android:layout_rowWeight="1"
-                    android:layout_columnWeight="1">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/common_function_icon" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="Image 1" />
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:layout_gravity="center"
-                    android:layout_rowWeight="1"
-                    android:layout_columnWeight="1">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/common_function_icon" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="Image 1" />
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:layout_gravity="center"
-                    android:layout_rowWeight="1"
-                    android:layout_columnWeight="1">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/common_function_icon" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="Image 1" />
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:layout_gravity="center"
-                    android:layout_rowWeight="1"
-                    android:layout_columnWeight="1">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/common_function_icon" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="Image 1" />
-                </LinearLayout>
-            </GridLayout>
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="10dp"></Space>
+            android:paddingEnd="10dp"
+            app:layout_constraintTop_toBottomOf="@+id/home_nav">
 
 
             <!--精选文章部分-->
@@ -280,8 +76,8 @@
                     android:id="@+id/weekly_article"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:paddingLeft="10dp"
                     android:gravity="center_vertical|start"
+                    android:paddingLeft="10dp"
                     android:text="@string/weekly_article"
                     android:textSize="30dp" />
 
@@ -321,7 +117,7 @@
                             android:layout_width="30dp"
                             android:layout_height="75dp"
                             android:layout_weight="1"
-                            android:src="@drawable/common_function_icon" />
+                            android:src="@drawable/avatar" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -380,7 +176,7 @@
                             android:layout_width="30dp"
                             android:layout_height="75dp"
                             android:layout_weight="1"
-                            android:src="@drawable/common_function_icon" />
+                            android:src="@drawable/avatar" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -402,7 +198,7 @@
             </LinearLayout>
         </LinearLayout>
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </FrameLayout>

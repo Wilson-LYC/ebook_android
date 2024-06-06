@@ -173,16 +173,11 @@ public class LoginFragment extends Fragment {
         loginViewModel.login(email,password);
     }
 
-    ResponseOperation loginResponse = new ResponseOperation(TAG) {
+    ResponseOperation loginResponse = new ResponseOperation(TAG,getView()) {
         @Override
         public void onSuccess(ResponseDto response) {
             AlertUtil.showToast(getContext(),"登录成功");
             startActivity(new Intent(getContext(), MainActivity.class));//跳转到主页面
-        }
-
-        @Override
-        public void showDialog(String msg) {
-            AlertUtil.showDialog(getContext(),msg);
         }
 
         @Override
