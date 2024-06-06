@@ -24,6 +24,10 @@ import com.ebook.app.view.authority.viewmodel.LoginViewModel;
 import com.ebook.app.view.main.adapter.HomeArticleAdapter;
 import com.ebook.app.view.main.adapter.HomeNavAdapter;
 import com.ebook.app.view.main.viewmodel.HomeViewModel;
+import com.scwang.smart.refresh.layout.SmartRefreshLayout;
+import com.scwang.smart.refresh.layout.api.RefreshLayout;
+import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +39,7 @@ public class HomeFragment extends Fragment {
     private HomeArticleAdapter articleAdapter;
     private HomeViewModel homeViewModel;
     private Observer<List<Article>> articleObserver;
+    private SmartRefreshLayout refreshLayout;
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -80,6 +85,7 @@ public class HomeFragment extends Fragment {
             homeViewModel= new ViewModelProvider(this).get(HomeViewModel.class);
         initNavBar(view);// 初始化导航栏
         initArticleList(view);// 初始化文章列表
+        initRefresh(view);// 初始化刷新控件
     }
 
     @Override
@@ -123,5 +129,17 @@ public class HomeFragment extends Fragment {
             }
         };
         homeViewModel.getArticlesLiveData().observe(getViewLifecycleOwner(), articleObserver);
+    }
+
+    private void initRefresh(View view){
+        refreshLayout=view.findViewById(R.id.home_refresh_layout);// 初始化刷新控件
+        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(RefreshLayout refreshlayout) {
+                Log.i(TAG,"触发下拉刷新");
+                homeViewModel.refreshArticles();
+                refreshlayout.finishRefresh(2000);
+            }
+        });
     }
 }

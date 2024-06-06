@@ -20,9 +20,7 @@ public class HomeViewModel extends ViewModel {
     public HomeViewModel() {
         loadArticles();//首次加载，自动加载数据
     }
-    /**
-     * 加载文章
-     */
+
     private void loadArticles() {
         Log.i(TAG, "模拟异步加载文章");
         //新线程加载数据
@@ -30,7 +28,7 @@ public class HomeViewModel extends ViewModel {
             @Override
             public void run() {
                 List<Article> articles = new ArrayList<>();
-                for (int i = 1; i <= 30; i++) {
+                for (int i = 1; i <= 100; i++) {
                     id++;
                     articles.add(new Article("文章" + id, "大家好！这是文章！你好你好！大家好"));
                 }
@@ -39,9 +37,6 @@ public class HomeViewModel extends ViewModel {
         }).start();
     }
 
-    /**
-     * 刷新文章
-     */
     public void refreshArticles() {
         loadArticles();
     }
