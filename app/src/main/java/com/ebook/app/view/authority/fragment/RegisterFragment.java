@@ -217,7 +217,7 @@ public class RegisterFragment extends Fragment {
         registerViewModel.register(email, password, captcha);
     }
 
-    private ResponseOperation registerResponse = new ResponseOperation(TAG) {
+    private ResponseOperation registerResponse = new ResponseOperation(TAG,getView()) {
         @Override
         public void onSuccess(ResponseDto response) {
             // 注册成功
@@ -225,10 +225,6 @@ public class RegisterFragment extends Fragment {
             AlertUtil.showDialog(getContext(), "注册成功");
             if (getActivity() instanceof AuthorityActivity)
                 ((AuthorityActivity) getActivity()).changeToLogin();// 切换到登录
-        }
-        @Override
-        public void showDialog(String msg) {
-            AlertUtil.showDialog(getContext(),msg);
         }
     };
 
@@ -250,19 +246,13 @@ public class RegisterFragment extends Fragment {
         }
     }
 
-    ResponseOperation getCaptchaResponse = new ResponseOperation(TAG) {
-
+    ResponseOperation getCaptchaResponse = new ResponseOperation(TAG,getView()) {
         @Override
         public void onSuccess(ResponseDto response) {
             // 获取验证码成功
             Log.i(TAG, "验证码已发送");
             AlertUtil.showToast(getContext(), "验证码已发送");
             disableBtnGetCaptcha();
-        }
-
-        @Override
-        public void showDialog(String msg) {
-            AlertUtil.showDialog(getContext(), msg);
         }
     };
 

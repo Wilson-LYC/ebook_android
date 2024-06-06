@@ -2,14 +2,17 @@ package com.ebook.app.util;
 
 import android.content.Context;
 import android.util.Log;
+import android.view.View;
 
 import com.ebook.app.dto.ResponseDto;
 
 public abstract class ResponseOperation {
     private String tag;
+    private View view;
 
-    public ResponseOperation(String TAG) {
+    public ResponseOperation(String TAG,View view) {
         this.tag = TAG;
+        this.view=view;
     }
 
     /**
@@ -59,5 +62,7 @@ public abstract class ResponseOperation {
      */
     public void onCommon(ResponseDto response){}
 
-    public abstract void showDialog(String msg);
+    public void showDialog(String msg){
+        AlertUtil.showDialog(view.getContext(),msg);
+    }
 }
