@@ -6,17 +6,17 @@
     app:startDestination="@id/main_nav_home">
     <fragment
         android:id="@+id/main_nav_home"
-        android:name="com.ebook.app.view.main.fragment.HomeFragment"
+        android:name="com.ebook.app.view.main.home.HomeFragment"
         android:label="@string/home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/page_home" />
     <fragment
         android:id="@+id/main_nav_mine"
-        android:name="com.ebook.app.view.main.fragment.MineFragment"
+        android:name="com.ebook.app.view.main.me.MeFragment"
         android:label="@string/mine"
-        tools:layout="@layout/fragment_mine" />
+        tools:layout="@layout/page_me" />
     <fragment
         android:id="@+id/main_nav_ai"
-        android:name="com.ebook.app.view.main.fragment.AiFragment"
+        android:name="com.ebook.app.view.main.ai.AiFragment"
         android:label="@string/ai"
-        tools:layout="@layout/fragment_ai" />
+        tools:layout="@layout/page_ai" />
 </navigation>

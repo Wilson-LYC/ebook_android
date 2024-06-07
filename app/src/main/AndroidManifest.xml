@@ -26,7 +26,7 @@
         </activity>
         <activity
             android:name=".view.authority.AuthorityActivity"
-            android:exported="true"></activity>
+            android:exported="false"/>
     </application>
 
 </manifest>
