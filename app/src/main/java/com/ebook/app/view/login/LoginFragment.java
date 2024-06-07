@@ -1,4 +1,4 @@
-package com.ebook.app.view.authority.login;
+package com.ebook.app.view.login;
 
 import android.content.Intent;
 import android.os.Bundle;

@@ -1,4 +1,4 @@
-package com.ebook.app.view.authority.register;
+package com.ebook.app.view.register;
 
 import android.os.Bundle;
 

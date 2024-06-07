@@ -1,4 +1,4 @@
-package com.ebook.app.view.authority.login;
+package com.ebook.app.view.login;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;

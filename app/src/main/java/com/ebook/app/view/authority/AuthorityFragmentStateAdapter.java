@@ -6,8 +6,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import com.ebook.app.view.authority.login.LoginFragment;
-import com.ebook.app.view.authority.register.RegisterFragment;
+import com.ebook.app.view.login.LoginFragment;
+import com.ebook.app.view.register.RegisterFragment;
 
 public class AuthorityFragmentStateAdapter extends FragmentStateAdapter {
 
