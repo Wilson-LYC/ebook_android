@@ -36,4 +36,9 @@
         <item name="android:textSize">20sp</item>
         <item name="android:textColor">@color/black</item>
     </style>
+
+    <style name="EBook.MaterialToolbar">
+        <item name="android:background">@color/ebook_primary</item>
+        <item name="titleTextColor">@color/ebook_onPrimary</item>
+    </style>
 </resources>

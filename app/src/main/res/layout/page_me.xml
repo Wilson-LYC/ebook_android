@@ -64,14 +64,14 @@
             app:layout_constraintTop_toBottomOf="@+id/me_tv_email">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/me_info"
+                android:id="@+id/me_set_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="5dp"
                 android:paddingBottom="5dp">
 
                 <ImageView
-                    android:id="@+id/me_info_img"
+                    android:id="@+id/me_set_info_img"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:src="@drawable/ic_user_setting"
@@ -80,15 +80,15 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/me_info_label"
+                    android:id="@+id/me_set_info_label"
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
                     android:layout_marginStart="8dp"
                     android:gravity="center_vertical"
-                    android:text="@string/setting_info"
+                    android:text="@string/set_info"
                     android:textSize="18sp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/me_info_img"
+                    app:layout_constraintStart_toEndOf="@+id/me_set_info_img"
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -98,14 +98,50 @@
                 android:background="@color/ebook_outline" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/me_account"
+                android:id="@+id/me_set_email"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp">
+
+                <ImageView
+                    android:id="@+id/me_set_email_img"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/ic_email"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/me_set_email_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="8dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/set_email"
+                    android:textSize="18sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/me_set_email_img"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="1.0" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/ebook_outline" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/me_set_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="5dp"
                 android:paddingBottom="5dp">
 
                 <ImageView
-                    android:id="@+id/me_account_img"
+                    android:id="@+id/me_set_password_img"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:src="@drawable/ic_lock"
@@ -114,55 +150,19 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/me_account_label"
+                    android:id="@+id/me_set_password_label"
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
                     android:layout_marginStart="8dp"
                     android:gravity="center_vertical"
-                    android:text="@string/setting_info"
+                    android:text="@string/set_password"
                     android:textSize="18sp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/me_account_img"
+                    app:layout_constraintStart_toEndOf="@+id/me_set_password_img"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="1.0" />
-
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="@color/ebook_outline" />
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/me_service"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp">
-
-                <ImageView
-                    android:id="@+id/me_service_img"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:src="@drawable/ic_comment"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/me_service_label"
-                    android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:layout_marginStart="8dp"
-                    android:gravity="center_vertical"
-                    android:text="@string/customer_service"
-                    android:textSize="18sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/me_service_img"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="1.0" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
 
 
