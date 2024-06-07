@@ -1,4 +1,4 @@
-package com.ebook.app.view.main.me;
+package com.ebook.app.view.me;
 
 import androidx.lifecycle.ViewModel;
 

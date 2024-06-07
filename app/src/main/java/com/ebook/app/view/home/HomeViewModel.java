@@ -1,4 +1,4 @@
-package com.ebook.app.view.main.home;
+package com.ebook.app.view.home;
 
 import android.app.Application;
 import android.util.Log;
@@ -17,11 +17,7 @@ public class HomeViewModel extends ViewModel {
     final static String TAG = "HomeViewModel";
     int id=0;
     private MutableLiveData<List<Article>> articlesLiveData = new MutableLiveData<>();
-    public HomeViewModel() {
-        loadArticles();//首次加载，自动加载数据
-    }
-
-    private void loadArticles() {
+    public void getWeeklyArticles() {
         Log.i(TAG, "模拟异步加载文章");
         //新线程加载数据
         new Thread(new Runnable() {
@@ -36,13 +32,7 @@ public class HomeViewModel extends ViewModel {
             }
         }).start();
     }
-
-    public void refreshArticles() {
-        loadArticles();
-    }
-
     public LiveData<List<Article>> getArticlesLiveData() {
         return articlesLiveData;
     }
-
 }
