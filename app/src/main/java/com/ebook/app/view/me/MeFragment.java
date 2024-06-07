@@ -1,9 +1,11 @@
-package com.ebook.app.view.main.me;
+package com.ebook.app.view.me;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -11,8 +13,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ebook.app.R;
+import com.ebook.app.view.userinfo.UserInfoActivity;
 
 public class MeFragment extends Fragment {
+
+    private ConstraintLayout setInfo;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -64,5 +69,12 @@ public class MeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        setInfo = view.findViewById(R.id.me_info);
+        setInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), UserInfoActivity.class));
+            }
+        });
     }
 }

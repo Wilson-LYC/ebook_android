@@ -1,5 +1,5 @@
 <resources>
-    <style name="Theme.EBook" parent="Theme.Material3.Light.NoActionBar">
+    <style name="Theme.EBook" parent="Theme.Material3.Light">
         <item name="colorPrimary">@color/ebook_primary</item>
         <item name="colorOnPrimary">@color/ebook_onPrimary</item>
         <item name="colorPrimaryContainer">@color/ebook_primaryContainer</item>
@@ -47,4 +47,54 @@
         <item name="colorSurfaceContainerHigh">@color/ebook_surfaceContainerHigh</item>
         <item name="colorSurfaceContainerHighest">@color/ebook_surfaceContainerHighest</item>
     </style>
+
+    <style name="Theme.EBook.NoActionBar" parent="Theme.Material3.Light.NoActionBar">
+        <item name="colorPrimary">@color/ebook_primary</item>
+        <item name="colorOnPrimary">@color/ebook_onPrimary</item>
+        <item name="colorPrimaryContainer">@color/ebook_primaryContainer</item>
+        <item name="colorOnPrimaryContainer">@color/ebook_onPrimaryContainer</item>
+        <item name="colorSecondary">@color/ebook_secondary</item>
+        <item name="colorOnSecondary">@color/ebook_onSecondary</item>
+        <item name="colorSecondaryContainer">@color/ebook_secondaryContainer</item>
+        <item name="colorOnSecondaryContainer">@color/ebook_onSecondaryContainer</item>
+        <item name="colorTertiary">@color/ebook_tertiary</item>
+        <item name="colorOnTertiary">@color/ebook_onTertiary</item>
+        <item name="colorTertiaryContainer">@color/ebook_tertiaryContainer</item>
+        <item name="colorOnTertiaryContainer">@color/ebook_onTertiaryContainer</item>
+        <item name="colorError">@color/ebook_error</item>
+        <item name="colorOnError">@color/ebook_onError</item>
+        <item name="colorErrorContainer">@color/ebook_errorContainer</item>
+        <item name="colorOnErrorContainer">@color/ebook_onErrorContainer</item>
+        <item name="android:colorBackground">@color/ebook_background</item>
+        <item name="colorOnBackground">@color/ebook_onBackground</item>
+        <item name="colorSurface">@color/ebook_surface</item>
+        <item name="colorOnSurface">@color/ebook_onSurface</item>
+        <item name="colorSurfaceVariant">@color/ebook_surfaceVariant</item>
+        <item name="colorOnSurfaceVariant">@color/ebook_onSurfaceVariant</item>
+        <item name="colorOutline">@color/ebook_outline</item>
+        <item name="colorOutlineVariant">@color/ebook_outlineVariant</item>
+        <item name="colorSurfaceInverse">@color/ebook_inverseSurface</item>
+        <item name="colorOnSurfaceInverse">@color/ebook_inverseOnSurface</item>
+        <item name="colorPrimaryInverse">@color/ebook_inversePrimary</item>
+        <item name="colorPrimaryFixed">@color/ebook_primaryFixed</item>
+        <item name="colorOnPrimaryFixed">@color/ebook_onPrimaryFixed</item>
+        <item name="colorPrimaryFixedDim">@color/ebook_primaryFixedDim</item>
+        <item name="colorOnPrimaryFixedVariant">@color/ebook_onPrimaryFixedVariant</item>
+        <item name="colorSecondaryFixed">@color/ebook_secondaryFixed</item>
+        <item name="colorOnSecondaryFixed">@color/ebook_onSecondaryFixed</item>
+        <item name="colorSecondaryFixedDim">@color/ebook_secondaryFixedDim</item>
+        <item name="colorOnSecondaryFixedVariant">@color/ebook_onSecondaryFixedVariant</item>
+        <item name="colorTertiaryFixed">@color/ebook_tertiaryFixed</item>
+        <item name="colorOnTertiaryFixed">@color/ebook_onTertiaryFixed</item>
+        <item name="colorTertiaryFixedDim">@color/ebook_tertiaryFixedDim</item>
+        <item name="colorOnTertiaryFixedVariant">@color/ebook_onTertiaryFixedVariant</item>
+        <item name="colorSurfaceDim">@color/ebook_surfaceDim</item>
+        <item name="colorSurfaceBright">@color/ebook_surfaceBright</item>
+        <item name="colorSurfaceContainerLowest">@color/ebook_surfaceContainerLowest</item>
+        <item name="colorSurfaceContainerLow">@color/ebook_surfaceContainerLow</item>
+        <item name="colorSurfaceContainer">@color/ebook_surfaceContainer</item>
+        <item name="colorSurfaceContainerHigh">@color/ebook_surfaceContainerHigh</item>
+        <item name="colorSurfaceContainerHighest">@color/ebook_surfaceContainerHighest</item>
+    </style>
+
 </resources>

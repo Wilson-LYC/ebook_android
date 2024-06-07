@@ -1,4 +1,4 @@
-package com.ebook.app.view.main.ai;
+package com.ebook.app.view.ai;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;

@@ -1,4 +1,4 @@
-package com.ebook.app.view.main.home;
+package com.ebook.app.view.home;
 
 import android.os.Bundle;
 
@@ -24,12 +24,12 @@ import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
     final static String TAG="HomeFragment";
-    private RecyclerView navView,articleView;
+    private RecyclerView navView;
+    private RecyclerView articleView;
     private HomeNavAdapter navAdapter;
     private HomeArticleAdapter articleAdapter;
     private HomeViewModel homeViewModel;
@@ -92,38 +92,27 @@ public class HomeFragment extends Fragment {
 
     private void initNavBar(View view){
         // 初始化导航栏
-        GridLayoutManager navGridLayoutManager = new GridLayoutManager(getContext(), 5){
-            @Override
-            public boolean canScrollVertically() {
-                return false;
-            }
-        };
-        navAdapter= new HomeNavAdapter(getLayoutInflater(),FunctionCategoryConfig.categories);
+        navAdapter= new HomeNavAdapter(FunctionCategoryConfig.categories);
         navView = view.findViewById(R.id.home_nav);
-        navView.setLayoutManager(navGridLayoutManager);
+        navView.setLayoutManager(new GridLayoutManager(getContext(), 5));
         navView.setAdapter(navAdapter);
     }
 
     private void initArticleList(View view) {
-        LinearLayoutManager aricleLayoutManager = new LinearLayoutManager(getContext()){
-            @Override
-            public boolean canScrollVertically() {
-                return false;
-            }
-        };
-        articleAdapter = new HomeArticleAdapter(getLayoutInflater());
+        //配置文章列表试图
+        articleAdapter=new HomeArticleAdapter();
         articleView = view.findViewById(R.id.home_articles);
-        articleView.setLayoutManager(aricleLayoutManager);
         articleView.setAdapter(articleAdapter);
+        articleView.setLayoutManager(new LinearLayoutManager(getContext()));
+        //配置文章数据
         articleObserver = new Observer<List<Article>>() {
             @Override
             public void onChanged(List<Article> articles) {
-                if (articles == null)
-                    articles = new ArrayList<>();
                 articleAdapter.setList(articles);
             }
         };
         homeViewModel.getArticlesLiveData().observe(getViewLifecycleOwner(), articleObserver);
+        homeViewModel.getWeeklyArticles();
     }
 
     private void initRefresh(View view){
@@ -132,7 +121,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
                 Log.i(TAG,"触发下拉刷新");
-                homeViewModel.refreshArticles();
+                homeViewModel.getWeeklyArticles();
                 refreshlayout.finishRefresh(2000);
             }
         });

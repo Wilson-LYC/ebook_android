@@ -1,4 +1,4 @@
-package com.ebook.app.view.main.mine;
+package com.ebook.app.view.mine;
 
 import android.os.Bundle;
 
