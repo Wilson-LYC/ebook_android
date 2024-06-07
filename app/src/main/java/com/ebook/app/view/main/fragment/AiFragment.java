@@ -3,12 +3,21 @@ package com.ebook.app.view.main.fragment;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 
 import com.ebook.app.R;
+import com.ebook.app.model.MessageAI;
+import com.ebook.app.view.main.adapter.MessageAIAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -16,6 +25,10 @@ import com.ebook.app.R;
  * create an instance of this fragment.
  */
 public class AiFragment extends Fragment {
+
+    private RecyclerView recyclerView;
+    private MessageAIAdapter adapter;
+    private List<MessageAI> messageList = new ArrayList<>();
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -61,6 +74,16 @@ public class AiFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_ai, container, false);
+        View view = inflater.inflate(R.layout.fragment_ai, container, false);
+
+//        recyclerView = view.findViewById(R.id.ai_user_message);
+//        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+//        adapter = new MessageAIAdapter(messageList);
+//        recyclerView.setAdapter(adapter);
+
+
+
+
+        return view;
     }
 }
