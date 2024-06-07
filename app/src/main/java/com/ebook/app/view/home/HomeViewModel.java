@@ -16,7 +16,13 @@ import java.util.List;
 public class HomeViewModel extends ViewModel {
     final static String TAG = "HomeViewModel";
     int id=0;
+
+    public HomeViewModel() {
+        getWeeklyArticles();
+    }
+
     private MutableLiveData<List<Article>> articlesLiveData = new MutableLiveData<>();
+
     public void getWeeklyArticles() {
         Log.i(TAG, "模拟异步加载文章");
         //新线程加载数据

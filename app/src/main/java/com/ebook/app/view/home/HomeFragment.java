@@ -112,7 +112,6 @@ public class HomeFragment extends Fragment {
             }
         };
         homeViewModel.getArticlesLiveData().observe(getViewLifecycleOwner(), articleObserver);
-        homeViewModel.getWeeklyArticles();
     }
 
     private void initRefresh(View view){
