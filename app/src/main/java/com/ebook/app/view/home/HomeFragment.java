@@ -18,7 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ebook.app.R;
-import com.ebook.app.config.FunctionCategoryConfig;
+import com.ebook.app.config.EBookConfig;
 
 import com.ebook.app.model.Article;
 import com.ebook.app.view.catalogue.CatalogueActivity;
@@ -94,7 +94,7 @@ public class HomeFragment extends Fragment {
 
     private void initNavBar(View view){
         // 初始化导航栏
-        navAdapter= new HomeNavAdapter(FunctionCategoryConfig.categories, position -> {
+        navAdapter= new HomeNavAdapter(EBookConfig.categoryList, position -> {
             //导航栏项目点击事件 - 跳转到目录页面
             Log.i(TAG,"点击了导航栏项目:"+position);
             Intent intent = new Intent(getContext(), CatalogueActivity.class);

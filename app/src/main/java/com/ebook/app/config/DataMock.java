@@ -16,7 +16,7 @@ public class DataMock {
             List<Function> functionList=new ArrayList<>();
             for(int j=1;j<=10;j++){
                 id++;
-                Function function=new Function(id,"文章"+id);
+                Function function=new Function(id,"函数"+id);
                 functionList.add(function);
             }
             FunctionCategory category=new FunctionCategory("分类"+i,functionList);
