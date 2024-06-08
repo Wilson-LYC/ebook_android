@@ -15,7 +15,7 @@ public class FunctionViewModel extends ViewModel {
         loadFunction();
     }
     private void loadFunction() {
-        function.setValue(new Function(fid, "VLOOKUP", "# Hello World\n" +
+        function.setValue(new Function(fid, "VLOOKUP", null,"# Hello World\n" +
                 "\n" +
                 "This is a **Markdown** document with [link](https://www.example.com).\n"));
     }

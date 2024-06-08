@@ -55,7 +55,7 @@ public class FunctionActivity extends AppCompatActivity {
         }
         tvMarkdown=binding.functionTvContent;
         viewModel.getFunction().observe(this,function -> {
-            setContent(function.getContent());
+            setContent(function.getMarkdown());
         });
         viewModel.setFid(fid);
     }

@@ -1,30 +1,28 @@
 package com.ebook.app.view.catalogue;
 
-import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ebook.app.R;
-import com.ebook.app.model.FunctionCategory;
+import com.ebook.app.model.Category;
 
 import java.util.List;
 
 public class CatalogueCategoryAdapter extends RecyclerView.Adapter<CatalogueCategoryAdapter.CatalogueCategoryHolder> {
-    private List<FunctionCategory> list;
-    private OnCategoryClickListener listener;
+    private List<Category> list;
+    private OnClickListener listener;
     private int index = 0;
 
-    public interface OnCategoryClickListener {
-        void onCategoryClick(int position);
+    public interface OnClickListener {
+        void onClick(int position);
     }
 
-    public CatalogueCategoryAdapter(List<FunctionCategory> list, OnCategoryClickListener listener) {
+    public CatalogueCategoryAdapter(List<Category> list, OnClickListener listener) {
         this.list = list;
         this.listener = listener;
     }
@@ -39,7 +37,7 @@ public class CatalogueCategoryAdapter extends RecyclerView.Adapter<CatalogueCate
     @Override
     public void onBindViewHolder(@NonNull CatalogueCategoryHolder holder, int position) {
         holder.textView.setText(list.get(position).getName());
-        holder.itemView.setOnClickListener(v -> listener.onCategoryClick(position));
+        holder.itemView.setOnClickListener(v -> listener.onClick(position));
         holder.itemView.setSelected(index== position);
     }
 

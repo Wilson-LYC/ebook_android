@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ebook.app.R;
 import com.ebook.app.config.DataMock;
 import com.ebook.app.databinding.PageCatalogueBinding;
-import com.ebook.app.model.FunctionCategory;
+import com.ebook.app.model.Category;
 import com.ebook.app.view.function.FunctionActivity;
 import com.google.android.material.appbar.MaterialToolbar;
 
@@ -23,7 +23,7 @@ public class CatalogueActivity extends AppCompatActivity {
     private RecyclerView rvCategory,rvFunction;
     private CatalogueCategoryAdapter categoryAdapter;
     private CatalogueFunctionAdapter functionAdapter;
-    private List<FunctionCategory> categoryList;
+    private List<Category> categoryList;
     private MaterialToolbar topAppBar;
     private int index=0;
     @Override

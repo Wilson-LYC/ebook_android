@@ -1,6 +1,5 @@
 package com.ebook.app.view.home;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,19 +10,19 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ebook.app.R;
-import com.ebook.app.model.FunctionCategory;
+import com.ebook.app.model.Category;
 
 import java.util.List;
 
 public class HomeNavAdapter extends RecyclerView.Adapter<HomeNavAdapter.HomeNavItemHolder> {
-    private List<FunctionCategory> list;
+    private List<Category> list;
 
     private OnClickListener listener;
     public interface OnClickListener {
         void onClick(int position);
     }
 
-    public HomeNavAdapter(List<FunctionCategory> list, OnClickListener listener) {
+    public HomeNavAdapter(List<Category> list, OnClickListener listener) {
         this.list = list;
         this.listener = listener;
     }
@@ -37,9 +36,9 @@ public class HomeNavAdapter extends RecyclerView.Adapter<HomeNavAdapter.HomeNavI
 
     @Override
     public void onBindViewHolder(HomeNavItemHolder holder, int position) {
-        FunctionCategory functionCategory=list.get(position);
-        holder.label.setText(functionCategory.getName());
-        holder.image.setImageResource(functionCategory.getIcon());
+        Category category =list.get(position);
+        holder.label.setText(category.getName());
+        holder.image.setImageResource(category.getIcon());
         holder.itemView.setOnClickListener(v -> listener.onClick(position));
     }
 

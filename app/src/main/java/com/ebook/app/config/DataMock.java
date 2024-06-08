@@ -1,7 +1,7 @@
 package com.ebook.app.config;
 
 import com.ebook.app.model.Function;
-import com.ebook.app.model.FunctionCategory;
+import com.ebook.app.model.Category;
 import com.ebook.app.model.Message;
 
 import java.util.ArrayList;
@@ -9,7 +9,7 @@ import java.util.List;
 
 public class DataMock {
 
-    public static List<FunctionCategory> catalogue=new ArrayList<>();
+    public static List<Category> catalogue=new ArrayList<>();
     public static List<Message> messageList=new ArrayList<>();
     static {
         int id=0;
@@ -17,10 +17,10 @@ public class DataMock {
             List<Function> functionList=new ArrayList<>();
             for(int j=1;j<=10;j++){
                 id++;
-                Function function=new Function(id,"函数"+id);
+                Function function=new Function(id,"函数"+id,"函数"+id+"的使用方法","");
                 functionList.add(function);
             }
-            FunctionCategory category=new FunctionCategory("分类"+i,functionList);
+            Category category=new Category("分类"+i,functionList);
             catalogue.add(category);
         }
 

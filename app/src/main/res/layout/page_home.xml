@@ -12,31 +12,6 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <View
-            android:id="@+id/view"
-            android:layout_width="0dp"
-            android:layout_height="?actionBarSize"
-            android:background="@color/ebook_primary"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <EditText
-            android:id="@+id/home_et_search"
-            android:layout_width="match_parent"
-            android:layout_height="38dp"
-            android:layout_gravity="center"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="30dp"
-            android:background="@drawable/ebook_search"
-            android:hint="@string/search"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp"
-            app:layout_constraintBottom_toBottomOf="@+id/view"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/view" />
-
         <com.scwang.smart.refresh.layout.SmartRefreshLayout
             android:id="@+id/home_refresh_layout"
             android:layout_width="0dp"
@@ -44,7 +19,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/view">
+            app:layout_constraintTop_toTopOf="parent">
 
             <com.scwang.smart.refresh.header.ClassicsHeader
                 android:layout_width="match_parent"
@@ -62,7 +37,7 @@
                     android:padding="15dp">
 
                     <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/home_nav"
+                        android:id="@+id/home_rv_nav"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/ebook_card_white"
@@ -79,12 +54,13 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginBottom="10dp"
                             android:text="@string/weekly_article"
                             android:textColor="@color/ebook_primary"
                             android:textSize="24sp" />
 
                         <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/home_articles"
+                            android:id="@+id/home_rv_article"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content" />
                     </LinearLayout>

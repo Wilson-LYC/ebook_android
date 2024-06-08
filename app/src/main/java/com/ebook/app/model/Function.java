@@ -3,17 +3,14 @@ package com.ebook.app.model;
 public class Function {
     private int id;
     private String name;
-    private String content;
+    private String usage;
+    private String markdown;
 
-    public Function(int id, String name, String content) {
+    public Function(int id, String name, String usage, String markdown) {
         this.id = id;
         this.name = name;
-        this.content = content;
-    }
-
-    public Function(int id, String name) {
-        this.id = id;
-        this.name = name;
+        this.usage = usage;
+        this.markdown = markdown;
     }
 
     public int getId() {
@@ -32,11 +29,19 @@ public class Function {
         this.name = name;
     }
 
-    public String getContent() {
-        return content;
+    public String getUsage() {
+        return usage;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setUsage(String usage) {
+        this.usage = usage;
+    }
+
+    public String getMarkdown() {
+        return markdown;
+    }
+
+    public void setMarkdown(String markdown) {
+        this.markdown = markdown;
     }
 }
