@@ -1,6 +1,11 @@
 package com.ebook.app.view.function;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,6 +16,8 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.ebook.app.R;
 import com.ebook.app.databinding.PageFunctionBinding;
+import com.ebook.app.view.comment.CommentActivity;
+import com.ebook.app.view.comment.send.SendCommentActivity;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 
@@ -21,6 +28,8 @@ public class FunctionActivity extends AppCompatActivity {
     private MaterialToolbar topAppBar;
     private FunctionViewModel viewModel;
     private SmartRefreshLayout refreshLayout;
+    private TextView tvWriteComment;
+    private ImageView imgComment, imgLike;
     private int fid;
 
     private TextView tvMarkdown;
@@ -41,6 +50,7 @@ public class FunctionActivity extends AppCompatActivity {
         initTopAppBar();
         initContent();
         initRefreshLayout();
+        initBottom();
     }
     private void initViewModel(){
         viewModel=new ViewModelProvider(this).get(FunctionViewModel.class);
@@ -71,6 +81,17 @@ public class FunctionActivity extends AppCompatActivity {
         refreshLayout.setOnRefreshListener(refreshLayout -> {
             viewModel.refresh();
             refreshLayout.finishRefresh(1500);
+        });
+    }
+
+    private void initBottom(){
+        tvWriteComment=binding.functionTvComment;
+        imgComment=binding.functionImgComment;
+        imgLike=binding.functionImgLike;
+        imgComment.setOnClickListener(v -> {
+            Intent intent=new Intent(this, CommentActivity.class);
+            intent.putExtra("fid",fid);
+            startActivity(intent);
         });
     }
 }

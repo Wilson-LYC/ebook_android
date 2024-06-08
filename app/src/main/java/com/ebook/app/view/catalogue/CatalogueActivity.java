@@ -51,7 +51,7 @@ public class CatalogueActivity extends AppCompatActivity {
 
     private void initCategory(){
         rvCategory=binding.catalogueRvCategory;
-        categoryList = DataMock.catalogue;
+        categoryList = DataMock.categoryList;
         categoryAdapter = new CatalogueCategoryAdapter(categoryList, position -> {
             changeIndex(position);
         });

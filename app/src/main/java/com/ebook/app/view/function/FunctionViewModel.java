@@ -19,78 +19,47 @@ public class FunctionViewModel extends ViewModel {
     private void loadFunction() {
         function.setValue(new Function(fid++, "VLOOKUP", null,"# Hello World\n" +
                 "\n" +
-                "This is a **Markdown** document with [link](https://www.example.com).\n"+
-                "This is a **Markdown** document with [link](https://www.example.com).\n"+
-                "This is a **Markdown** document with [link](https://www.example.com).\n"+
-                "This is a **Markdown** document with [link](https://www.example.com).\n"+
-                "This is a **Markdown** document with [link](https://www.example.com).\n"+
-                "This is a **Markdown** document with [link](https://www.example.com).\n"+
-                "This is a **Markdown** document with [link](https://www.example.com).\n"+
-                "This is a **Markdown** document with [link](https://www.example.com).\n"+
-                "This is a **Markdown** document with [link](https://www.example.com).\n"+
-                "This is a **Markdown** document with [link](https://www.example.com).\n"+
-                "This is a **Markdown** document with [link](https://www.example.com).\n"+
-                "This is a **Markdown** document with [link](https://www.example.com).\n"+
-                "This is a **Markdown** document with [link](https://www.example.com).\n"+
-                "This is a **Markdown** document with [link](https://www.example.com).\n"+
-                "This is a **Markdown** document with [link](https://www.example.com).\n"+
-                "This is a **Markdown** document with [link](https://www.example.com).\n"+
-                "This is a **Markdown** document with [link](https://www.example.com).\n"+
-                "This is a **Markdown** document with [link](https://www.example.com).\n"+
-                "This is a **Markdown** document with [link](https://www.example.com).\n"+
-                "This is a **Markdown** document with [link](https://www.example.com).\n"+
-                "This is a **Markdown** document with [link](https://www.example.com).\n"+
-                "This is a **Markdown** document with [link](https://www.example.com).\n"+
-                "This is a **Markdown** document with [link](https://www.example.com).\n"+
-                "This is a **Markdown** document with [link](https://www.example.com).\n"+
-                "This is a **Markdown** document with [link](https://www.example.com).\n"+
-                "This is a **Markdown** document with [link](https://www.example.com).\n"+
-                "This is a **Markdown** document with [link](https://www.example.com).\n"+
-                "This is a **Markdown** document with [link](https://www.example.com).\n"+
-                "This is a **Markdown** document with [link](https://www.example.com).\n"+
-                "This is a **Markdown** document with [link](https://www.example.com).\n"+
-                "This is a **Markdown** document with [link](https://www.example.com).\n"+
-                "This is a **Markdown** document with [link](https://www.example.com).\n"+
-                "This is a **Markdown** document with [link](https://www.example.com).\n"+
-                "This is a **Markdown** document with [link](https://www.example.com).\n"+
-                "This is a **Markdown** document with [link](https://www.example.com).\n"+
-                "This is a **Markdown** document with [link](https://www.example.com).\n"+
-                "This is a **Markdown** document with [link](https://www.example.com).\n"+
-                "This is a **Markdown** document with [link](https://www.example.com).\n"+
-                "This is a **Markdown** document with [link](https://www.example.com).\n"+
-                "This is a **Markdown** document with [link](https://www.example.com).\n"+
-                "This is a **Markdown** document with [link](https://www.example.com).\n"+
-                "This is a **Markdown** document with [link](https://www.example.com).\n"+
-                "This is a **Markdown** document with [link](https://www.example.com).\n"+
-                "This is a **Markdown** document with [link](https://www.example.com).\n"+
-                "This is a **Markdown** document with [link](https://www.example.com).\n"+
-                "This is a **Markdown** document with [link](https://www.example.com).\n"+
-                "This is a **Markdown** document with [link](https://www.example.com).\n"+
-                "This is a **Markdown** document with [link](https://www.example.com).\n"+
-                "This is a **Markdown** document with [link](https://www.example.com).\n"+
-                "This is a **Markdown** document with [link](https://www.example.com).\n"+
-                "This is a **Markdown** document with [link](https://www.example.com).\n"+
-                "This is a **Markdown** document with [link](https://www.example.com).\n"+
-                "This is a **Markdown** document with [link](https://www.example.com).\n"+
-                "This is a **Markdown** document with [link](https://www.example.com).\n"+
-                "This is a **Markdown** document with [link](https://www.example.com).\n"+
-                "This is a **Markdown** document with [link](https://www.example.com).\n"+
-                "This is a **Markdown** document with [link](https://www.example.com).\n"+
-                "This is a **Markdown** document with [link](https://www.example.com).\n"+
-                "This is a **Markdown** document with [link](https://www.example.com).\n"+
-                "This is a **Markdown** document with [link](https://www.example.com).\n"+
-                "This is a **Markdown** document with [link](https://www.example.com).\n"+
-                "This is a **Markdown** document with [link](https://www.example.com).\n"+
-                "This is a **Markdown** document with [link](https://www.example.com).\n"+
-                "This is a **Markdown** document with [link](https://www.example.com).\n"+
-                "This is a **Markdown** document with [link](https://www.example.com).\n"+
-                "This is a **Markdown** document with [link](https://www.example.com).\n"+
-                "This is a **Markdown** document with [link](https://www.example.com).\n"+
-                "This is a **Markdown** document with [link](https://www.example.com).\n"+
-                "This is a **Markdown** document with [link](https://www.example.com).\n"+
-                "This is a **Markdown** document with [link](https://www.example.com).\n"+
-                "This is a **Markdown** document with [link](https://www.example.com).\n"+
-                "T123123123123\n"));
+                "## 代码测试\n"+
+                "\n" +
+                "```java\n" +
+                "public class HelloWorld {\n" +
+                "    public static void main(String[] args) {\n" +
+                "        System.out.println(\"Hello, World!\");\n" +
+                "    }\n" +
+                "}\n" +
+                "```\n" +
+                "\n" +
+                "## 标题测试\n"+
+                "\n" +
+                "大家好，我是测试文本\n"+
+                "\n" +
+                "## 代码测试\n"+
+                "\n" +
+                "```java\n" +
+                "public class HelloWorld {\n" +
+                "    public static void main(String[] args) {\n" +
+                "        System.out.println(\"Hello, World!\");\n" +
+                "    }\n" +
+                "}\n" +
+                "```\n" +
+                "\n" +
+                "## 标题测试\n"+
+                "\n" +
+                "大家好，我是测试文本\n"+
+                "\n" +
+                "## 代码测试\n"+
+                "\n" +
+                "```java\n" +
+                "public class HelloWorld {\n" +
+                "    public static void main(String[] args) {\n" +
+                "        System.out.println(\"Hello, World!\");\n" +
+                "    }\n" +
+                "}\n" +
+                "```\n" +
+                "\n" +
+                "## 标题测试\n"+
+                "\n" +
+                "大家好，我是测试文本\n"));
     }
     public LiveData<Function> getFunction(){
         return function;
