@@ -24,26 +24,56 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:minHeight="?attr/actionBarSize"
-                app:navigationIcon="@drawable/ic_back_24dp"
+                app:navigationIcon="@drawable/ic_back_white"
                 app:title="@{vm.function.name}" />
         </com.google.android.material.appbar.AppBarLayout>
 
-        <TextView
-            android:id="@+id/function_tv_content"
-            android:layout_width="match_parent"
+        <com.scwang.smart.refresh.layout.SmartRefreshLayout
+            android:id="@+id/function_refresh_layout"
+            android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginBottom="1dp"
-            android:paddingLeft="15dp"
-            android:paddingEnd="15dp"
             app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/appbar_layout" />
+            app:layout_constraintTop_toBottomOf="@+id/appbar_layout">
+
+            <com.scwang.smart.refresh.header.ClassicsHeader
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:srlEnableNestedScrolling="true" >
+
+            </com.scwang.smart.refresh.header.ClassicsHeader>
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:padding="15dp">
+
+                    <TextView
+                        android:id="@+id/function_tv_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/ebook_card_white"
+                        android:paddingLeft="15dp"
+                        android:paddingEnd="15dp"
+                        app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/appbar_layout" />
+                </LinearLayout>
+            </ScrollView>
+        </com.scwang.smart.refresh.layout.SmartRefreshLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:background="@color/white"
             android:padding="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -51,24 +81,48 @@
             app:layout_constraintStart_toStartOf="parent">
 
             <ImageView
-                android:id="@+id/imageView"
+                android:id="@+id/function_img_comment"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:layout_marginEnd="5dp"
-                app:layout_constraintEnd_toStartOf="@+id/textView"
+                android:layout_marginEnd="3dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/function_tv_comment_count"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_comment_light" />
+                app:srcCompat="@drawable/ic_comment_primary" />
+
+            <ImageView
+                android:id="@+id/function_img_like"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginEnd="3dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/function_tv_like_count"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_like_primary" />
 
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/function_tv_comment_count"
                 android:layout_width="40dp"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
-                android:text="100"
+                android:text="@{String.valueOf(vm.function.commentCount)}"
                 android:textColor="@color/ebook_primary"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/function_tv_like_count"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:gravity="center_vertical"
+                android:text="@{String.valueOf(vm.function.commentCount)}"
+                android:textColor="@color/ebook_primary"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/function_img_comment"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

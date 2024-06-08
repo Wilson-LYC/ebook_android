@@ -5,12 +5,14 @@ public class Function {
     private String name;
     private String usage;
     private String markdown;
+    private int commentCount;
 
     public Function(int id, String name, String usage, String markdown) {
         this.id = id;
         this.name = name;
         this.usage = usage;
         this.markdown = markdown;
+        this.commentCount= 0;
     }
 
     public int getId() {
@@ -43,5 +45,13 @@ public class Function {
 
     public void setMarkdown(String markdown) {
         this.markdown = markdown;
+    }
+
+    public int getCommentCount() {
+        return commentCount;
+    }
+
+    public void setCommentCount(int commentCount) {
+        this.commentCount = commentCount;
     }
 }

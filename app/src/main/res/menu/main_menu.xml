@@ -10,6 +10,6 @@
         android:title="@string/ai" />
     <item
         android:id="@+id/main_nav_mine"
-        android:icon="@drawable/ic_selector_mine"
+        android:icon="@drawable/ic_me_selector"
         android:title="@string/mine" />
 </menu>

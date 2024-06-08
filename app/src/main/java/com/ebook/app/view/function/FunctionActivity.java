@@ -3,7 +3,6 @@ package com.ebook.app.view.function;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -13,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.ebook.app.R;
 import com.ebook.app.databinding.PageFunctionBinding;
 import com.google.android.material.appbar.MaterialToolbar;
+import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 
 import io.noties.markwon.Markwon;
 
@@ -20,6 +20,7 @@ public class FunctionActivity extends AppCompatActivity {
     private PageFunctionBinding binding;
     private MaterialToolbar topAppBar;
     private FunctionViewModel viewModel;
+    private SmartRefreshLayout refreshLayout;
     private int fid;
 
     private TextView tvMarkdown;
@@ -39,6 +40,7 @@ public class FunctionActivity extends AppCompatActivity {
         initViewModel();
         initTopAppBar();
         initContent();
+        initRefreshLayout();
     }
     private void initViewModel(){
         viewModel=new ViewModelProvider(this).get(FunctionViewModel.class);
@@ -57,10 +59,18 @@ public class FunctionActivity extends AppCompatActivity {
         viewModel.getFunction().observe(this,function -> {
             setContent(function.getMarkdown());
         });
-        viewModel.setFid(fid);
+        viewModel.create(fid);
     }
     private void setContent(String content){
         Markwon markwon = Markwon.create(this);
         markwon.setMarkdown(tvMarkdown, content);
+    }
+
+    private void initRefreshLayout(){
+        refreshLayout=binding.functionRefreshLayout;
+        refreshLayout.setOnRefreshListener(refreshLayout -> {
+            viewModel.refresh();
+            refreshLayout.finishRefresh(1500);
+        });
     }
 }

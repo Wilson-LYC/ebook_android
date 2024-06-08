@@ -113,7 +113,7 @@ public class HomeFragment extends Fragment {
         rvNav.setAdapter(navAdapter);
     }
     private void initFunctionList() {
-        functionListAdapter=new FunctionListAdapter(null,position -> {
+        functionListAdapter=new FunctionListAdapter(null,(position,fid) -> {
             //跳转到函数页面
             Intent intent = new Intent(getContext(), FunctionActivity.class);
             intent.putExtra("fid", functionList.get(position).getId());

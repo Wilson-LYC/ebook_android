@@ -21,7 +21,7 @@ public class FunctionListAdapter extends RecyclerView.Adapter<FunctionListAdapte
     int face=R.layout.item_function;
 
     public interface OnClickListener{
-        void onClick(int position);
+        void onClick(int position,int fid);
     }
 
     public FunctionListAdapter(List<Function> list, OnClickListener listener) {
@@ -53,7 +53,7 @@ public class FunctionListAdapter extends RecyclerView.Adapter<FunctionListAdapte
         Function function=list.get(position);
         holder.tvName.setText(function.getName());
         holder.tvUsage.setText(function.getUsage());
-        holder.itemView.setOnClickListener(v->listener.onClick(position));
+        holder.itemView.setOnClickListener(v->listener.onClick(position,function.getId()));
     }
 
     @Override

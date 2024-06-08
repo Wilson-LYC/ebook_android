@@ -14,6 +14,7 @@ import com.ebook.app.config.DataMock;
 import com.ebook.app.databinding.PageCatalogueBinding;
 import com.ebook.app.model.Category;
 import com.ebook.app.view.function.FunctionActivity;
+import com.ebook.app.view.function.FunctionListAdapter;
 import com.google.android.material.appbar.MaterialToolbar;
 
 import java.util.List;
@@ -22,7 +23,7 @@ public class CatalogueActivity extends AppCompatActivity {
     private PageCatalogueBinding binding;
     private RecyclerView rvCategory,rvFunction;
     private CatalogueCategoryAdapter categoryAdapter;
-    private CatalogueFunctionAdapter functionAdapter;
+    private FunctionListAdapter functionAdapter;
     private List<Category> categoryList;
     private MaterialToolbar topAppBar;
     private int index=0;
@@ -39,11 +40,10 @@ public class CatalogueActivity extends AppCompatActivity {
         init();
     }
     private void init(){
-        //获取初始index
         if(getIntent().hasExtra("index")){
             index=getIntent().getIntExtra("index",0);
         }
-        initTopAppBar();//初始化顶部工具栏
+        initTopAppBar();
         initCategory();
         initFunction();
         changeIndex(index);
@@ -60,12 +60,12 @@ public class CatalogueActivity extends AppCompatActivity {
     }
     private void initFunction(){
         rvFunction=binding.catalogueRvFunction;
-        functionAdapter = new CatalogueFunctionAdapter(null, (position, fid) -> {
+        functionAdapter = new FunctionListAdapter(null, (position, fid) -> {
             //跳转到教程页面
             Intent intent = new Intent(CatalogueActivity.this, FunctionActivity.class);
             intent.putExtra("fid", fid);
             startActivity(intent);
-        });
+        },R.layout.item_function_card);
         rvFunction.setLayoutManager(new LinearLayoutManager(this));
         rvFunction.setAdapter(functionAdapter);
     }

@@ -22,9 +22,6 @@
             android:name=".view.comment.CommentActivity"
             android:exported="false" />
         <activity
-            android:name=".view.article.ArticleActivity"
-            android:exported="false" />
-        <activity
             android:name=".view.function.FunctionActivity"
             android:exported="false" />
         <activity

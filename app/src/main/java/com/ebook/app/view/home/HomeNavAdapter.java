@@ -30,7 +30,7 @@ public class HomeNavAdapter extends RecyclerView.Adapter<HomeNavAdapter.HomeNavI
     @NonNull
     @Override
     public HomeNavItemHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_home_nav, parent, false);//获取导航栏项目的布局
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_nav, parent, false);//获取导航栏项目的布局
         return new HomeNavItemHolder(view);
     }
 

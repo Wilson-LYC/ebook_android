@@ -74,7 +74,7 @@
                     android:id="@+id/me_set_info_img"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:src="@drawable/ic_user_setting"
+                    android:src="@drawable/ic_setting_info_primary"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -108,7 +108,7 @@
                     android:id="@+id/me_set_email_img"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:src="@drawable/ic_email"
+                    android:src="@drawable/ic_email_primary"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -144,7 +144,7 @@
                     android:id="@+id/me_set_password_img"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:src="@drawable/ic_lock"
+                    android:src="@drawable/ic_lock_primary"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
