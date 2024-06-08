@@ -1,5 +1,6 @@
 package com.ebook.app.view.home;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -20,6 +21,7 @@ import com.ebook.app.R;
 import com.ebook.app.config.FunctionCategoryConfig;
 
 import com.ebook.app.model.Article;
+import com.ebook.app.view.catalogue.CatalogueActivity;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
@@ -92,7 +94,13 @@ public class HomeFragment extends Fragment {
 
     private void initNavBar(View view){
         // 初始化导航栏
-        navAdapter= new HomeNavAdapter(FunctionCategoryConfig.categories);
+        navAdapter= new HomeNavAdapter(FunctionCategoryConfig.categories, position -> {
+            //导航栏项目点击事件 - 跳转到目录页面
+            Log.i(TAG,"点击了导航栏项目:"+position);
+            Intent intent = new Intent(getContext(), CatalogueActivity.class);
+            intent.putExtra("index",position);
+            startActivity(intent);
+        });
         navView = view.findViewById(R.id.home_nav);
         navView.setLayoutManager(new GridLayoutManager(getContext(), 5));
         navView.setAdapter(navAdapter);

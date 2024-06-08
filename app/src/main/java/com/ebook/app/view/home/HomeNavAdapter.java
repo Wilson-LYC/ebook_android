@@ -18,8 +18,14 @@ import java.util.List;
 public class HomeNavAdapter extends RecyclerView.Adapter<HomeNavAdapter.HomeNavItemHolder> {
     private List<FunctionCategory> list;
 
-    public HomeNavAdapter(List<FunctionCategory> list) {
+    private OnClickListener listener;
+    public interface OnClickListener {
+        void onClick(int position);
+    }
+
+    public HomeNavAdapter(List<FunctionCategory> list, OnClickListener listener) {
         this.list = list;
+        this.listener = listener;
     }
 
     @NonNull
@@ -34,6 +40,7 @@ public class HomeNavAdapter extends RecyclerView.Adapter<HomeNavAdapter.HomeNavI
         FunctionCategory functionCategory=list.get(position);
         holder.label.setText(functionCategory.getName());
         holder.image.setImageResource(functionCategory.getIcon());
+        holder.itemView.setOnClickListener(v -> listener.onClick(position));
     }
 
     @Override
@@ -41,19 +48,13 @@ public class HomeNavAdapter extends RecyclerView.Adapter<HomeNavAdapter.HomeNavI
         return list.size();
     }
 
-    public class HomeNavItemHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public class HomeNavItemHolder extends RecyclerView.ViewHolder{
         TextView label;
         ImageView image;
         public HomeNavItemHolder(@NonNull View itemView) {
             super(itemView);
             label = itemView.findViewById(R.id.home_nav_item_label);//获取导航栏项目的标签
             image = itemView.findViewById(R.id.home_nav_item_img);//获取导航栏项目的图片
-            itemView.setOnClickListener(this);//设置点击事件
-        }
-        @Override
-        public void onClick(View v) {
-            int position = getAdapterPosition();
-            Log.i("HomeNavItemHolder","第"+position+"个被点击");
         }
     }
 

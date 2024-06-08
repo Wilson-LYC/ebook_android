@@ -1,8 +1,6 @@
 package com.ebook.app.view.catalogue;
 
 import android.os.Bundle;
-
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -13,10 +11,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ebook.app.R;
 import com.ebook.app.config.DataMock;
 import com.ebook.app.databinding.PageCatalogueBinding;
-import com.ebook.app.model.Function;
 import com.ebook.app.model.FunctionCategory;
+import com.google.android.material.appbar.MaterialToolbar;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class CatalogueActivity extends AppCompatActivity {
@@ -25,6 +22,8 @@ public class CatalogueActivity extends AppCompatActivity {
     private CatalogueCategoryAdapter categoryAdapter;
     private CatalogueFunctionAdapter functionAdapter;
     private List<FunctionCategory> categoryList;
+    private MaterialToolbar topAppBar;
+    private int index=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,25 +37,38 @@ public class CatalogueActivity extends AppCompatActivity {
         init();
     }
     private void init(){
-        //绑定控件
+        //获取初始index
+        if(getIntent().hasExtra("index")){
+            index=getIntent().getIntExtra("index",0);
+        }
+        initTopAppBar();//初始化顶部工具栏
+        initCategory();
+        initFunction();
+        changeIndex(index);
+    }
+
+    private void initCategory(){
         rvCategory=binding.catalogueRvCategory;
-        rvFunction=binding.catalogueRvFunction;
-        //配置分类列表
         categoryList = DataMock.catalogue;
         categoryAdapter = new CatalogueCategoryAdapter(categoryList, position -> {
             changeIndex(position);
         });
         rvCategory.setLayoutManager(new LinearLayoutManager(this));
         rvCategory.setAdapter(categoryAdapter);
-        //配置函数列表
-        functionAdapter = new CatalogueFunctionAdapter(categoryList.get(0).getFunctionList());
+    }
+    private void initFunction(){
+        rvFunction=binding.catalogueRvFunction;
+        functionAdapter = new CatalogueFunctionAdapter(null);
         rvFunction.setLayoutManager(new LinearLayoutManager(this));
         rvFunction.setAdapter(functionAdapter);
     }
-
     private void changeIndex(int position){
         categoryAdapter.changeIndex(position);
         functionAdapter.setList(categoryList.get(position).getFunctionList());
+    }
+    private void initTopAppBar() {
+        topAppBar = binding.appbar;
+        topAppBar.setNavigationOnClickListener(v -> finish());
     }
 
 }

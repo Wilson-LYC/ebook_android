@@ -18,7 +18,6 @@ import java.util.List;
 
 public class HomeArticleAdapter extends RecyclerView.Adapter<HomeArticleAdapter.HomeArticleHolder> {
     final static String TAG="HomeArticleAdapter";
-
     private List<Article> list;
 
     public HomeArticleAdapter() {
