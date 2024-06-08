@@ -28,7 +28,7 @@
         android:id="@+id/catalogue_rv_category"
         android:layout_width="120dp"
         android:layout_height="0dp"
-        android:background="@color/ebook_secondaryContainer"
+        android:background="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appbar_layout">

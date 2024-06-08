@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="50dp"
     android:layout_marginBottom="15dp"
-    android:background="@drawable/ebook_card_grey">
+    android:background="@drawable/item_function">
 
     <TextView
         android:id="@+id/catalogue_function_item_label"

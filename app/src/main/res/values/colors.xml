@@ -16,7 +16,7 @@
     <color name="ebook_onError">#FFFFFF</color>
     <color name="ebook_errorContainer">#FFDAD6</color>
     <color name="ebook_onErrorContainer">#410002</color>
-    <color name="ebook_background">#F6FBF3</color>
+    <color name="ebook_background">#EEEEEE</color>
     <color name="ebook_onBackground">#181D19</color>
     <color name="ebook_surface">#F6FBF3</color>
     <color name="ebook_onSurface">#181D19</color>

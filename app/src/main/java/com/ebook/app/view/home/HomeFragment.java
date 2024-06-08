@@ -75,7 +75,6 @@ public class HomeFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        Log.i(TAG, "onViewCreated");
         super.onViewCreated(view, savedInstanceState);
         // 初始化ViewModel
         if (homeViewModel==null)
