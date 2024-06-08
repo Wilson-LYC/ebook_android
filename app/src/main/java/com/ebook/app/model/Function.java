@@ -3,6 +3,13 @@ package com.ebook.app.model;
 public class Function {
     private int id;
     private String name;
+    private String content;
+
+    public Function(int id, String name, String content) {
+        this.id = id;
+        this.name = name;
+        this.content = content;
+    }
 
     public Function(int id, String name) {
         this.id = id;
@@ -23,5 +30,13 @@ public class Function {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 }

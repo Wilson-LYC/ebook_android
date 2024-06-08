@@ -1,6 +1,5 @@
 package com.ebook.app.view.catalogue;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,11 +17,15 @@ import java.util.List;
 public class CatalogueFunctionAdapter extends RecyclerView.Adapter<CatalogueFunctionAdapter.CatalogueFunctionHolder> {
 
     private List<Function> list;
+    private OnClickListener listener;
 
-    public CatalogueFunctionAdapter(List<Function> list) {
-        if (list==null)
-            list=new ArrayList<>();
+    public interface OnClickListener {
+        void onClick(int position,int fid);
+    }
+
+    public CatalogueFunctionAdapter(List<Function> list, OnClickListener listener) {
         this.list = list;
+        this.listener = listener;
     }
 
     @NonNull
@@ -36,6 +39,7 @@ public class CatalogueFunctionAdapter extends RecyclerView.Adapter<CatalogueFunc
     public void onBindViewHolder(@NonNull CatalogueFunctionHolder holder, int position) {
         Function function=list.get(position);
         holder.label.setText(function.getName());
+        holder.itemView.setOnClickListener(v->listener.onClick(position,list.get(position).getId()));
     }
 
     @Override
@@ -48,19 +52,11 @@ public class CatalogueFunctionAdapter extends RecyclerView.Adapter<CatalogueFunc
         notifyDataSetChanged();
     }
 
-    public class CatalogueFunctionHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class CatalogueFunctionHolder extends RecyclerView.ViewHolder{
         TextView label;
         public CatalogueFunctionHolder(@NonNull View itemView) {
             super(itemView);
-            label=itemView.findViewById(R.id.catalogue_function_item_label);
-            itemView.setOnClickListener(this);
+            label = itemView.findViewById(R.id.catalogue_function_item_label);
         }
-
-        @Override
-        public void onClick(View v) {
-            int position=getAdapterPosition();
-            Log.i("CatalogueFunctionAdapter","onClick: "+position);
-        }
-
     }
 }

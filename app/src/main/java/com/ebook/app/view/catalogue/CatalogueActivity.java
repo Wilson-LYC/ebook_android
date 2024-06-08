@@ -1,5 +1,6 @@
 package com.ebook.app.view.catalogue;
 
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -12,6 +13,7 @@ import com.ebook.app.R;
 import com.ebook.app.config.DataMock;
 import com.ebook.app.databinding.PageCatalogueBinding;
 import com.ebook.app.model.FunctionCategory;
+import com.ebook.app.view.function.FunctionActivity;
 import com.google.android.material.appbar.MaterialToolbar;
 
 import java.util.List;
@@ -58,7 +60,12 @@ public class CatalogueActivity extends AppCompatActivity {
     }
     private void initFunction(){
         rvFunction=binding.catalogueRvFunction;
-        functionAdapter = new CatalogueFunctionAdapter(null);
+        functionAdapter = new CatalogueFunctionAdapter(null, (position, fid) -> {
+            //跳转到教程页面
+            Intent intent = new Intent(CatalogueActivity.this, FunctionActivity.class);
+            intent.putExtra("fid", fid);
+            startActivity(intent);
+        });
         rvFunction.setLayoutManager(new LinearLayoutManager(this));
         rvFunction.setAdapter(functionAdapter);
     }
