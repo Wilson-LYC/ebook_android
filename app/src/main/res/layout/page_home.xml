@@ -80,6 +80,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/weekly_article"
+                            android:textColor="@color/ebook_primary"
                             android:textSize="24sp" />
 
                         <androidx.recyclerview.widget.RecyclerView

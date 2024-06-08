@@ -16,22 +16,30 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".view.main.MainActivity"
-            android:exported="true">
+            android:name=".view.catalogue.CatalogueActivity"
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
+            android:name=".view.main.MainActivity"
+            android:exported="true">
+        </activity>
+        <activity
             android:name=".view.authority.AuthorityActivity"
-            android:exported="false"/>
-        <activity android:name=".view.set.activity.SetInfoActivity"
-            android:exported="false"/>
-        <activity android:name=".view.set.activity.SetEmailActivity"
-            android:exported="false"/>
-        <activity android:name=".view.set.activity.SetPasswordActivity"
-            android:exported="false"/>
+            android:exported="false" />
+        <activity
+            android:name=".view.set.activity.SetInfoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.set.activity.SetEmailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.set.activity.SetPasswordActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

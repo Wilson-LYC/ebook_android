@@ -1,4 +1,5 @@
 <resources>
+    <color name="ebook_transparent">#00000000</color>
     <color name="ebook_primary">#2C6A45</color>
     <color name="ebook_onPrimary">#FFFFFF</color>
     <color name="ebook_primaryContainer">#B0F1C2</color>
