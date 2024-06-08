@@ -23,6 +23,8 @@
     <string name="save">保存</string>
     <string name="phone">手机</string>
     <string name="catalogue">目录</string>
+    <string name="comment">评论</string>
+    <string name="send_comment">发表评论</string>
     <!--设置-->
     <string name="set_info">修改资料</string>
     <string name="set_email">更换邮箱</string>
