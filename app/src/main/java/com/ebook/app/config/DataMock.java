@@ -31,6 +31,8 @@ public class DataMock {
         messageList.add(new Message("EBook","欢迎使用EBook!在这里,学习Excel函数使用技巧,赋能未来!"));
         messageList.add(new Message("You","谢谢!"));
         messageList.add(new Message("EBook","不客气!"));
+        for (int i=1;i<=20;i++)
+            messageList.add(new Message("EBook","不客气!"));
 
         for (int i=1;i<=20;i++)
             commentList.add(new Comment(new User("张三"),"你好!","2019-01-01"));
