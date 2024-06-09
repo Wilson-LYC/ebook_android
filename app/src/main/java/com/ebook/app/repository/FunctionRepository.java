@@ -25,4 +25,13 @@ public class FunctionRepository {
                 .build();
         httpUtil.request(request,callback);
     }
+
+    public void getFunctionListByCid(int cid, Callback callback) {
+        String url=HttpUtil.BASE_URL+"/v1/function/category/"+cid;
+        Request request=new Request.Builder()
+                .url(url)
+                .get()
+                .build();
+        httpUtil.request(request,callback);
+    }
 }
