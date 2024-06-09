@@ -55,8 +55,11 @@ public class UserRepository {
      * @param token token
      * @param callback 回调函数
      */
-    public void getUserByToken(Request request,Callback callback) {
-        //发送请求
+    public void getUserByToken(String token,Callback callback) {
+        Request request = new Request.Builder()
+                .url(HttpUtil.BASE_URL+GET_USER_BY_TOKEN_URL)
+                .addHeader("Authorization", token)
+                .build();
         httpUtil.get(GET_USER_BY_TOKEN_URL,request,callback);
     }
 }

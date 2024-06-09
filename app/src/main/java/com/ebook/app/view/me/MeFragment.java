@@ -7,7 +7,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.util.Log;
@@ -16,13 +15,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.alibaba.fastjson.JSONObject;
 import com.ebook.app.R;
 import com.ebook.app.databinding.PageMeBinding;
-import com.ebook.app.dto.ResponseDto;
-import com.ebook.app.model.User;
 import com.ebook.app.util.AlertUtil;
-import com.ebook.app.util.ResponseOperation;
 import com.ebook.app.util.SharedPrefsUtil;
 import com.ebook.app.view.authority.AuthorityActivity;
 import com.ebook.app.view.set.activity.SetEmailActivity;
@@ -36,8 +31,6 @@ public class MeFragment extends Fragment {
     private ConstraintLayout setInfo,setEmail,setPwd;
     private ImageView imgAvatar;
     private MeViewModel viewModel;
-    private Observer<ResponseDto> userObserver;
-    private User user;
     private SharedPrefsUtil prefsUtil;
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -93,6 +86,8 @@ public class MeFragment extends Fragment {
 
     private void initViewModel(){
         viewModel=new ViewModelProvider(this).get(MeViewModel.class);
+        viewModel.setContext(getContext());
+        binding.setVm(viewModel);
         binding.setLifecycleOwner(this);
     }
 
@@ -136,38 +131,15 @@ public class MeFragment extends Fragment {
                 .into(imgAvatar);
     }
 
-
-    private ResponseOperation userOperation = new ResponseOperation("User") {
-        @Override
-        public void onSuccess(ResponseDto response) {
-            JSONObject userJSon=response.getData().getJSONObject("user");
-            user=userJSon.toJavaObject(User.class);
-            //设置头像
-            setAvatar(user.getAvatar());
-            //设置用户名和邮箱
-            binding.setEmail(user.getEmail());
-            binding.setName(user.getName());
-        }
-
-        @Override
-        public void onParamError(ResponseDto response) {
-            AlertUtil.showToast(getContext(),"请重新登录");
-            goToLogin();
-        }
-
-        @Override
-        public void showError(String msg) {
-        }
-    };
-
     private void initUserObserver(){
-        userObserver=new Observer<ResponseDto>() {
-            @Override
-            public void onChanged(ResponseDto responseDto) {
-                userOperation.onRespond(responseDto);
+        viewModel.getUser().observe(getViewLifecycleOwner(),user -> {
+            if (user==null){
+                AlertUtil.showToast(getContext(),"用户信息加载失败");
+                goToLogin();
+                return;
             }
-        };
-        viewModel.getUserInfoResponse().observe(getViewLifecycleOwner(),userObserver);
+            setAvatar(user.getAvatar());
+        });
     }
 
     /**
@@ -176,12 +148,7 @@ public class MeFragment extends Fragment {
     private void loadUserInfo(){
         Log.i(TAG,"加载用户信息");
         String token=prefsUtil.getString("token","");
-        if (token==null || token.equals("")){
-            AlertUtil.showToast(getContext(),"未登录");
-            goToLogin();
-            return;
-        }
-        viewModel.loadUserInfo(token);
+        viewModel.loadUser(token);
     }
 
     /**

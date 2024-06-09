@@ -20,7 +20,7 @@ import okhttp3.Response;
 
 public class HttpUtil {
     final static String TAG = "HttpUtil";
-    final static String BASE_URL = "http://10.0.2.2:8080";
+    public final static String BASE_URL = "http://10.0.2.2:8080";
     private final OkHttpClient client= new OkHttpClient.Builder()
             .connectTimeout(5, TimeUnit.SECONDS)
             .build();

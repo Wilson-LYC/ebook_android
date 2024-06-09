@@ -25,11 +25,24 @@ public class SetInfoActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        initTopAppBar();//初始化顶部工具栏
+        init();
+
     }
 
+    private void init(){
+        initTopAppBar();
+//        initViewModel();
+//        initElement();//初始化元素
+//        initButtonListener();//初始化按钮
+//        initUserObserver();//初始化用户信息观察者
+//        loadUserInfo();//初始化时，加载用户信息
+    }
     private void initTopAppBar() {
         topAppBar = binding.appbar;
         topAppBar.setNavigationOnClickListener(v -> finish());
     }
+//    private void initViewModel(){
+//        viewModel=new ViewModelProvider(this).get(MeViewModel.class);
+//    }
+
 }
