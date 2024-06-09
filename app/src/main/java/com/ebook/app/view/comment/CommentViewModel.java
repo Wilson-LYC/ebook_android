@@ -13,12 +13,20 @@ import java.util.List;
 
 public class CommentViewModel extends ViewModel {
     MutableLiveData<ResponseDto> commentList=new MutableLiveData<>();
-
+    MutableLiveData<ResponseDto> sendComment=new MutableLiveData<>();
     public LiveData<ResponseDto> getCommentList() {
         return commentList;
     }
+
+    public LiveData<ResponseDto> getSendComment() {
+        return sendComment;
+    }
+
     CommentReposity commentReposity=new CommentReposity();
     public void loadCommentList(int fid){
         commentReposity.getCommentListByFid(fid,new RequestCallback(commentList));
+    }
+    public void sendComment(Comment comment,String token){
+        commentReposity.sendComment(comment.getFid(),comment.getContent(),token,new RequestCallback(sendComment));
     }
 }

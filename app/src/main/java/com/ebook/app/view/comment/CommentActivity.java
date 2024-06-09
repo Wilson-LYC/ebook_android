@@ -3,8 +3,6 @@ package com.ebook.app.view.comment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -22,7 +20,6 @@ import com.ebook.app.dto.ResponseDto;
 import com.ebook.app.model.Comment;
 import com.ebook.app.util.AlertUtil;
 import com.ebook.app.util.ResponseOperation;
-import com.ebook.app.view.comment.send.SendCommentActivity;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 
@@ -75,6 +72,7 @@ public class CommentActivity extends AppCompatActivity {
                         JSONArray commentArray=response.getData().getJSONArray("comments");
                         List<Comment> commentList=commentArray.toJavaList(Comment.class);
                         commentAdapter.setList(commentList);
+                        refreshLayout.finishRefresh();
                     }
                     @Override
                     public void showError(String msg) {
@@ -93,7 +91,6 @@ public class CommentActivity extends AppCompatActivity {
         refreshLayout=binding.functionRefreshLayout;
         refreshLayout.setOnRefreshListener(refreshLayout -> {
             viewModel.loadCommentList(fid);
-            refreshLayout.finishRefresh(1500);
         });
     }
 
