@@ -22,7 +22,7 @@
     <color name="ebook_onSurface">#181D19</color>
     <color name="ebook_surfaceVariant">#DCE5DB</color>
     <color name="ebook_onSurfaceVariant">#414942</color>
-    <color name="ebook_outline">#717971</color>
+    <color name="ebook_outline">#A6A6A6</color>
     <color name="ebook_outlineVariant">#C0C9BF</color>
     <color name="ebook_scrim">#000000</color>
     <color name="ebook_inverseSurface">#2C322D</color>

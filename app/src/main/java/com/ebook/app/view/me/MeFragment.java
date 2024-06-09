@@ -10,12 +10,14 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.alibaba.fastjson.JSONObject;
+import com.ebook.app.R;
 import com.ebook.app.databinding.PageMeBinding;
 import com.ebook.app.dto.ResponseDto;
 import com.ebook.app.model.User;
@@ -29,11 +31,12 @@ import com.ebook.app.view.set.activity.SetPasswordActivity;
 import com.squareup.picasso.Picasso;
 
 public class MeFragment extends Fragment {
+    private static final String TAG="MeFragment";
     private PageMeBinding binding;
     private ConstraintLayout setInfo,setEmail,setPwd;
     private ImageView imgAvatar;
     private MeViewModel viewModel;
-    private Observer<ResponseDto> userInfoObserver;
+    private Observer<ResponseDto> userObserver;
     private User user;
     private SharedPrefsUtil prefsUtil;
     private static final String ARG_PARAM1 = "param1";
@@ -79,8 +82,8 @@ public class MeFragment extends Fragment {
         initViewModel();
         initElement();//初始化元素
         initButtonListener();//初始化按钮
-        initUserInfoObserver();//初始化用户信息观察者
-        loadUserInfo();
+        initUserObserver();//初始化用户信息观察者
+        loadUserInfo();//初始化时，加载用户信息
     }
     @Override
     public void onDestroyView() {
@@ -98,7 +101,9 @@ public class MeFragment extends Fragment {
         setEmail=binding.meSetEmail;
         setPwd=binding.meSetPassword;
         imgAvatar=binding.meImgAvatar;
+        prefsUtil=SharedPrefsUtil.with(getContext());
     }
+
     private void initButtonListener(){
         setInfo.setOnClickListener(v -> setInfoOnClick());
         setEmail.setOnClickListener(v -> setEmailOnClick());
@@ -119,16 +124,27 @@ public class MeFragment extends Fragment {
         startActivity(intent);
     }
 
+    /**
+     * 设置头像
+     * @param url 头像地址
+     */
     private void setAvatar(String url){
-        Picasso.with(getContext()).load(url).into(imgAvatar);
+        Picasso.with(getContext())
+                .load(url)
+                .placeholder(R.drawable.avatar)
+                .error(R.drawable.avatar)
+                .into(imgAvatar);
     }
 
-    private ResponseOperation userInfoOperation = new ResponseOperation("userInfo") {
+
+    private ResponseOperation userOperation = new ResponseOperation("User") {
         @Override
         public void onSuccess(ResponseDto response) {
-            user=new User(response.getData().getJSONObject("user"));
+            JSONObject userJSon=response.getData().getJSONObject("user");
+            user=userJSon.toJavaObject(User.class);
+            //设置头像
             setAvatar(user.getAvatar());
-            System.out.println(user.getName());
+            //设置用户名和邮箱
             binding.setEmail(user.getEmail());
             binding.setName(user.getName());
         }
@@ -136,8 +152,7 @@ public class MeFragment extends Fragment {
         @Override
         public void onParamError(ResponseDto response) {
             AlertUtil.showToast(getContext(),"请重新登录");
-            Intent intent = new Intent(getActivity(), AuthorityActivity.class);
-            startActivity(intent);
+            goToLogin();
         }
 
         @Override
@@ -145,20 +160,35 @@ public class MeFragment extends Fragment {
         }
     };
 
-    private void initUserInfoObserver(){
-        userInfoObserver=new Observer<ResponseDto>() {
+    private void initUserObserver(){
+        userObserver=new Observer<ResponseDto>() {
             @Override
             public void onChanged(ResponseDto responseDto) {
-                userInfoOperation.onRespond(responseDto);
+                userOperation.onRespond(responseDto);
             }
         };
-        viewModel.getUserInfoResponse().observe(getViewLifecycleOwner(),userInfoObserver);
-        prefsUtil=SharedPrefsUtil.with(getContext());
+        viewModel.getUserInfoResponse().observe(getViewLifecycleOwner(),userObserver);
     }
 
+    /**
+     * 加载用户信息
+     */
     private void loadUserInfo(){
+        Log.i(TAG,"加载用户信息");
         String token=prefsUtil.getString("token","");
-        System.out.println("token:"+token);
+        if (token==null || token.equals("")){
+            AlertUtil.showToast(getContext(),"未登录");
+            goToLogin();
+            return;
+        }
         viewModel.loadUserInfo(token);
+    }
+
+    /**
+     * 跳转到登录页面
+     */
+    private void goToLogin(){
+        Intent intent = new Intent(getActivity(), AuthorityActivity.class);
+        startActivity(intent);
     }
 }

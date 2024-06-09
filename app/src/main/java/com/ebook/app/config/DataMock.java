@@ -35,7 +35,7 @@ public class DataMock {
             messageList.add(new Message("EBook","不客气!"));
 
         for (int i=1;i<=20;i++)
-            commentList.add(new Comment(new User("张三"),"你好!","2019-01-01"));
+            commentList.add(new Comment(new User(),"你好!","2019-01-01"));
 
     }
 }
