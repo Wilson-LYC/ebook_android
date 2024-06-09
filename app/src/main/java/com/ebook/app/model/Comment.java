@@ -1,22 +1,44 @@
 package com.ebook.app.model;
 
 public class Comment {
-    private User sender;
+    private int id;
+    private int fid; //文章id
+    private int uid; //评论者id
+    private String username;
     private String content;
-    private String time;
+    private String createTime;
+    private String updateTime;
 
-    public Comment(User sender, String content, String time) {
-        this.sender = sender;
-        this.content = content;
-        this.time = time;
+    public int getId() {
+        return id;
     }
 
-    public User getSender() {
-        return sender;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public void setSender(User sender) {
-        this.sender = sender;
+    public int getFid() {
+        return fid;
+    }
+
+    public void setFid(int fid) {
+        this.fid = fid;
+    }
+
+    public int getUid() {
+        return uid;
+    }
+
+    public void setUid(int uid) {
+        this.uid = uid;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getContent() {
@@ -27,11 +49,19 @@ public class Comment {
         this.content = content;
     }
 
-    public String getTime() {
-        return time;
+    public String getCreateTime() {
+        return createTime;
     }
 
-    public void setTime(String time) {
-        this.time = time;
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
+    }
+
+    public String getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(String updateTime) {
+        this.updateTime = updateTime;
     }
 }

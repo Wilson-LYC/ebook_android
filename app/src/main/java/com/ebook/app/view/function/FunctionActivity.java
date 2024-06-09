@@ -2,9 +2,6 @@ package com.ebook.app.view.function;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -12,14 +9,20 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.alibaba.fastjson.JSONObject;
 import com.ebook.app.R;
 import com.ebook.app.databinding.PageFunctionBinding;
+import com.ebook.app.dto.ResponseDto;
+import com.ebook.app.model.Function;
+import com.ebook.app.util.AlertUtil;
+import com.ebook.app.util.ResponseOperation;
 import com.ebook.app.view.comment.CommentActivity;
-import com.ebook.app.view.comment.send.SendCommentActivity;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
+
 
 import io.noties.markwon.Markwon;
 
@@ -30,8 +33,8 @@ public class FunctionActivity extends AppCompatActivity {
     private SmartRefreshLayout refreshLayout;
     private TextView tvWriteComment;
     private ImageView imgComment, imgLike;
+    private Function function;
     private int fid;
-
     private TextView tvMarkdown;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,29 +51,45 @@ public class FunctionActivity extends AppCompatActivity {
     private void init(){
         initViewModel();
         initTopAppBar();
-        initContent();
+        initFunction();
         initRefreshLayout();
         initBottom();
     }
     private void initViewModel(){
         viewModel=new ViewModelProvider(this).get(FunctionViewModel.class);
-        binding.setVm(viewModel);
         binding.setLifecycleOwner(this);
     }
     private void initTopAppBar() {
         topAppBar = binding.appbar;
         topAppBar.setNavigationOnClickListener(v -> finish());
     }
-    private void initContent(){
-        if (getIntent().hasExtra("fid")){
-            fid=getIntent().getIntExtra("fid",0);
-        }
+    private void initFunction(){
         tvMarkdown=binding.functionTvContent;
-        viewModel.getFunction().observe(this,function -> {
-            setContent(function.getMarkdown());
+        fid=getIntent().getIntExtra("fid",0);
+        viewModel.getFunction().observe(this, new Observer<ResponseDto>() {
+            @Override
+            public void onChanged(ResponseDto responseDto) {
+                new ResponseOperation("GetFunction",getApplicationContext()){
+                    @Override
+                    public void onSuccess(ResponseDto response) {
+                        JSONObject functionJson=response.getData().getJSONObject("function");
+                        function=functionJson.toJavaObject(Function.class);
+                        function.setCommentCount(response.getData().getInteger("commentCount"));
+                        binding.setTitle(function.getName());
+                        binding.setLikeCount(String.valueOf(function.getLikeCount()));
+                        binding.setCommentCount(String.valueOf(function.getCommentCount()));
+                        setContent(function.getMarkdown());
+                    }
+                    @Override
+                    public void showError(String msg) {
+                        AlertUtil.showToast(getContext(),msg);
+                    }
+                }.onRespond(responseDto);
+            }
         });
-        viewModel.create(fid);
+        viewModel.loadFunction(fid);
     }
+
     private void setContent(String content){
         Markwon markwon = Markwon.create(this);
         markwon.setMarkdown(tvMarkdown, content);
@@ -79,7 +98,7 @@ public class FunctionActivity extends AppCompatActivity {
     private void initRefreshLayout(){
         refreshLayout=binding.functionRefreshLayout;
         refreshLayout.setOnRefreshListener(refreshLayout -> {
-            viewModel.refresh();
+            viewModel.loadFunction(fid);
             refreshLayout.finishRefresh(1500);
         });
     }

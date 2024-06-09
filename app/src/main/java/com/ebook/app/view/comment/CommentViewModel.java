@@ -4,25 +4,21 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.ebook.app.dto.ResponseDto;
 import com.ebook.app.model.Comment;
+import com.ebook.app.repository.CommentReposity;
+import com.ebook.app.util.RequestCallback;
 
 import java.util.List;
 
 public class CommentViewModel extends ViewModel {
-    int fid;
-    MutableLiveData<List<Comment>> commentList=new MutableLiveData<>();
+    MutableLiveData<ResponseDto> commentList=new MutableLiveData<>();
 
-    public void creat(int fid){
-        this.fid=fid;
-        loadCommentList();
-    }
-    public void refresh(){
-        loadCommentList();
-    }
-    private void loadCommentList(){
-        // Load comment list from database
-    }
-    public LiveData<List<Comment>> getCommentList(){
+    public LiveData<ResponseDto> getCommentList() {
         return commentList;
+    }
+    CommentReposity commentReposity=new CommentReposity();
+    public void loadCommentList(int fid){
+        commentReposity.getCommentListByFid(fid,new RequestCallback(commentList));
     }
 }

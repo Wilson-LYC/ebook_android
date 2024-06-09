@@ -4,21 +4,18 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.ebook.app.dto.ResponseDto;
 import com.ebook.app.model.Function;
+import com.ebook.app.repository.FunctionRepository;
+import com.ebook.app.util.RequestCallback;
 
 public class FunctionViewModel extends ViewModel {
-    int fid;
-    MutableLiveData<Function> function = new MutableLiveData<>();
-    public void create(int fid){
-        this.fid=fid;
-        loadFunction();
-    }
-    public void refresh(){
-        loadFunction();
-    }
-    private void loadFunction() {}
-
-    public LiveData<Function> getFunction(){
+    MutableLiveData<ResponseDto> function = new MutableLiveData<>();
+    public LiveData<ResponseDto> getFunction(){
         return function;
+    }
+    FunctionRepository functionRepository=new FunctionRepository();
+    public void loadFunction(int id) {
+        functionRepository.getFunctionById(id, new RequestCallback(function));
     }
 }

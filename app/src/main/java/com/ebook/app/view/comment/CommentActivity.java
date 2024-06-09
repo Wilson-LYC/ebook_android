@@ -15,9 +15,13 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.alibaba.fastjson.JSONArray;
 import com.ebook.app.R;
 import com.ebook.app.databinding.PageCommentBinding;
+import com.ebook.app.dto.ResponseDto;
 import com.ebook.app.model.Comment;
+import com.ebook.app.util.AlertUtil;
+import com.ebook.app.util.ResponseOperation;
 import com.ebook.app.view.comment.send.SendCommentActivity;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
@@ -30,7 +34,7 @@ public class CommentActivity extends AppCompatActivity {
     private RecyclerView rvCommentList;
     private Button btnSend;
     private CommentAdapter commentAdapter;
-    private CommentViewModel commentViewModel;
+    private CommentViewModel viewModel;
     private SmartRefreshLayout refreshLayout;
     private MaterialToolbar topAppBar;
     @Override
@@ -46,31 +50,40 @@ public class CommentActivity extends AppCompatActivity {
         init();
     }
     private void init(){
+        initRefreshLayout();
         initTopAppBar();
         initViewModel();
         initCommentList();
-        initRefreshLayout();
         initSend();
     }
 
     private void initViewModel(){
-        commentViewModel=new ViewModelProvider(this).get(CommentViewModel.class);
+        viewModel=new ViewModelProvider(this).get(CommentViewModel.class);
     }
     private void initCommentList(){
-        if (getIntent().hasExtra("fid")){
-            fid=getIntent().getIntExtra("fid",0);
-        }
+        fid=getIntent().getIntExtra("fid",0);
         rvCommentList=binding.commentRvList;
         commentAdapter=new CommentAdapter(null);
         rvCommentList.setAdapter(commentAdapter);
         rvCommentList.setLayoutManager(new LinearLayoutManager(this));
-        commentViewModel.getCommentList().observe(this, new Observer<List<Comment>>() {
+        viewModel.getCommentList().observe(this, new Observer<ResponseDto>() {
             @Override
-            public void onChanged(List<Comment> comments) {
-                commentAdapter.setList(comments);
+            public void onChanged(ResponseDto responseDto) {
+                new ResponseOperation("GetFunction",getApplicationContext()){
+                    @Override
+                    public void onSuccess(ResponseDto response) {
+                        JSONArray commentArray=response.getData().getJSONArray("comments");
+                        List<Comment> commentList=commentArray.toJavaList(Comment.class);
+                        commentAdapter.setList(commentList);
+                    }
+                    @Override
+                    public void showError(String msg) {
+                        AlertUtil.showToast(getContext(),msg);
+                    }
+                }.onRespond(responseDto);
             }
         });
-        commentViewModel.creat(fid);
+        viewModel.loadCommentList(fid);
     }
     private void initTopAppBar() {
         topAppBar = binding.appbar;
@@ -79,7 +92,7 @@ public class CommentActivity extends AppCompatActivity {
     private void initRefreshLayout(){
         refreshLayout=binding.functionRefreshLayout;
         refreshLayout.setOnRefreshListener(refreshLayout -> {
-            commentViewModel.refresh();
+            viewModel.loadCommentList(fid);
             refreshLayout.finishRefresh(1500);
         });
     }

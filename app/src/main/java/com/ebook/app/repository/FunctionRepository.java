@@ -34,4 +34,13 @@ public class FunctionRepository {
                 .build();
         httpUtil.request(request,callback);
     }
+
+    public void getFunctionById(int fid, Callback callback) {
+        String url=HttpUtil.BASE_URL+"/v1/function/"+fid;
+        Request request=new Request.Builder()
+                .url(url)
+                .get()
+                .build();
+        httpUtil.request(request,callback);
+    }
 }

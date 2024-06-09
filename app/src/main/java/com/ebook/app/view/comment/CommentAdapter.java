@@ -35,9 +35,9 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentH
     @Override
     public void onBindViewHolder(@NonNull CommentHolder holder, int position) {
         Comment comment = list.get(position);
-        holder.tvName.setText(comment.getSender().getName());
+        holder.tvName.setText(comment.getUsername());
         holder.tvContent.setText(comment.getContent());
-        holder.tvTime.setText(comment.getTime());
+        holder.tvTime.setText(comment.getCreateTime());
     }
 
     @Override
@@ -56,7 +56,6 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentH
     }
 
     public void setList(List<Comment> list){
-        Log.d("CommentAdapter", "setList: "+list.size());
         this.list = list;
         notifyDataSetChanged();
     }

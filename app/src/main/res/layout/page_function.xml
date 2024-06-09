@@ -4,8 +4,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
         <variable
-            name="vm"
-            type="com.ebook.app.view.function.FunctionViewModel" />
+            name="title"
+            type="String" />
+        <variable
+            name="commentCount"
+            type="String" />
+        <variable
+            name="likeCount"
+            type="String" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -25,7 +31,7 @@
                 android:layout_height="wrap_content"
                 android:minHeight="?attr/actionBarSize"
                 app:navigationIcon="@drawable/ic_back_white"
-                app:title="@{vm.function.name}" />
+                app:title="@{title}" />
         </com.google.android.material.appbar.AppBarLayout>
 
         <com.scwang.smart.refresh.layout.SmartRefreshLayout
@@ -131,7 +137,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
                 android:gravity="center_vertical"
-                android:text="@{String.valueOf(vm.function.commentCount)}"
+                android:text="@{commentCount}"
                 android:textColor="@color/ebook_primary"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -144,7 +150,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="5dp"
                 android:gravity="center_vertical"
-                android:text="@{String.valueOf(vm.function.likeCount)}"
+                android:text="@{likeCount}"
                 android:textColor="@color/ebook_primary"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
