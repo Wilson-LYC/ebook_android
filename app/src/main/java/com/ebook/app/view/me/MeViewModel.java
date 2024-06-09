@@ -2,7 +2,6 @@ package com.ebook.app.view.me;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
@@ -14,7 +13,7 @@ import com.ebook.app.model.User;
 import com.ebook.app.repository.UserRepository;
 import com.ebook.app.util.AlertUtil;
 import com.ebook.app.util.GeneralCallback;
-import com.ebook.app.view.set.activity.SetInfoActivity;
+import com.ebook.app.view.set.SetInfoActivity;
 
 import java.io.IOException;
 

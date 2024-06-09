@@ -17,21 +17,27 @@ import android.widget.ImageView;
 
 import com.ebook.app.R;
 import com.ebook.app.databinding.PageMeBinding;
+import com.ebook.app.model.User;
 import com.ebook.app.util.AlertUtil;
 import com.ebook.app.util.SharedPrefsUtil;
 import com.ebook.app.view.authority.AuthorityActivity;
-import com.ebook.app.view.set.activity.SetEmailActivity;
-import com.ebook.app.view.set.activity.SetInfoActivity;
-import com.ebook.app.view.set.activity.SetPasswordActivity;
+import com.ebook.app.view.set.SetEmailActivity;
+import com.ebook.app.view.set.SetInfoActivity;
+import com.ebook.app.view.set.SetPasswordActivity;
+import com.scwang.smart.refresh.layout.SmartRefreshLayout;
+import com.scwang.smart.refresh.layout.api.RefreshLayout;
+import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
 import com.squareup.picasso.Picasso;
 
 public class MeFragment extends Fragment {
     private static final String TAG="MeFragment";
     private PageMeBinding binding;
+    private SmartRefreshLayout refreshLayout;
     private ConstraintLayout setInfo,setEmail,setPwd;
     private ImageView imgAvatar;
     private MeViewModel viewModel;
     private SharedPrefsUtil prefsUtil;
+    private User user;
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -77,6 +83,7 @@ public class MeFragment extends Fragment {
         initButtonListener();//初始化按钮
         initUserObserver();//初始化用户信息观察者
         loadUserInfo();//初始化时，加载用户信息
+        initRefresh();
     }
     @Override
     public void onDestroyView() {
@@ -108,6 +115,8 @@ public class MeFragment extends Fragment {
     private void setInfoOnClick() {
         System.out.println("setInfoOnClick");
         Intent intent = new Intent(getActivity(), SetInfoActivity.class);
+        intent.putExtra("name",user.getName());
+        intent.putExtra("id",user.getId());
         startActivity(intent);
     }
     private void setEmailOnClick() {
@@ -138,6 +147,7 @@ public class MeFragment extends Fragment {
                 goToLogin();
                 return;
             }
+            this.user=user;
             setAvatar(user.getAvatar());
         });
     }
@@ -148,6 +158,11 @@ public class MeFragment extends Fragment {
     private void loadUserInfo(){
         Log.i(TAG,"加载用户信息");
         String token=prefsUtil.getString("token","");
+        if (token==null || token.equals("")){
+            AlertUtil.showToast(getContext(),"请先登录");
+            goToLogin();
+            return;
+        }
         viewModel.loadUser(token);
     }
 
@@ -157,5 +172,23 @@ public class MeFragment extends Fragment {
     private void goToLogin(){
         Intent intent = new Intent(getActivity(), AuthorityActivity.class);
         startActivity(intent);
+    }
+
+    private void initRefresh(){
+        refreshLayout=binding.refreshLayout;
+        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(RefreshLayout refreshlayout) {
+                Log.i(TAG,"下拉刷新");
+                String token=prefsUtil.getString("token","");
+                if (token==null || token.equals("")){
+                    AlertUtil.showToast(getContext(),"请先登录");
+                    goToLogin();
+                    return;
+                }
+                viewModel.loadUser(token);
+                refreshlayout.finishRefresh(1500);
+            }
+        });
     }
 }

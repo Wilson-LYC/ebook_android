@@ -11,9 +11,11 @@ import okhttp3.RequestBody;
  * 用户api
  */
 public class UserRepository {
+    private final static String TAG= "UserRepository";
     private final String LOGIN_URL = "/v1/token/pwd";
     private final String REGISTER_URL = "/v1/user";
     private final String GET_USER_BY_TOKEN_URL = "/v1/user/token";
+    private final String UPDATE_INFO_URL = "/v1/user/info";
     private final HttpUtil httpUtil= new HttpUtil();
 
     /**
@@ -61,5 +63,25 @@ public class UserRepository {
                 .addHeader("Authorization", token)
                 .build();
         httpUtil.get(GET_USER_BY_TOKEN_URL,request,callback);
+    }
+
+    /**
+     * 更新用户信息
+     * @param id 用户id
+     * @param name 用户名
+     * @param token token
+     * @param callback 回调函数
+     */
+    public void updateInfo(int id, String name, String token, Callback callback) {
+        RequestBody requestBody = new FormBody.Builder()
+                .add("id", String.valueOf(id))
+                .add("name", name)
+                .build();
+        Request request = new Request.Builder()
+                .url(HttpUtil.BASE_URL+"/v1/user/info")
+                .addHeader("Authorization", token)
+                .put(requestBody)
+                .build();
+        httpUtil.request(request,callback);
     }
 }

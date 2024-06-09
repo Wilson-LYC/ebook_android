@@ -1,4 +1,4 @@
-package com.ebook.app.view.set.activity;
+package com.ebook.app.view.set;
 
 import android.os.Bundle;
 

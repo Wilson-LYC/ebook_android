@@ -38,4 +38,7 @@ public class HttpUtil {
         Log.i(TAG,"get => "+BASE_URL+url);
         client.newCall(request).enqueue(callback);
     }
+    public void request (Request request,Callback callback) {
+        client.newCall(request).enqueue(callback);
+    }
 }

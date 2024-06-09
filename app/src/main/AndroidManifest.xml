@@ -39,13 +39,13 @@
             android:name=".view.authority.AuthorityActivity"
             android:exported="false" />
         <activity
-            android:name=".view.set.activity.SetInfoActivity"
+            android:name=".view.set.SetInfoActivity"
             android:exported="false" />
         <activity
-            android:name=".view.set.activity.SetEmailActivity"
+            android:name=".view.set.SetEmailActivity"
             android:exported="false" />
         <activity
-            android:name=".view.set.activity.SetPasswordActivity"
+            android:name=".view.set.SetPasswordActivity"
             android:exported="false" />
     </application>
 

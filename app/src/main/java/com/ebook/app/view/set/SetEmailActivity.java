@@ -1,4 +1,4 @@
-package com.ebook.app.view.set.activity;
+package com.ebook.app.view.set;
 
 import android.os.Bundle;
 
@@ -8,41 +8,28 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.ebook.app.R;
-import com.ebook.app.databinding.PageSetInfoBinding;
+import com.ebook.app.databinding.PageSetEmailBinding;
 import com.google.android.material.appbar.MaterialToolbar;
 
-public class SetInfoActivity extends AppCompatActivity {
-    private PageSetInfoBinding binding;
+public class SetEmailActivity extends AppCompatActivity {
+    private PageSetEmailBinding binding;
     private MaterialToolbar topAppBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding=PageSetInfoBinding.inflate(getLayoutInflater());
+        binding=PageSetEmailBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        ViewCompat.setOnApplyWindowInsetsListener(binding.activity, (v, insets) -> {
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.activity), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        init();
-
+        initTopAppBar();//初始化顶部工具栏
     }
 
-    private void init(){
-        initTopAppBar();
-//        initViewModel();
-//        initElement();//初始化元素
-//        initButtonListener();//初始化按钮
-//        initUserObserver();//初始化用户信息观察者
-//        loadUserInfo();//初始化时，加载用户信息
-    }
     private void initTopAppBar() {
         topAppBar = binding.appbar;
         topAppBar.setNavigationOnClickListener(v -> finish());
     }
-//    private void initViewModel(){
-//        viewModel=new ViewModelProvider(this).get(MeViewModel.class);
-//    }
-
 }

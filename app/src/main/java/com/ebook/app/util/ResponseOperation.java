@@ -9,8 +9,14 @@ import com.ebook.app.model.Notify;
 
 public abstract class ResponseOperation {
     private String tag;
+    private Context context;
     public ResponseOperation(String tag) {
         this.tag = tag;
+    }
+
+    public ResponseOperation(String tag, Context context) {
+        this.tag = tag;
+        this.context = context;
     }
 
     public void onRespond(ResponseDto response){
@@ -50,4 +56,12 @@ public abstract class ResponseOperation {
     public void onCommon(ResponseDto response){}
 
     public abstract void showError(String msg);
+
+    public Context getContext() {
+        return context;
+    }
+
+    public void setContext(Context context) {
+        this.context = context;
+    }
 }
