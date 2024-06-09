@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.ebook.app.config.DataMock;
 import com.ebook.app.model.Comment;
 
 import java.util.List;
@@ -22,7 +21,6 @@ public class CommentViewModel extends ViewModel {
     }
     private void loadCommentList(){
         // Load comment list from database
-        commentList.postValue(DataMock.commentList);
     }
     public LiveData<List<Comment>> getCommentList(){
         return commentList;

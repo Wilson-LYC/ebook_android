@@ -18,12 +18,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.alibaba.fastjson.JSONArray;
-import com.ebook.app.config.EBookConfig;
 
 import com.ebook.app.databinding.PageHomeBinding;
 import com.ebook.app.dto.ResponseDto;
 import com.ebook.app.model.Category;
 import com.ebook.app.model.Function;
+import com.ebook.app.util.AlertUtil;
 import com.ebook.app.util.ResponseOperation;
 import com.ebook.app.view.catalogue.CatalogueActivity;
 import com.ebook.app.view.function.FunctionActivity;
@@ -41,8 +41,9 @@ public class HomeFragment extends Fragment {
     private SmartRefreshLayout refreshLayout;
     private HomeNavAdapter navAdapter;
     private FunctionListAdapter functionListAdapter;
-    private HomeViewModel homeViewModel;
+    private HomeViewModel viewModel;
     private List<Function> functionList;
+    private List<Category> categoryList;
     private Observer<ResponseDto> functionListObserver;
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -91,46 +92,46 @@ public class HomeFragment extends Fragment {
 
     private void init(){
         initViewModel();
+        initRefresh();
         initNavBar();
         initFunctionList();
-        initRefresh();
     }
 
     private void initViewModel(){
-        if (homeViewModel==null)
-            homeViewModel= new ViewModelProvider(this).get(HomeViewModel.class);
+        viewModel= new ViewModelProvider(this).get(HomeViewModel.class);
     }
 
     private void initNavBar(){
-        List<Category> categoryList=EBookConfig.categoryList;//从配置类读取
+        //配置视图与绑定点击事件
         rvNav=binding.homeRvNav;
         navAdapter= new HomeNavAdapter(categoryList, position -> {
-            //点击导航栏项目,跳转到目录页面
-            Log.i(TAG,"导航栏第"+position+"项被点击");
             Intent intent = new Intent(getContext(), CatalogueActivity.class);
             intent.putExtra("index",position);
             startActivity(intent);
         });
         rvNav.setLayoutManager(new GridLayoutManager(getContext(), 5));
         rvNav.setAdapter(navAdapter);
+        //配置数据
+        viewModel.getCategories().observe(getViewLifecycleOwner(), new Observer<ResponseDto>() {
+            @Override
+            public void onChanged(ResponseDto response) {
+                new ResponseOperation("GetCategories",getContext()) {
+                    @Override
+                    public void onSuccess(ResponseDto response) {
+                        JSONArray categoryArray = response.getData().getJSONArray("categories");
+                        categoryList= categoryArray.toJavaList(Category.class);
+                        navAdapter.setList(categoryList);
+                    }
+                    @Override
+                    public void showError(String msg) {
+                    }
+                }.onRespond(response);
+            }
+        });
     }
 
-    /**
-     * 初始化函数列表
-     */
-    private ResponseOperation getFunctionOpreation=new ResponseOperation("GetRecommended",getContext()) {
-        @Override
-        public void onSuccess(ResponseDto response) {
-            JSONArray functionArray = response.getData().getJSONArray("functions");
-            System.out.println(functionArray.toJSONString());
-            functionList= functionArray.toJavaList(Function.class);
-            functionListAdapter.setList(functionList);
-        }
-        @Override
-        public void showError(String msg) {
-        }
-    };
     private void initFunctionList() {
+        //配置视图与绑定点击事件
         functionListAdapter=new FunctionListAdapter(null,(position,fid) -> {
             Intent intent = new Intent(getContext(), FunctionActivity.class);
             intent.putExtra("fid", functionList.get(position).getId());
@@ -139,23 +140,34 @@ public class HomeFragment extends Fragment {
         rvArticle = binding.homeRvArticle;
         rvArticle.setAdapter(functionListAdapter);
         rvArticle.setLayoutManager(new LinearLayoutManager(getContext()));
-        functionListObserver=new Observer<ResponseDto>() {
+        //配置数据
+        viewModel.getFunctions().observe(getViewLifecycleOwner(),new Observer<ResponseDto>() {
             @Override
-            public void onChanged(ResponseDto res) {
-                getFunctionOpreation.onRespond(res);
-                System.out.println(res.toJSONString());
+            public void onChanged(ResponseDto response) {
+                new ResponseOperation("GetRecommended",getContext()) {
+                    @Override
+                    public void onSuccess(ResponseDto response) {
+                        JSONArray functionArray = response.getData().getJSONArray("functions");
+                        functionList= functionArray.toJavaList(Function.class);
+                        functionListAdapter.setList(functionList);
+                    }
+                    @Override
+                    public void showError(String msg) {
+                        AlertUtil.showToast(getContext(),msg);
+                    }
+                }.onRespond(response);
             }
-        };
-        homeViewModel.getFunctions().observe(getViewLifecycleOwner(),functionListObserver);
+        });
     }
 
     private void initRefresh(){
-        refreshLayout=binding.homeRefreshLayout;
+        refreshLayout=binding.refreshLayout;
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
                 Log.i(TAG,"下拉刷新");
-                homeViewModel.loadRecommendFunctions();
+                viewModel.loadRecommendFunctions();
+                viewModel.loadCategoryList();
                 refreshlayout.finishRefresh(2000);
             }
         });

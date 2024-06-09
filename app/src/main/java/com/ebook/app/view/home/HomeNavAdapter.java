@@ -12,17 +12,27 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ebook.app.R;
 import com.ebook.app.model.Category;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class HomeNavAdapter extends RecyclerView.Adapter<HomeNavAdapter.HomeNavItemHolder> {
     private List<Category> list;
 
     private OnClickListener listener;
+
+    public void setList(List<Category> categoryList) {
+        this.list = categoryList;
+        notifyDataSetChanged();
+    }
+
     public interface OnClickListener {
         void onClick(int position);
     }
 
     public HomeNavAdapter(List<Category> list, OnClickListener listener) {
+        if (list == null) {
+            list=new ArrayList<>();
+        }
         this.list = list;
         this.listener = listener;
     }

@@ -12,8 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.ebook.app.R;
-import com.ebook.app.config.DataMock;
 import com.ebook.app.databinding.PageAiBinding;
 import com.ebook.app.model.Message;
 
@@ -74,7 +72,7 @@ public class AiFragment extends Fragment {
         rvMessageList=binding.aiRvMessage;
         rvMessageList.setAdapter(messageAdapter);
         rvMessageList.setLayoutManager(new LinearLayoutManager(getContext()));
-        messageList= DataMock.messageList;
+//        messageList= DataMock.messageList;
         messageAdapter.setList(messageList);
     }
 }

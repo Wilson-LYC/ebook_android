@@ -6,18 +6,8 @@ import java.util.List;
 public class Category {
     private int id;
     private String name;
-    private int icon= R.drawable.logo_circle;
+    private int icon= R.drawable.ic_hs;
     private List<Function> functionList;
-
-    public Category(String name, int icon) {
-        this.name = name;
-        this.icon = icon;
-    }
-
-    public Category(String name, List<Function> functionList) {
-        this.name = name;
-        this.functionList = functionList;
-    }
 
     public String getName() {
         return name;
@@ -33,6 +23,14 @@ public class Category {
 
     public void setIcon(int icon) {
         this.icon = icon;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public List<Function> getFunctionList() {

@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ebook.app.R;
-import com.ebook.app.config.DataMock;
 import com.ebook.app.databinding.PageCatalogueBinding;
 import com.ebook.app.model.Category;
 import com.ebook.app.view.function.FunctionActivity;
@@ -51,7 +50,7 @@ public class CatalogueActivity extends AppCompatActivity {
 
     private void initCategory(){
         rvCategory=binding.catalogueRvCategory;
-        categoryList = DataMock.categoryList;
+//        categoryList = DataMock.categoryList;
         categoryAdapter = new CatalogueCategoryAdapter(categoryList, position -> {
             changeIndex(position);
         });
@@ -71,7 +70,7 @@ public class CatalogueActivity extends AppCompatActivity {
     }
     private void changeIndex(int position){
         categoryAdapter.changeIndex(position);
-        functionAdapter.setList(categoryList.get(position).getFunctionList());
+//        functionAdapter.setList(categoryList.get(position).getFunctionList());
     }
     private void initTopAppBar() {
         topAppBar = binding.appbar;

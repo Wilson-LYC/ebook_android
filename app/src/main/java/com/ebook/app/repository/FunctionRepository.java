@@ -17,4 +17,12 @@ public class FunctionRepository {
                 .build();
         httpUtil.request(request,callback);
     }
+
+    public void getCategoryList(Callback callback) {
+        Request request=new Request.Builder()
+                .url(HttpUtil.BASE_URL+"/v1/function/category")
+                .get()
+                .build();
+        httpUtil.request(request,callback);
+    }
 }
