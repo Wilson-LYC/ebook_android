@@ -1,0 +1,20 @@
+package com.ebook.app.repository;
+
+import com.ebook.app.util.HttpUtil;
+import com.ebook.app.util.RequestCallback;
+
+import okhttp3.Callback;
+import okhttp3.FormBody;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+
+public class FunctionRepository {
+    private final HttpUtil httpUtil= new HttpUtil();
+
+    public void getRecommendedFunction(Callback callback) {
+        Request request=new Request.Builder()
+                .url(HttpUtil.BASE_URL+"/v1/function/recommended")
+                .build();
+        httpUtil.request(request,callback);
+    }
+}

@@ -7,30 +7,27 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.ebook.app.config.DataMock;
+import com.ebook.app.dto.ResponseDto;
 import com.ebook.app.model.Function;
+import com.ebook.app.repository.FunctionRepository;
+import com.ebook.app.util.RequestCallback;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class HomeViewModel extends ViewModel {
-    final static String TAG = "HomeViewModel";
-    int id=0;
     public HomeViewModel() {
-        getRecommendFunctions();
-    }
-    private MutableLiveData<List<Function>> functionList = new MutableLiveData<>();
-
-    public void getRecommendFunctions() {
-        List<Function> recommendFunctionList = new ArrayList<>();
-        for (int i=1;i<=10;i++){
-            id++;
-            Function function=new Function(id,"函数"+id,"函数"+id+"的使用方法","");
-            recommendFunctionList.add(function);
-        }
-        functionList.postValue(recommendFunctionList);
+        loadRecommendFunctions();
     }
 
-    public LiveData<List<Function>> getFunctionList() {
-        return functionList;
+    private MutableLiveData<ResponseDto> functions = new MutableLiveData<>();
+
+    public LiveData<ResponseDto> getFunctions() {
+        return functions;
+    }
+
+    FunctionRepository functionRepository=new FunctionRepository();
+    public void loadRecommendFunctions() {
+        functionRepository.getRecommendedFunction(new RequestCallback(functions));
     }
 }

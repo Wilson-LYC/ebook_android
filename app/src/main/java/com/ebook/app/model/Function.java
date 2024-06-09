@@ -2,29 +2,16 @@ package com.ebook.app.model;
 
 public class Function {
     private int id;
+    private int cid; //类别id
+    private String category; //类别名称
     private String name;
-    private String usage;
-    private String markdown;
+    private String intro; //功能简介
+    private String markdown; //使用教程
+    private int recommend; //是否推荐
+    private String createTime;
+    private String updateTime;
     private int commentCount;
     private int likeCount;
-
-    public Function(int id, String name, String usage, String markdown) {
-        this.id = id;
-        this.name = name;
-        this.usage = usage;
-        this.markdown = markdown;
-        this.commentCount= 10;
-        this.likeCount = 88;
-    }
-
-    public Function(int id, String name, String usage, String markdown, int commentCount, int likeCount) {
-        this.id = id;
-        this.name = name;
-        this.usage = usage;
-        this.markdown = markdown;
-        this.commentCount = commentCount;
-        this.likeCount = likeCount;
-    }
 
     public int getId() {
         return id;
@@ -32,6 +19,22 @@ public class Function {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getCid() {
+        return cid;
+    }
+
+    public void setCid(int cid) {
+        this.cid = cid;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     public String getName() {
@@ -42,12 +45,12 @@ public class Function {
         this.name = name;
     }
 
-    public String getUsage() {
-        return usage;
+    public String getIntro() {
+        return intro;
     }
 
-    public void setUsage(String usage) {
-        this.usage = usage;
+    public void setIntro(String intro) {
+        this.intro = intro;
     }
 
     public String getMarkdown() {
@@ -56,6 +59,30 @@ public class Function {
 
     public void setMarkdown(String markdown) {
         this.markdown = markdown;
+    }
+
+    public int getRecommend() {
+        return recommend;
+    }
+
+    public void setRecommend(int recommend) {
+        this.recommend = recommend;
+    }
+
+    public String getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
+    }
+
+    public String getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(String updateTime) {
+        this.updateTime = updateTime;
     }
 
     public int getCommentCount() {

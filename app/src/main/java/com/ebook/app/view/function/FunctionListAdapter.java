@@ -52,7 +52,7 @@ public class FunctionListAdapter extends RecyclerView.Adapter<FunctionListAdapte
     public void onBindViewHolder(@NonNull FunctionHolder holder, int position) {
         Function function=list.get(position);
         holder.tvName.setText(function.getName());
-        holder.tvUsage.setText(function.getUsage());
+        holder.tvUsage.setText(function.getIntro());
         holder.itemView.setOnClickListener(v->listener.onClick(position,function.getId()));
     }
 

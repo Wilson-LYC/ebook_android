@@ -16,51 +16,8 @@ public class FunctionViewModel extends ViewModel {
     public void refresh(){
         loadFunction();
     }
-    private void loadFunction() {
-        function.setValue(new Function(fid++, "VLOOKUP", null,"# Hello World\n" +
-                "\n" +
-                "## 代码测试\n"+
-                "\n" +
-                "```java\n" +
-                "public class HelloWorld {\n" +
-                "    public static void main(String[] args) {\n" +
-                "        System.out.println(\"Hello, World!\");\n" +
-                "    }\n" +
-                "}\n" +
-                "```\n" +
-                "\n" +
-                "## 标题测试\n"+
-                "\n" +
-                "大家好，我是测试文本\n"+
-                "\n" +
-                "## 代码测试\n"+
-                "\n" +
-                "```java\n" +
-                "public class HelloWorld {\n" +
-                "    public static void main(String[] args) {\n" +
-                "        System.out.println(\"Hello, World!\");\n" +
-                "    }\n" +
-                "}\n" +
-                "```\n" +
-                "\n" +
-                "## 标题测试\n"+
-                "\n" +
-                "大家好，我是测试文本\n"+
-                "\n" +
-                "## 代码测试\n"+
-                "\n" +
-                "```java\n" +
-                "public class HelloWorld {\n" +
-                "    public static void main(String[] args) {\n" +
-                "        System.out.println(\"Hello, World!\");\n" +
-                "    }\n" +
-                "}\n" +
-                "```\n" +
-                "\n" +
-                "## 标题测试\n"+
-                "\n" +
-                "大家好，我是测试文本\n"));
-    }
+    private void loadFunction() {}
+
     public LiveData<Function> getFunction(){
         return function;
     }

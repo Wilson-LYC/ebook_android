@@ -17,12 +17,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.ebook.app.R;
+import com.alibaba.fastjson.JSONArray;
 import com.ebook.app.config.EBookConfig;
 
 import com.ebook.app.databinding.PageHomeBinding;
+import com.ebook.app.dto.ResponseDto;
 import com.ebook.app.model.Category;
 import com.ebook.app.model.Function;
+import com.ebook.app.util.ResponseOperation;
 import com.ebook.app.view.catalogue.CatalogueActivity;
 import com.ebook.app.view.function.FunctionActivity;
 import com.ebook.app.view.function.FunctionListAdapter;
@@ -41,7 +43,7 @@ public class HomeFragment extends Fragment {
     private FunctionListAdapter functionListAdapter;
     private HomeViewModel homeViewModel;
     private List<Function> functionList;
-    private Observer<List<Function>> functionListObserver;
+    private Observer<ResponseDto> functionListObserver;
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -112,9 +114,24 @@ public class HomeFragment extends Fragment {
         rvNav.setLayoutManager(new GridLayoutManager(getContext(), 5));
         rvNav.setAdapter(navAdapter);
     }
+
+    /**
+     * 初始化函数列表
+     */
+    private ResponseOperation getFunctionOpreation=new ResponseOperation("GetRecommended",getContext()) {
+        @Override
+        public void onSuccess(ResponseDto response) {
+            JSONArray functionArray = response.getData().getJSONArray("functions");
+            System.out.println(functionArray.toJSONString());
+            functionList= functionArray.toJavaList(Function.class);
+            functionListAdapter.setList(functionList);
+        }
+        @Override
+        public void showError(String msg) {
+        }
+    };
     private void initFunctionList() {
         functionListAdapter=new FunctionListAdapter(null,(position,fid) -> {
-            //跳转到函数页面
             Intent intent = new Intent(getContext(), FunctionActivity.class);
             intent.putExtra("fid", functionList.get(position).getId());
             startActivity(intent);
@@ -122,14 +139,14 @@ public class HomeFragment extends Fragment {
         rvArticle = binding.homeRvArticle;
         rvArticle.setAdapter(functionListAdapter);
         rvArticle.setLayoutManager(new LinearLayoutManager(getContext()));
-        functionListObserver=new Observer<List<Function>>() {
+        functionListObserver=new Observer<ResponseDto>() {
             @Override
-            public void onChanged(List<Function> functions) {
-                functionList=functions;
-                functionListAdapter.setList(functions);
+            public void onChanged(ResponseDto res) {
+                getFunctionOpreation.onRespond(res);
+                System.out.println(res.toJSONString());
             }
         };
-        homeViewModel.getFunctionList().observe(getViewLifecycleOwner(),functionListObserver);
+        homeViewModel.getFunctions().observe(getViewLifecycleOwner(),functionListObserver);
     }
 
     private void initRefresh(){
@@ -138,7 +155,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
                 Log.i(TAG,"下拉刷新");
-                homeViewModel.getFunctionList();
+                homeViewModel.loadRecommendFunctions();
                 refreshlayout.finishRefresh(2000);
             }
         });

@@ -15,18 +15,6 @@ public class DataMock {
     public static List<Category> categoryList=new ArrayList<>();
     public static List<Message> messageList=new ArrayList<>();
     static {
-        int id=0;
-        for (int i=1;i<=10;i++){
-            List<Function> functionList=new ArrayList<>();
-            for(int j=1;j<=10;j++){
-                id++;
-                Function function=new Function(id,"函数"+id,"函数"+id+"的使用方法","");
-                functionList.add(function);
-            }
-            Category category=new Category("分类"+i,functionList);
-            categoryList.add(category);
-        }
-
         messageList.add(new Message("You","你好!"));
         messageList.add(new Message("EBook","欢迎使用EBook!在这里,学习Excel函数使用技巧,赋能未来!"));
         messageList.add(new Message("You","谢谢!"));
