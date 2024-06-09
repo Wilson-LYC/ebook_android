@@ -42,6 +42,7 @@ dependencies {
     implementation group: 'com.alibaba', name: 'fastjson', version: '2.0.21.android'
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
     runtimeOnly group: 'com.google.android.material', name: 'material', version: '1.12.0'
+    implementation group: 'com.squareup.picasso', name: 'picasso', version: '2.5.2'
     implementation 'androidx.appcompat:appcompat:1.0.0'                 //必须 1.0.0 以上
     implementation  'io.github.scwang90:refresh-layout-kernel:2.1.0'      //核心必须依赖
     implementation  'io.github.scwang90:refresh-header-classics:2.1.0'    //经典刷新头

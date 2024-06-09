@@ -26,4 +26,7 @@ public class RegisterViewModel extends ViewModel {
     public void sendCaptcha(String email){
         captchaRepository.sendCaptcha(email,new RequestCallback(sendCaptchaResponse));
     }
+    public void register(String email,String password,String captcha){
+        userRepository.register(email,password,captcha,new RequestCallback(registerResponse));
+    }
 }

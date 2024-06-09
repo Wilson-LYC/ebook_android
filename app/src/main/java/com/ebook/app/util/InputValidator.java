@@ -48,4 +48,8 @@ public class InputValidator {
         til.setError(null);
         return true;
     }
+
+    public static boolean isNotEmpty(String input) {
+        return input != null && !input.isEmpty();
+    }
 }

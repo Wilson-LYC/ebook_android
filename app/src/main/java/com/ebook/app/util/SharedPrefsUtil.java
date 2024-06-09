@@ -8,10 +8,10 @@ import android.content.SharedPreferences;
  */
 public class SharedPrefsUtil {
 
-    private static final String PREFS_NAME = "app_preferences";
+    private static final String PREFS_NAME = "EBookApp";
     private SharedPreferences preferences;
 
-    private SharedPrefsUtil(Context context) {
+    public SharedPrefsUtil(Context context) {
         preferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
     }
 

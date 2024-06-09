@@ -16,20 +16,24 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.ebook.app.R;
+import com.ebook.app.databinding.PageLoginBinding;
 import com.ebook.app.dto.ResponseDto;
 import com.ebook.app.util.AlertUtil;
+import com.ebook.app.util.InputValidator;
 import com.ebook.app.util.ResponseOperation;
+import com.ebook.app.util.SharedPrefsUtil;
 import com.ebook.app.view.main.MainActivity;
+import com.ebook.app.view.register.RegisterViewModel;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 public class LoginFragment extends Fragment {
     final String TAG = "Login Page";
-    private static LoginViewModel loginViewModel;
-    private Observer<ResponseDto> loginObserver;
+    private PageLoginBinding binding;
+    private static LoginViewModel viewModel;
     private Button btnLogin;
+    private Observer<ResponseDto> loginObserver;
     private TextInputLayout tilEmail, tilPassword;
-    private TextInputEditText etEmail, etPassword;
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private String mParam1;
@@ -59,18 +63,84 @@ public class LoginFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.page_login, container, false);
+        binding = PageLoginBinding.inflate(inflater, container, false);
+        return binding.getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        init();
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        loginViewModel.getLoginLiveData().removeObserver(loginObserver);//移除观察者
+        viewModel.getLoginResponse().removeObserver(loginObserver);//移除观察者
     }
 
+    private void init(){
+        initViewModel();
+        initElement();//初始化元素
+        initButtonListener();//初始化按钮
+        initLoginObserver();//初始化登录观察者
+    }
+    private void initViewModel(){
+        viewModel=new ViewModelProvider(this).get(LoginViewModel.class);
+        binding.setLifecycleOwner(this);
+    }
+    private void initElement(){
+        tilEmail=binding.loginTilEmail;
+        tilPassword=binding.loginTilPassword;
+        btnLogin=binding.loginBtnLogin;
+    }
+    private void initButtonListener(){
+        btnLogin.setOnClickListener(v->btnLoginOnClick());
+    }
+
+    private void btnLoginOnClick(){
+        String email=binding.getEmail();
+        String password=binding.getPassword();
+        if (!InputValidator.isNotEmpty(email)){
+            tilEmail.setError("邮箱不能为空");
+            return;
+        }
+        if (!InputValidator.isValidEmail(email)){
+            tilEmail.setError("邮箱格式不正确");
+            return;
+        }
+        tilEmail.setError(null);
+        if (password==null || password.isEmpty()){
+            tilPassword.setError("密码不能为空");
+            return;
+        }
+        tilPassword.setError(null);
+        viewModel.login(email,password);
+    }
+    private ResponseOperation loginOperation = new ResponseOperation("login") {
+        @Override
+        public void onSuccess(ResponseDto response) {
+            AlertUtil.showToast(getContext(),"登录成功");
+            //保存token
+            SharedPrefsUtil prefsUtil=new SharedPrefsUtil(getContext());
+            prefsUtil.putString("token",response.getData().getString("token"));
+            //跳转到主页
+            Intent intent=new Intent(getContext(), MainActivity.class);
+            startActivity(intent);
+        }
+
+        @Override
+        public void showError(String msg) {
+            AlertUtil.showToast(getContext(),msg);
+        }
+    };
+    private void initLoginObserver(){
+        loginObserver=new Observer<ResponseDto>() {
+            @Override
+            public void onChanged(ResponseDto response) {
+                loginOperation.onRespond(response);
+            }
+        };
+        viewModel.getLoginResponse().observe(getViewLifecycleOwner(),loginObserver);
+    }
 }

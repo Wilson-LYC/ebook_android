@@ -1,5 +1,8 @@
 package com.ebook.app.model;
 
+
+import com.alibaba.fastjson.JSONObject;
+
 public class User {
     private String name;
     private String email;
@@ -8,6 +11,13 @@ public class User {
 
     public User(String name) {
         this.name = name;
+    }
+
+    public User(JSONObject json) {
+        this.name = json.getString("name");
+        this.email = json.getString("email");
+        this.avatar = json.getString("avatar");
+        this.token = json.getString("token");
     }
 
     public String getName() {

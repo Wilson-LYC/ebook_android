@@ -12,12 +12,14 @@ import com.ebook.app.util.RequestCallback;
  * 登录页面的viewmodel
  */
 public class LoginViewModel extends ViewModel {
-    private MutableLiveData<ResponseDto> loginLiveData=new MutableLiveData<>();
+    private MutableLiveData<ResponseDto> loginResponse=new MutableLiveData<>();
     private UserRepository userRepository=new UserRepository();
-    public LiveData<ResponseDto> getLoginLiveData(){
-        return loginLiveData;
+
+    public LiveData<ResponseDto> getLoginResponse() {
+        return loginResponse;
     }
+
     public void login(String email, String password){
-        userRepository.login(email, password, new RequestCallback(loginLiveData));
+        userRepository.login(email, password, new RequestCallback(loginResponse));
     }
 }

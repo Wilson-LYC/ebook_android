@@ -7,20 +7,35 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
+import com.alibaba.fastjson.JSONObject;
 import com.ebook.app.databinding.PageMeBinding;
+import com.ebook.app.dto.ResponseDto;
+import com.ebook.app.model.User;
+import com.ebook.app.util.AlertUtil;
+import com.ebook.app.util.ResponseOperation;
+import com.ebook.app.util.SharedPrefsUtil;
+import com.ebook.app.view.authority.AuthorityActivity;
 import com.ebook.app.view.set.activity.SetEmailActivity;
 import com.ebook.app.view.set.activity.SetInfoActivity;
 import com.ebook.app.view.set.activity.SetPasswordActivity;
+import com.squareup.picasso.Picasso;
 
 public class MeFragment extends Fragment {
     private PageMeBinding binding;
     private ConstraintLayout setInfo,setEmail,setPwd;
-
+    private ImageView imgAvatar;
+    private MeViewModel viewModel;
+    private Observer<ResponseDto> userInfoObserver;
+    private User user;
+    private SharedPrefsUtil prefsUtil;
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -57,18 +72,37 @@ public class MeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        setInfo = binding.meSetInfo;
-        setInfo.setOnClickListener(v->setInfoOnClick());
-        setEmail = binding.meSetEmail;
-        setEmail.setOnClickListener(v->setEmailOnClick());
-        setPwd=binding.meSetPassword;
-        setPwd.setOnClickListener(v->setPwdOnClick());
+        init();
     }
 
+    private void init(){
+        initViewModel();
+        initElement();//初始化元素
+        initButtonListener();//初始化按钮
+        initUserInfoObserver();//初始化用户信息观察者
+        loadUserInfo();
+    }
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         binding=null;
+    }
+
+    private void initViewModel(){
+        viewModel=new ViewModelProvider(this).get(MeViewModel.class);
+        binding.setLifecycleOwner(this);
+    }
+
+    private void initElement(){
+        setInfo=binding.meSetInfo;
+        setEmail=binding.meSetEmail;
+        setPwd=binding.meSetPassword;
+        imgAvatar=binding.meImgAvatar;
+    }
+    private void initButtonListener(){
+        setInfo.setOnClickListener(v -> setInfoOnClick());
+        setEmail.setOnClickListener(v -> setEmailOnClick());
+        setPwd.setOnClickListener(v -> setPwdOnClick());
     }
 
     private void setInfoOnClick() {
@@ -83,5 +117,48 @@ public class MeFragment extends Fragment {
     private void setPwdOnClick() {
         Intent intent = new Intent(getActivity(), SetPasswordActivity.class);
         startActivity(intent);
+    }
+
+    private void setAvatar(String url){
+        Picasso.with(getContext()).load(url).into(imgAvatar);
+    }
+
+    private ResponseOperation userInfoOperation = new ResponseOperation("userInfo") {
+        @Override
+        public void onSuccess(ResponseDto response) {
+            user=new User(response.getData().getJSONObject("user"));
+            setAvatar(user.getAvatar());
+            System.out.println(user.getName());
+            binding.setEmail(user.getEmail());
+            binding.setName(user.getName());
+        }
+
+        @Override
+        public void onParamError(ResponseDto response) {
+            AlertUtil.showToast(getContext(),"请重新登录");
+            Intent intent = new Intent(getActivity(), AuthorityActivity.class);
+            startActivity(intent);
+        }
+
+        @Override
+        public void showError(String msg) {
+        }
+    };
+
+    private void initUserInfoObserver(){
+        userInfoObserver=new Observer<ResponseDto>() {
+            @Override
+            public void onChanged(ResponseDto responseDto) {
+                userInfoOperation.onRespond(responseDto);
+            }
+        };
+        viewModel.getUserInfoResponse().observe(getViewLifecycleOwner(),userInfoObserver);
+        prefsUtil=SharedPrefsUtil.with(getContext());
+    }
+
+    private void loadUserInfo(){
+        String token=prefsUtil.getString("token","");
+        System.out.println("token:"+token);
+        viewModel.loadUserInfo(token);
     }
 }

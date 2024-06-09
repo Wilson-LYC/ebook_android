@@ -17,6 +17,7 @@ import com.ebook.app.model.Notify;
 import com.ebook.app.util.AlertUtil;
 import com.ebook.app.util.InputValidator;
 import com.ebook.app.util.ResponseOperation;
+import com.ebook.app.view.authority.AuthorityActivity;
 import com.google.android.material.textfield.TextInputLayout;
 
 public class RegisterFragment extends Fragment {
@@ -69,7 +70,9 @@ public class RegisterFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        viewModel=null;//销毁ViewModel
+        viewModel.getRegisterResponse().removeObserver(registerObserver);
+        viewModel.getSendCaptchaResponse().removeObserver(sendCaptchaObserver);
+        viewModel=null;
     }
 
     private void init(){
@@ -77,6 +80,7 @@ public class RegisterFragment extends Fragment {
         initElement();//初始化元素
         initButtonListener();//初始化按钮
         initSendCaptchaObserver();//初始化发送验证码观察者
+        initRegisterObserver();//初始化注册观察者
     }
     private void initViewModel(){
         viewModel=new ViewModelProvider(this).get(RegisterViewModel.class);
@@ -95,10 +99,55 @@ public class RegisterFragment extends Fragment {
         btnGetCaptcha.setOnClickListener(v->btnGetCaptchaOnClick());
     }
 
-    private ResponseOperation sendCaptchaOperation =new ResponseOperation("Send Captcha") {
+    //注册
+    private void btnRegisterOnClick(){
+        String email= binding.getEmail();
+        String password= binding.getPassword();
+        String captcha= binding.getCaptcha();
+        String passwordConfirm= binding.getConfirmPassword();
+        if(email==null||email.isEmpty()){
+            tilEmail.setError("请输入邮箱");
+            return;
+        }
+        if(!InputValidator.isValidEmail(email)){
+            tilEmail.setError("邮箱格式不正确");
+            return;
+        }
+        tilEmail.setError(null);
+        if (password==null||password.isEmpty()){
+            tilPassword.setError("请输入密码");
+            return;
+        }
+        if(password.length()<6){
+            tilPassword.setError("密码长度不能小于6位");
+            return;
+        }
+        tilPassword.setError(null);
+        if(passwordConfirm==null||passwordConfirm.isEmpty()){
+            tilPasswordConfirm.setError("确认密码不能为空");
+            return;
+        }
+        if(!password.equals(passwordConfirm)){
+            tilPasswordConfirm.setError("两次密码不一致");
+            return;
+        }
+        tilPasswordConfirm.setError(null);
+        if (captcha==null||captcha.isEmpty()){
+            tilCaptcha.setError("请输入验证码");
+            return;
+        }
+        tilCaptcha.setError(null);
+        viewModel.register(binding.getEmail(),binding.getPassword(),binding.getCaptcha());
+    }
+    private ResponseOperation registerOperation =new ResponseOperation("Register") {
         @Override
         public void onSuccess(ResponseDto response) {
-            AlertUtil.alert(getContext(),new Notify(Notify.TOAST,"验证码已发送"));
+            AlertUtil.alert(getContext(),new Notify(Notify.TOAST,"注册成功"));
+            binding.setEmail(null);
+            binding.setPassword(null);
+            binding.setCaptcha(null);
+            binding.setConfirmPassword(null);
+            ((AuthorityActivity) getActivity()).changeToLogin();
         }
 
         @Override
@@ -106,19 +155,17 @@ public class RegisterFragment extends Fragment {
             AlertUtil.alert(getContext(),new Notify(Notify.TOAST,msg));
         }
     };
-
-    private void initSendCaptchaObserver(){
-        sendCaptchaObserver=new Observer<ResponseDto>() {
+    private void initRegisterObserver(){
+        registerObserver=new Observer<ResponseDto>() {
             @Override
             public void onChanged(ResponseDto response) {
-                sendCaptchaOperation.onRespond(response);
+                registerOperation.onRespond(response);
             }
         };
-        viewModel.getSendCaptchaResponse().observe(getViewLifecycleOwner(),sendCaptchaObserver);
+        viewModel.getRegisterResponse().observe(getViewLifecycleOwner(),registerObserver);
     }
-    private void btnRegisterOnClick(){
 
-    }
+    //发送验证码
     private void btnGetCaptchaOnClick(){
         String email= binding.getEmail();
         System.out.println(email);
@@ -132,5 +179,49 @@ public class RegisterFragment extends Fragment {
         }
         tilEmail.setError(null);
         viewModel.sendCaptcha(email);
+    }
+    private ResponseOperation sendCaptchaOperation =new ResponseOperation("SendCaptcha") {
+        @Override
+        public void onSuccess(ResponseDto response) {
+            AlertUtil.alert(getContext(),new Notify(Notify.TOAST,"验证码已发送"));
+            banBtnSendCaptcha();
+        }
+
+        @Override
+        public void showError(String msg) {
+            btnGetCaptcha.setEnabled(true);
+            AlertUtil.alert(getContext(),new Notify(Notify.TOAST,msg));
+        }
+    };
+    private void banBtnSendCaptcha(){
+        btnGetCaptcha.setEnabled(false);
+        new Thread(()->{
+            for(int i=60;i>0;i--){
+                final int finalI = i;
+                getActivity().runOnUiThread(()->{
+                    btnGetCaptcha.setText(finalI+"秒后重新发送");
+                });
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            getActivity().runOnUiThread(()->{
+                btnGetCaptcha.setText("获取验证码");
+                btnGetCaptcha.setEnabled(true);
+            });
+        }).start();
+    }
+
+
+    private void initSendCaptchaObserver(){
+        sendCaptchaObserver=new Observer<ResponseDto>() {
+            @Override
+            public void onChanged(ResponseDto response) {
+                sendCaptchaOperation.onRespond(response);
+            }
+        };
+        viewModel.getSendCaptchaResponse().observe(getViewLifecycleOwner(),sendCaptchaObserver);
     }
 }
