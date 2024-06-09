@@ -5,19 +5,14 @@ import android.util.Log;
 import android.view.View;
 
 import com.ebook.app.dto.ResponseDto;
+import com.ebook.app.model.Notify;
 
 public abstract class ResponseOperation {
     private String tag;
-    private View view;
-
-    public ResponseOperation(String TAG,View view) {
-        this.tag = TAG;
-        this.view=view;
+    public ResponseOperation(String tag) {
+        this.tag = tag;
     }
 
-    /**
-     * @param response 响应数据
-     */
     public void onRespond(ResponseDto response){
         onCommon(response);
         switch (response.getCode()){
@@ -35,18 +30,10 @@ public abstract class ResponseOperation {
         }
     }
 
-    /**
-     * @code 200 业务执行成功
-     * @param response 响应数据
-     */
     public abstract void onSuccess(ResponseDto response);
 
-    /**
-     * @code 400 参数错误
-     * @param response 响应数据
-     */
     public void onParamError(ResponseDto response){
-        showDialog(response.getMsg());
+        showError(response.getMsg());
     }
 
     /**
@@ -54,7 +41,7 @@ public abstract class ResponseOperation {
      * @param response 响应数据
      */
     public void onServerError(ResponseDto response){
-        showDialog(response.getMsg());
+        showError(response.getMsg());
     }
 
     /**
@@ -62,7 +49,5 @@ public abstract class ResponseOperation {
      */
     public void onCommon(ResponseDto response){}
 
-    public void showDialog(String msg){
-        AlertUtil.showDialog(view.getContext(),msg);
-    }
+    public abstract void showError(String msg);
 }

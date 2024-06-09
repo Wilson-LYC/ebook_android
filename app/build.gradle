@@ -9,6 +9,9 @@ android {
     dataBinding{
         enable = true
     }
+    viewBinding{
+        enabled = true
+    }
     defaultConfig {
         applicationId "com.ebook.app"
         minSdk 24

@@ -30,6 +30,13 @@ public class UserRepository {
         httpUtil.post(LOGIN_URL,requestBody,callback);
     }
 
+    /**
+     * 注册
+     * @param email 邮箱
+     * @param password 密码
+     * @param captcha 验证码
+     * @param callback 回调函数
+     */
     public void register(String email, String password, String captcha, Callback callback) {
         //封装请求体
         RequestBody requestBody = new FormBody.Builder()

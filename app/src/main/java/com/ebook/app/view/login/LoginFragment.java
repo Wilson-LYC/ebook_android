@@ -18,7 +18,6 @@ import android.widget.Button;
 import com.ebook.app.R;
 import com.ebook.app.dto.ResponseDto;
 import com.ebook.app.util.AlertUtil;
-import com.ebook.app.util.CheckInputUtil;
 import com.ebook.app.util.ResponseOperation;
 import com.ebook.app.view.main.MainActivity;
 import com.google.android.material.textfield.TextInputEditText;
@@ -66,35 +65,6 @@ public class LoginFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        //绑定ViewModel
-        if(loginViewModel==null)
-            loginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
-        //绑定页面组件
-        btnLogin = view.findViewById(R.id.login_btn_login);
-        tilEmail = view.findViewById(R.id.login_til_email);
-        tilPassword = view.findViewById(R.id.login_til_password);
-        etEmail = view.findViewById(R.id.login_et_email);
-        etPassword = view.findViewById(R.id.login_et_password);
-        loginObserver = new Observer<ResponseDto>() {
-            //登录观察者
-            @Override
-            public void onChanged(ResponseDto response) {
-                //调用登录响应
-                loginResponse.onRespond(response);
-            }
-        };
-        loginViewModel.getLoginLiveData().observe(getViewLifecycleOwner(), loginObserver);
-        btnLogin.setOnClickListener(new View.OnClickListener() {
-            //监听登录点击事件
-            @Override
-            public void onClick(View v) {
-                //获取数据
-                String email = etEmail.getText().toString().trim();
-                String password = etPassword.getText().toString().trim();
-                //调用登录按钮点击事件
-                btnLoginOnClick(email,password);
-            }
-        });
     }
 
     @Override
@@ -103,47 +73,4 @@ public class LoginFragment extends Fragment {
         loginViewModel.getLoginLiveData().removeObserver(loginObserver);//移除观察者
     }
 
-
-    /**
-     * 校验登录数据
-     * @param email 邮箱
-     * @param password 密码
-     * @return 校验结果
-     */
-    private boolean checkLoginInput(String email,String password){
-        if(!CheckInputUtil.checkEmpty(email,tilEmail,"邮箱不能为空"))
-            return false;
-        if(!CheckInputUtil.checkEmpty(password,tilPassword,"密码不能为空"))
-            return false;
-        if(!CheckInputUtil.checkEmail(email,tilEmail))
-            return false;
-        return true;
-    }
-
-    /**
-     * 登录按钮点击事件
-     * @param email 邮箱
-     * @param password 密码
-     */
-    private void btnLoginOnClick(String email,String password){
-        Log.i(TAG, "点击“登录”按钮");
-        if(!checkLoginInput(email,password))
-            return;
-        AlertUtil.showToast(this.getContext(),"登录中...");
-        btnLogin.setEnabled(false);
-        loginViewModel.login(email,password);
-    }
-
-    ResponseOperation loginResponse = new ResponseOperation(TAG,getView()) {
-        @Override
-        public void onSuccess(ResponseDto response) {
-            AlertUtil.showToast(getContext(),"登录成功");
-            startActivity(new Intent(getContext(), MainActivity.class));//跳转到主页面
-        }
-
-        @Override
-        public void onCommon(ResponseDto response) {
-            btnLogin.setEnabled(true);
-        }
-    };
 }

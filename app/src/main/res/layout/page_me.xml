@@ -67,8 +67,8 @@
                 android:id="@+id/me_set_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp">
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp">
 
                 <ImageView
                     android:id="@+id/me_set_info_img"
@@ -95,14 +95,14 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/ebook_primary" />
+                android:background="@color/ebook_outline" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/me_set_email"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp">
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp">
 
                 <ImageView
                     android:id="@+id/me_set_email_img"
@@ -131,14 +131,14 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/ebook_primary" />
+                android:background="@color/ebook_outline" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/me_set_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp">
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp">
 
                 <ImageView
                     android:id="@+id/me_set_password_img"
