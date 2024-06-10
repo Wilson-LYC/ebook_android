@@ -24,6 +24,7 @@ import com.ebook.app.util.AlertUtil;
 import com.ebook.app.util.ResponseOperation;
 import com.ebook.app.util.SharedPrefsUtil;
 import com.ebook.app.view.authority.AuthorityActivity;
+import com.ebook.app.view.main.MainActivity;
 import com.ebook.app.view.set.SetEmailActivity;
 import com.ebook.app.view.set.SetInfoActivity;
 import com.ebook.app.view.set.SetPasswordActivity;
@@ -35,7 +36,7 @@ import com.squareup.picasso.Picasso;
 public class MeFragment extends Fragment {
     private PageMeBinding binding;
     private SmartRefreshLayout refreshLayout;
-    private ConstraintLayout setInfo,setEmail,setPwd;
+    private ConstraintLayout setInfo,setEmail,setPwd,logout;
     private ImageView imgAvatar;
     private MeViewModel viewModel;
     private SharedPrefsUtil prefsUtil;
@@ -92,6 +93,7 @@ public class MeFragment extends Fragment {
     }
 
     private void initUserInfo(){
+        imgAvatar=binding.meImgAvatar;
         viewModel.getUser().observe(getViewLifecycleOwner(),response -> {
             new ResponseOperation("GetUserInfo",getContext()){
                 @Override
@@ -126,12 +128,19 @@ public class MeFragment extends Fragment {
         setInfo=binding.meSetInfo;
         setEmail=binding.meSetEmail;
         setPwd=binding.meSetPassword;
-        imgAvatar=binding.meImgAvatar;
+        logout=binding.meLogout;
         setInfo.setOnClickListener(v -> setInfoOnClick());
         setEmail.setOnClickListener(v -> setEmailOnClick());
         setPwd.setOnClickListener(v -> setPwdOnClick());
+        logout.setOnClickListener(v -> logoutOnClick());
     }
 
+    private void logoutOnClick() {
+        prefsUtil.remove("token");
+        binding.setName("未登录");
+        binding.setEmail(null);
+        setAvatar("123");
+    }
     private void setInfoOnClick() {
         Intent intent = new Intent(getActivity(), SetInfoActivity.class);
         intent.putExtra("name",user.getName());

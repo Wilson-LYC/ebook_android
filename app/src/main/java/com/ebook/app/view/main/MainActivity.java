@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -38,5 +39,11 @@ public class MainActivity extends AppCompatActivity {
 //                R.id.main_nav_home, R.id.main_nav_ai, R.id.main_nav_mine)
 //                .build();
 //        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+    }
+    public void goToHome(Fragment fragment){
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.main_nav_home, fragment)
+                .commit();
     }
 }

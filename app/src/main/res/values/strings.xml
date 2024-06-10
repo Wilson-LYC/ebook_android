@@ -27,6 +27,7 @@
     <string name="send_comment">发表评论</string>
     <string name="write_comment">写评论</string>
     <string name="send">发送</string>
+    <string name="logout">退出登录</string>
     <!--设置-->
     <string name="set_info">修改资料</string>
     <string name="set_email">更换邮箱</string>

@@ -32,7 +32,6 @@ public class LoginFragment extends Fragment {
     private PageLoginBinding binding;
     private static LoginViewModel viewModel;
     private Button btnLogin;
-    private Observer<ResponseDto> loginObserver;
     private TextInputLayout tilEmail, tilPassword;
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -76,7 +75,6 @@ public class LoginFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        viewModel.getLoginResponse().removeObserver(loginObserver);//移除观察者
     }
 
     private void init(){
@@ -117,30 +115,25 @@ public class LoginFragment extends Fragment {
         tilPassword.setError(null);
         viewModel.login(email,password);
     }
-    private ResponseOperation loginOperation = new ResponseOperation("login") {
-        @Override
-        public void onSuccess(ResponseDto response) {
-            AlertUtil.showToast(getContext(),"登录成功");
-            //保存token
-            SharedPrefsUtil prefsUtil=new SharedPrefsUtil(getContext());
-            prefsUtil.putString("token",response.getData().getString("token"));
-            //跳转到主页
-            Intent intent=new Intent(getContext(), MainActivity.class);
-            startActivity(intent);
-        }
-
-        @Override
-        public void showError(String msg) {
-            AlertUtil.showToast(getContext(),msg);
-        }
-    };
     private void initLoginObserver(){
-        loginObserver=new Observer<ResponseDto>() {
-            @Override
-            public void onChanged(ResponseDto response) {
-                loginOperation.onRespond(response);
-            }
-        };
-        viewModel.getLoginResponse().observe(getViewLifecycleOwner(),loginObserver);
+        viewModel.getLoginResponse().observe(getViewLifecycleOwner(),ResponseDto-> {
+            new ResponseOperation("login",getContext()){
+                @Override
+                public void onSuccess(ResponseDto response) {
+                    AlertUtil.showToast(getContext(),"登录成功");
+                    //保存token
+                    SharedPrefsUtil prefsUtil=new SharedPrefsUtil(getContext());
+                    prefsUtil.putString("token",response.getData().getString("token"));
+                    //跳转到主页
+                    Intent intent=new Intent(getContext(), MainActivity.class);
+                    startActivity(intent);
+                }
+
+                @Override
+                public void showError(String msg) {
+                    AlertUtil.showToast(getContext(),msg);
+                }
+            }.onRespond(ResponseDto);
+        });
     }
 }

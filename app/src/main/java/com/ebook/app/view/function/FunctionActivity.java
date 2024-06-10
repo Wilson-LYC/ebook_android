@@ -79,6 +79,7 @@ public class FunctionActivity extends AppCompatActivity {
                         binding.setLikeCount(String.valueOf(function.getLikeCount()));
                         binding.setCommentCount(String.valueOf(function.getCommentCount()));
                         setContent(function.getMarkdown());
+                        refreshLayout.finishRefresh();
                     }
                     @Override
                     public void showError(String msg) {
