@@ -5,15 +5,23 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.ebook.app.databinding.PageAiBinding;
+import com.ebook.app.dto.ResponseDto;
 import com.ebook.app.model.Message;
+import com.ebook.app.util.AlertUtil;
+import com.ebook.app.util.InputValidator;
+import com.ebook.app.util.ResponseOperation;
 
 import java.util.List;
 
@@ -21,13 +29,12 @@ public class AiFragment extends Fragment {
     private PageAiBinding binding;
     private RecyclerView rvMessageList;
     private AiMessageAdapter messageAdapter;
-    private List<Message> messageList;
+    private AiViewModel viewModel;
+    private Button btnSend;
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
     private String mParam1;
     private String mParam2;
-
     public AiFragment() {
     }
 
@@ -59,20 +66,71 @@ public class AiFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        Log.i("AI","创建ai");
         init();
     }
 
-    private void init(){
-        initRecyclerView();
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Log.i("AI","销毁ai");
+        viewModel=null;
     }
 
-    private void initRecyclerView(){
-        messageAdapter=new AiMessageAdapter();
+    private void init(){
+        initViewModel();
+        initMessageList();
+        initSend();
+        initReceive();
+    }
+
+    private void initViewModel(){
+        if(viewModel==null){
+            Log.i("AI","创建ViewModel");
+        }
+        viewModel=new AiViewModel();
+    }
+
+    private void initMessageList(){
         rvMessageList=binding.aiRvMessage;
+        messageAdapter=new AiMessageAdapter();
         rvMessageList.setAdapter(messageAdapter);
         rvMessageList.setLayoutManager(new LinearLayoutManager(getContext()));
-//        messageList= DataMock.messageList;
-        messageAdapter.setList(messageList);
+
+    }
+
+    private void initSend(){
+        btnSend=binding.aiBtnSend;
+        btnSend.setOnClickListener(v->send());
+    }
+    private void send(){
+        String sendMsg=binding.getSendMsg();
+        if(!InputValidator.isNotEmpty(sendMsg)){
+            AlertUtil.showToast(getContext(),"请输入内容");
+            return;
+        }
+        Message message=new Message("You",sendMsg);
+        messageAdapter.addItem(message);
+        binding.setSendMsg(null);
+        btnSend.setEnabled(false);
+        viewModel.sendMsg(sendMsg);
+    }
+    private void initReceive(){
+        viewModel.getMessage().observe(getViewLifecycleOwner(),responseDto -> {
+            Log.i("AI","123");
+            new ResponseOperation("AI",getContext()){
+                @Override
+                public void onSuccess(ResponseDto response) {
+                    Message message=new Message("AI",response.getData().getString("ans"));
+                    messageAdapter.addItem(message);
+                    btnSend.setEnabled(true);
+                }
+
+                @Override
+                public void showError(String msg) {
+                    AlertUtil.showToast(getContext(),msg);
+                }
+            }.onRespond(responseDto);
+        });
     }
 }

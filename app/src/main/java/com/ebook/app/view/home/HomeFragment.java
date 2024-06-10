@@ -35,6 +35,7 @@ import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
+    int refreshFlag=0;
     final static String TAG="HomePage";
     private PageHomeBinding binding;
     private RecyclerView rvNav,rvArticle;
@@ -121,6 +122,10 @@ public class HomeFragment extends Fragment {
                         JSONArray categoryArray = response.getData().getJSONArray("categories");
                         categoryList= categoryArray.toJavaList(Category.class);
                         navAdapter.setList(categoryList);
+                        refreshFlag++;
+                        if (refreshFlag==2){
+                            refreshLayout.finishRefresh();
+                        }
                     }
                     @Override
                     public void showError(String msg) {
@@ -150,6 +155,10 @@ public class HomeFragment extends Fragment {
                         JSONArray functionArray = response.getData().getJSONArray("functions");
                         functionList= functionArray.toJavaList(Function.class);
                         functionListAdapter.setList(functionList);
+                        refreshFlag++;
+                        if (refreshFlag==2){
+                            refreshLayout.finishRefresh();
+                        }
                     }
                     @Override
                     public void showError(String msg) {
@@ -166,9 +175,10 @@ public class HomeFragment extends Fragment {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
                 Log.i(TAG,"下拉刷新");
+                refreshFlag=0;
                 viewModel.loadRecommendFunctions();
                 viewModel.loadCategoryList();
-                refreshlayout.finishRefresh(2000);
+                refreshlayout.finishRefresh(1500);
             }
         });
     }

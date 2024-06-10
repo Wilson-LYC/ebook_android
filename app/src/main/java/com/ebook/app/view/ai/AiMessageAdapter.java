@@ -15,18 +15,22 @@ import com.ebook.app.model.Message;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.noties.markwon.Markwon;
+
 public class AiMessageAdapter extends RecyclerView.Adapter<AiMessageAdapter.AiMessageHolder> {
-    private List<Message> list;
+    private static List<Message> list;
 
     public AiMessageAdapter() {
-        Log.d("AiMessageAdapter","构造");
-        list=new ArrayList<>();
+        if (list==null) {
+            Message message=new Message("AI","你好！欢迎使用EBook！目前我只支持单轮对话～");
+            list=new ArrayList<>();
+            list.add(message);
+        }
     }
 
     @NonNull
     @Override
     public AiMessageHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        Log.d("AiMessageAdapter","onCreateViewHolder");
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_message, parent, false);
         return new AiMessageHolder(view);
     }
@@ -35,18 +39,10 @@ public class AiMessageAdapter extends RecyclerView.Adapter<AiMessageAdapter.AiMe
     public void onBindViewHolder(@NonNull AiMessageHolder holder, int position) {
         Message message=list.get(position);
         holder.tvSender.setText(message.getSender());
-        holder.tvContent.setText(message.getContent());
+        Markwon markwon = Markwon.create(holder.itemView.getContext());
+        markwon.setMarkdown(holder.tvContent, message.getContent());
     }
 
-    public AiMessageAdapter(List<Message> list) {
-        this.list = list;
-    }
-
-    public void setList(List<Message> messages){
-        System.out.println("addItems");
-        this.list=messages;
-        notifyDataSetChanged();
-    }
     @Override
     public int getItemCount() {
         return list.size();
@@ -61,6 +57,9 @@ public class AiMessageAdapter extends RecyclerView.Adapter<AiMessageAdapter.AiMe
         }
     }
 
-
+    public void addItem(Message message){
+        list.add(message);
+        notifyDataSetChanged();
+    }
 
 }
