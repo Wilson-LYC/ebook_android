@@ -84,4 +84,19 @@ public class UserRepository {
                 .build();
         httpUtil.request(request,callback);
     }
+
+    public void updateEmail(int id, String email, String captcha,String token, Callback callback) {
+        String url = HttpUtil.BASE_URL+"/v1/user/email";
+        RequestBody requestBody = new FormBody.Builder()
+                .add("id", String.valueOf(id))
+                .add("email", email)
+                .add("captcha", captcha)
+                .build();
+        Request request = new Request.Builder()
+                .url(url)
+                .addHeader("Authorization", token)
+                .put(requestBody)
+                .build();
+        httpUtil.request(request,callback);
+    }
 }

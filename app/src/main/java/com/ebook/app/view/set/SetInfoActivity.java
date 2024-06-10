@@ -43,7 +43,6 @@ public class SetInfoActivity extends AppCompatActivity {
         initViewModel();
         initElement();
         initData();
-        initButtonListener();//初始化按钮
         initUpdataObserver();
     }
     private void initTopAppBar() {
@@ -57,6 +56,7 @@ public class SetInfoActivity extends AppCompatActivity {
 
     private void initElement(){
         btnSave=binding.setInfoBtnSave;
+        btnSave.setOnClickListener(v->btnSaveOnClick());
     }
 
     private void initData(){
@@ -69,32 +69,26 @@ public class SetInfoActivity extends AppCompatActivity {
         String token=prefsUtil.getString("token","");
         user.setToken(token);
     }
-    private void initButtonListener(){
-        btnSave.setOnClickListener(v->btnSaveOnClick());
-    }
 
     private void btnSaveOnClick(){
         String name=binding.getName();
         user.setName(name);
         viewModel.updateInfo(user.getId(),user.getName(),user.getToken());
     }
-
-    private ResponseOperation reop=new ResponseOperation("updateInfo",this) {
-        @Override
-        public void onSuccess(ResponseDto response) {
-            AlertUtil.showToast(getContext(),response.getMsg());
-            finish();
-        }
-
-        @Override
-        public void showError(String msg) {
-            AlertUtil.showToast(getContext(),msg);
-        }
-    };
-
     private void initUpdataObserver(){
-        viewModel.getUpdateResponse().observe(this,response->{
-            reop.onRespond(response);
+        viewModel.getUpdateInfo().observe(this,response->{
+            new ResponseOperation("SetUserInfo",getApplicationContext()) {
+                @Override
+                public void onSuccess(ResponseDto response) {
+                    AlertUtil.showToast(getContext(),response.getMsg());
+                    finish();
+                }
+
+                @Override
+                public void showError(String msg) {
+                    AlertUtil.showToast(getContext(),msg);
+                }
+            }.onRespond(response);
         });
     }
 }

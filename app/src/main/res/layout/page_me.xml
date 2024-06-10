@@ -4,8 +4,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
         <variable
-            name="vm"
-            type="com.ebook.app.view.me.MeViewModel" />
+            name="name"
+            type="String" />
+        <variable
+            name="email"
+            type="String" />
     </data>
     <FrameLayout
         android:id="@+id/fragment_mine"
@@ -49,7 +52,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:gravity="center"
-                    android:text="@{String.valueOf(vm.user.name)}"
+                    android:text="@{name}"
                     android:textColor="@color/black"
                     android:textSize="28sp"
                     android:textStyle="bold"
@@ -63,7 +66,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="3dp"
                     android:gravity="center"
-                    android:text="@{vm.user.email}"
+                    android:text="@{email}"
                     android:textColor="@color/ebook_outline"
                     android:textSize="18sp"
                     app:layout_constraintEnd_toEndOf="parent"

@@ -15,10 +15,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.alibaba.fastjson.JSONObject;
 import com.ebook.app.R;
 import com.ebook.app.databinding.PageMeBinding;
+import com.ebook.app.dto.ResponseDto;
 import com.ebook.app.model.User;
 import com.ebook.app.util.AlertUtil;
+import com.ebook.app.util.ResponseOperation;
 import com.ebook.app.util.SharedPrefsUtil;
 import com.ebook.app.view.authority.AuthorityActivity;
 import com.ebook.app.view.set.SetEmailActivity;
@@ -30,14 +33,13 @@ import com.scwang.smart.refresh.layout.listener.OnRefreshListener;
 import com.squareup.picasso.Picasso;
 
 public class MeFragment extends Fragment {
-    private static final String TAG="MeFragment";
     private PageMeBinding binding;
     private SmartRefreshLayout refreshLayout;
     private ConstraintLayout setInfo,setEmail,setPwd;
     private ImageView imgAvatar;
     private MeViewModel viewModel;
     private SharedPrefsUtil prefsUtil;
-    private User user;
+    private User user=new User();
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -79,50 +81,70 @@ public class MeFragment extends Fragment {
 
     private void init(){
         initViewModel();
-        initElement();//初始化元素
-        initButtonListener();//初始化按钮
-        initUserObserver();//初始化用户信息观察者
-        loadUserInfo();//初始化时，加载用户信息
+        initUserInfo();
+        initMenu();
         initRefresh();
-    }
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding=null;
     }
 
     private void initViewModel(){
         viewModel=new ViewModelProvider(this).get(MeViewModel.class);
-        viewModel.setContext(getContext());
-        binding.setVm(viewModel);
         binding.setLifecycleOwner(this);
     }
 
-    private void initElement(){
+    private void initUserInfo(){
+        viewModel.getUser().observe(getViewLifecycleOwner(),response -> {
+            new ResponseOperation("GetUserInfo",getContext()){
+                @Override
+                public void onSuccess(ResponseDto response) {
+                    JSONObject userJson=response.getData().getJSONObject("user");
+                    user=userJson.toJavaObject(User.class);
+                    setAvatar(user.getAvatar());
+                    binding.setName(user.getName());
+                    binding.setEmail(user.getEmail());
+                    refreshLayout.finishRefresh();
+                }
+
+                @Override
+                public void showError(String msg) {
+                    AlertUtil.showToast(getContext(),msg);
+                    goToLogin();
+                }
+            }.onRespond(response);
+        });
+        prefsUtil=SharedPrefsUtil.with(getContext());
+        String token=prefsUtil.getString("token","");
+        if (token==null || token.equals("")){
+            AlertUtil.showToast(getContext(),"请先登录");
+            goToLogin();
+            return;
+        }
+        user.setToken(token);
+        viewModel.loadUser(token);
+    }
+
+    private void initMenu(){
         setInfo=binding.meSetInfo;
         setEmail=binding.meSetEmail;
         setPwd=binding.meSetPassword;
         imgAvatar=binding.meImgAvatar;
-        prefsUtil=SharedPrefsUtil.with(getContext());
-    }
-
-    private void initButtonListener(){
         setInfo.setOnClickListener(v -> setInfoOnClick());
         setEmail.setOnClickListener(v -> setEmailOnClick());
         setPwd.setOnClickListener(v -> setPwdOnClick());
     }
 
     private void setInfoOnClick() {
-        System.out.println("setInfoOnClick");
         Intent intent = new Intent(getActivity(), SetInfoActivity.class);
         intent.putExtra("name",user.getName());
         intent.putExtra("id",user.getId());
         startActivity(intent);
     }
+
     private void setEmailOnClick() {
         Intent intent = new Intent(getActivity(), SetEmailActivity.class);
+        intent.putExtra("id",user.getId());
         startActivity(intent);
     }
+
     private void setPwdOnClick() {
         Intent intent = new Intent(getActivity(), SetPasswordActivity.class);
         startActivity(intent);
@@ -140,32 +162,6 @@ public class MeFragment extends Fragment {
                 .into(imgAvatar);
     }
 
-    private void initUserObserver(){
-        viewModel.getUser().observe(getViewLifecycleOwner(),user -> {
-            if (user==null){
-                AlertUtil.showToast(getContext(),"用户信息加载失败");
-                goToLogin();
-                return;
-            }
-            this.user=user;
-            setAvatar(user.getAvatar());
-        });
-    }
-
-    /**
-     * 加载用户信息
-     */
-    private void loadUserInfo(){
-        Log.i(TAG,"加载用户信息");
-        String token=prefsUtil.getString("token","");
-        if (token==null || token.equals("")){
-            AlertUtil.showToast(getContext(),"请先登录");
-            goToLogin();
-            return;
-        }
-        viewModel.loadUser(token);
-    }
-
     /**
      * 跳转到登录页面
      */
@@ -179,7 +175,6 @@ public class MeFragment extends Fragment {
         refreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
-                Log.i(TAG,"下拉刷新");
                 String token=prefsUtil.getString("token","");
                 if (token==null || token.equals("")){
                     AlertUtil.showToast(getContext(),"请先登录");
