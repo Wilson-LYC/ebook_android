@@ -99,4 +99,18 @@ public class UserRepository {
                 .build();
         httpUtil.request(request,callback);
     }
+
+    public void updatePassword(String email, String captcha,String password, Callback callback) {
+        String url = HttpUtil.BASE_URL+"/v1/user/password";
+        RequestBody requestBody = new FormBody.Builder()
+                .add("email", email)
+                .add("captcha", captcha)
+                .add("password", password)
+                .build();
+        Request request = new Request.Builder()
+                .url(url)
+                .put(requestBody)
+                .build();
+        httpUtil.request(request,callback);
+    }
 }

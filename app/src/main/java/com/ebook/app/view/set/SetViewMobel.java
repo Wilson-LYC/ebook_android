@@ -12,6 +12,7 @@ public class SetViewMobel extends ViewModel {
     MutableLiveData<ResponseDto> updateInfo=new MutableLiveData<>();
     MutableLiveData<ResponseDto> sendCaptcha=new MutableLiveData<>();
     MutableLiveData<ResponseDto> updateEmail=new MutableLiveData<>();
+    MutableLiveData<ResponseDto> updatePassword=new MutableLiveData<>();
 
     public MutableLiveData<ResponseDto> getUpdateInfo() {
         return updateInfo;
@@ -23,6 +24,10 @@ public class SetViewMobel extends ViewModel {
 
     public MutableLiveData<ResponseDto> getSendCaptcha() {
         return sendCaptcha;
+    }
+
+    public MutableLiveData<ResponseDto> getUpdatePassword() {
+        return updatePassword;
     }
 
     UserRepository userRepository=new UserRepository();
@@ -37,5 +42,9 @@ public class SetViewMobel extends ViewModel {
     }
     public void updateEmail(int id,String email,String captcha,String token){
         userRepository.updateEmail(id,email,captcha,token,new RequestCallback(updateEmail));
+    }
+
+    public void updatePassword(String email,String captcha,String password){
+        userRepository.updatePassword(email,captcha,password,new RequestCallback(updatePassword));
     }
 }

@@ -110,6 +110,7 @@ public class SetEmailActivity extends AppCompatActivity {
         }).start();
     }
     private void initUpdateEmail(){
+        tilCaptcha=binding.setEmailTilCaptcha;
         uid=getIntent().getIntExtra("id",0);
         btnSave=binding.setEmailBtnSave;
         btnSave.setOnClickListener(v->updateEmail());
@@ -129,7 +130,6 @@ public class SetEmailActivity extends AppCompatActivity {
         });
     }
     private void updateEmail(){
-        tilCaptcha=binding.setEmailTilCaptcha;
         String email=binding.getEmail();
         String captcha=binding.getCaptcha();
         prefsUtil=SharedPrefsUtil.with(this);
