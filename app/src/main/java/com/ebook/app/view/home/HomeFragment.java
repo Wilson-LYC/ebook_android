@@ -16,9 +16,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.RotateAnimation;
+import android.widget.ImageView;
 
 import com.alibaba.fastjson.JSONArray;
 
+import com.ebook.app.R;
 import com.ebook.app.databinding.PageHomeBinding;
 import com.ebook.app.dto.ResponseDto;
 import com.ebook.app.model.Category;

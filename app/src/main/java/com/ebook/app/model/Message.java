@@ -3,10 +3,17 @@ package com.ebook.app.model;
 public class Message {
     private String sender;
     private String content;
+    private boolean isLoading=false;
 
     public Message(String sender, String content) {
         this.sender = sender;
         this.content = content;
+    }
+
+    public Message(String sender, String content, boolean isLoading) {
+        this.sender = sender;
+        this.content = content;
+        this.isLoading = isLoading;
     }
 
     public String getSender() {
@@ -23,6 +30,14 @@ public class Message {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public boolean isLoading() {
+        return isLoading;
+    }
+
+    public void setLoading(boolean loading) {
+        isLoading = loading;
     }
 }
 

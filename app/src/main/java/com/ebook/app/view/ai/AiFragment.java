@@ -111,19 +111,23 @@ public class AiFragment extends Fragment {
         }
         Message message=new Message("You",sendMsg);
         messageAdapter.addItem(message);
+        Message messageAI=new Message("AI","E宝正在思考🤔",true);
+        messageAdapter.addItem(messageAI);
+        //滚动到最后一条
+        rvMessageList.scrollToPosition(messageAdapter.getItemCount()-1);
         binding.setSendMsg(null);
         btnSend.setEnabled(false);
         viewModel.sendMsg(sendMsg);
     }
     private void initReceive(){
         viewModel.getMessage().observe(getViewLifecycleOwner(),responseDto -> {
-            Log.i("AI","123");
             new ResponseOperation("AI",getContext()){
                 @Override
                 public void onSuccess(ResponseDto response) {
                     Message message=new Message("AI",response.getData().getString("ans"));
-                    messageAdapter.addItem(message);
+                    messageAdapter.updateAiMessage(message);
                     btnSend.setEnabled(true);
+                    rvMessageList.scrollToPosition(messageAdapter.getItemCount()-1);
                 }
 
                 @Override
