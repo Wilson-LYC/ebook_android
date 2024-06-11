@@ -140,6 +140,7 @@ public class MeFragment extends Fragment {
         binding.setName("未登录");
         binding.setEmail(null);
         setAvatar("123");
+        goToLogin();
     }
     private void setInfoOnClick() {
         Intent intent = new Intent(getActivity(), SetInfoActivity.class);

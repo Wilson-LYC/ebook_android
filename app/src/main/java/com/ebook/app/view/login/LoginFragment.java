@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.ebook.app.R;
 import com.ebook.app.databinding.PageLoginBinding;
@@ -22,8 +23,10 @@ import com.ebook.app.util.AlertUtil;
 import com.ebook.app.util.InputValidator;
 import com.ebook.app.util.ResponseOperation;
 import com.ebook.app.util.SharedPrefsUtil;
+import com.ebook.app.view.authority.AuthorityActivity;
 import com.ebook.app.view.main.MainActivity;
 import com.ebook.app.view.register.RegisterViewModel;
+import com.ebook.app.view.set.SetPasswordActivity;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -31,6 +34,7 @@ public class LoginFragment extends Fragment {
     final String TAG = "Login Page";
     private PageLoginBinding binding;
     private static LoginViewModel viewModel;
+    private TextView tvForgotPwd;
     private Button btnLogin;
     private TextInputLayout tilEmail, tilPassword;
     private static final String ARG_PARAM1 = "param1";
@@ -79,43 +83,19 @@ public class LoginFragment extends Fragment {
 
     private void init(){
         initViewModel();
-        initElement();//初始化元素
-        initButtonListener();//初始化按钮
-        initLoginObserver();//初始化登录观察者
+        initLogin();
+        initForgetPwd();
     }
     private void initViewModel(){
         viewModel=new ViewModelProvider(this).get(LoginViewModel.class);
         binding.setLifecycleOwner(this);
     }
-    private void initElement(){
+
+    private void initLogin(){
         tilEmail=binding.loginTilEmail;
         tilPassword=binding.loginTilPassword;
         btnLogin=binding.loginBtnLogin;
-    }
-    private void initButtonListener(){
-        btnLogin.setOnClickListener(v->btnLoginOnClick());
-    }
-
-    private void btnLoginOnClick(){
-        String email=binding.getEmail();
-        String password=binding.getPassword();
-        if (!InputValidator.isNotEmpty(email)){
-            tilEmail.setError("邮箱不能为空");
-            return;
-        }
-        if (!InputValidator.isValidEmail(email)){
-            tilEmail.setError("邮箱格式不正确");
-            return;
-        }
-        tilEmail.setError(null);
-        if (password==null || password.isEmpty()){
-            tilPassword.setError("密码不能为空");
-            return;
-        }
-        tilPassword.setError(null);
-        viewModel.login(email,password);
-    }
-    private void initLoginObserver(){
+        btnLogin.setOnClickListener(v->login());
         viewModel.getLoginResponse().observe(getViewLifecycleOwner(),ResponseDto-> {
             new ResponseOperation("login",getContext()){
                 @Override
@@ -134,6 +114,34 @@ public class LoginFragment extends Fragment {
                     AlertUtil.showToast(getContext(),msg);
                 }
             }.onRespond(ResponseDto);
+        });
+    }
+
+    private void login(){
+        String email=binding.getEmail();
+        String password=binding.getPassword();
+        if (!InputValidator.isNotEmpty(email)){
+            tilEmail.setError("邮箱不能为空");
+            return;
+        }
+        if (!InputValidator.isValidEmail(email)){
+            tilEmail.setError("邮箱格式不正确");
+            return;
+        }
+        tilEmail.setError(null);
+        if (password==null || password.isEmpty()){
+            tilPassword.setError("密码不能为空");
+            return;
+        }
+        tilPassword.setError(null);
+        viewModel.login(email,password);
+    }
+
+    private void initForgetPwd(){
+        tvForgotPwd=binding.loginTvForgotPwd;
+        tvForgotPwd.setOnClickListener(v->{
+            Intent intent = new Intent(getActivity(), SetPasswordActivity.class);
+            startActivity(intent);
         });
     }
 }

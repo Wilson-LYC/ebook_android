@@ -121,7 +121,6 @@ public class SetEmailActivity extends AppCompatActivity {
                     AlertUtil.showToast(getContext(),"邮箱已更新");
                     finish();
                 }
-
                 @Override
                 public void showError(String msg) {
                     AlertUtil.showToast(getContext(),msg);

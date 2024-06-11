@@ -12,6 +12,7 @@ public class Function {
     private String updateTime;
     private int commentCount;
     private int likeCount;
+    private boolean like;
 
     public int getId() {
         return id;
@@ -99,5 +100,13 @@ public class Function {
 
     public void setLikeCount(int likeCount) {
         this.likeCount = likeCount;
+    }
+
+    public boolean isLike() {
+        return like;
+    }
+
+    public void setLike(boolean like) {
+        this.like = like;
     }
 }

@@ -1,9 +1,12 @@
 package com.ebook.app.view.main;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.ebook.app.R;
 import com.ebook.app.databinding.FrameMainBinding;
+import com.ebook.app.util.SharedPrefsUtil;
+import com.ebook.app.view.authority.AuthorityActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.activity.EdgeToEdge;
@@ -19,6 +22,7 @@ import androidx.navigation.ui.NavigationUI;
 
 public class MainActivity extends AppCompatActivity {
     private FrameMainBinding binding;
+    private SharedPrefsUtil prefsUtil;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,11 +43,12 @@ public class MainActivity extends AppCompatActivity {
 //                R.id.main_nav_home, R.id.main_nav_ai, R.id.main_nav_mine)
 //                .build();
 //        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-    }
-    public void goToHome(Fragment fragment){
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.main_nav_home, fragment)
-                .commit();
+        //强制登录
+        prefsUtil=SharedPrefsUtil.with(this);
+        String token=prefsUtil.getString("token","error");
+        if(token.equals("error")){
+            Intent intent = new Intent(this, AuthorityActivity.class);
+            startActivity(intent);
+        }
     }
 }

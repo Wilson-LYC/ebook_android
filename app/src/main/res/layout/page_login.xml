@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
         <variable
             name="email"
@@ -8,9 +10,7 @@
             name="password"
             type="String" />
     </data>
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -26,39 +26,40 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/login_til_email"
                 style="@style/EBook.textInputLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="0dp"
                 android:layout_marginTop="15dp"
                 android:hint="@string/email"
                 app:endIconMode="clear_text"
                 app:errorEnabled="true"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:layout_editor_absoluteX="30dp">
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/login_et_email"
-                    android:text="@={email}"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:text="@={email}" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/login_til_password"
                 style="@style/EBook.textInputLayout"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:hint="@string/password"
                 app:endIconMode="password_toggle"
                 app:errorEnabled="true"
-                app:layout_constraintTop_toBottomOf="@+id/login_til_email"
-                tools:layout_editor_absoluteX="30dp">
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/login_til_email">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/login_et_password"
-                    android:text="@={password}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textPassword" />
+                    android:inputType="textPassword"
+                    android:text="@={password}" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
@@ -68,6 +69,16 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/login_til_password" />
+
+            <TextView
+                android:id="@+id/login_tv_forgot_pwd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/forget_pwd"
+                android:textColor="@color/ebook_outline"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/login_btn_login" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

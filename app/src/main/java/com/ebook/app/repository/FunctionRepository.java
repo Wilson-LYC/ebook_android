@@ -6,7 +6,6 @@ import com.ebook.app.util.RequestCallback;
 import okhttp3.Callback;
 import okhttp3.FormBody;
 import okhttp3.Request;
-import okhttp3.RequestBody;
 
 public class FunctionRepository {
     private final HttpUtil httpUtil= new HttpUtil();
@@ -35,11 +34,32 @@ public class FunctionRepository {
         httpUtil.request(request,callback);
     }
 
-    public void getFunctionById(int fid, Callback callback) {
+    public void getFunctionById(int fid, String token, Callback callback) {
         String url=HttpUtil.BASE_URL+"/v1/function/"+fid;
         Request request=new Request.Builder()
                 .url(url)
+                .header("Authorization",token)
                 .get()
+                .build();
+        httpUtil.request(request,callback);
+    }
+
+    public void likeFunction(int id, String token, RequestCallback callback) {
+        String url=HttpUtil.BASE_URL+"/v1/function/like/"+id;
+        Request request=new Request.Builder()
+                .url(url)
+                .header("Authorization",token)
+                .post(new FormBody.Builder().build())
+                .build();
+        httpUtil.request(request,callback);
+    }
+
+    public void disLikeFunction(int id, String token, RequestCallback callback) {
+        String url=HttpUtil.BASE_URL+"/v1/function/like/"+id;
+        Request request=new Request.Builder()
+                .url(url)
+                .header("Authorization",token)
+                .delete()
                 .build();
         httpUtil.request(request,callback);
     }

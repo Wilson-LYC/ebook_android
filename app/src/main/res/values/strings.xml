@@ -31,7 +31,7 @@
     <!--设置-->
     <string name="set_info">修改资料</string>
     <string name="set_email">更换邮箱</string>
-    <string name="set_password">修改密码</string>
+    <string name="set_password">重置密码</string>
 
 
 </resources>

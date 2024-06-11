@@ -77,30 +77,73 @@ public class RegisterFragment extends Fragment {
 
     private void init(){
         initViewModel();
-        initElement();//初始化元素
-        initButtonListener();//初始化按钮
-        initSendCaptchaObserver();//初始化发送验证码观察者
-        initRegisterObserver();//初始化注册观察者
+        initSendCaptcha();
+        initRegister();
     }
     private void initViewModel(){
         viewModel=new ViewModelProvider(this).get(RegisterViewModel.class);
         binding.setLifecycleOwner(this);
     }
-    private void initElement(){
+    private void initSendCaptcha(){
         tilEmail=binding.registerTilEmail;
+        btnGetCaptcha=binding.registerBtnGetCaptcha;
+        btnGetCaptcha.setOnClickListener(v->sendCaptcha());
+        viewModel.getSendCaptchaResponse().observe(getViewLifecycleOwner(),ResponseDto->{
+            new ResponseOperation("SendCaptcha",getContext()) {
+                @Override
+                public void onSuccess(ResponseDto response) {
+                    AlertUtil.alert(getContext(),new Notify(Notify.TOAST,"验证码已发送"));
+                    banBtnSendCaptcha();
+                }
+
+                @Override
+                public void showError(String msg) {
+                    btnGetCaptcha.setEnabled(true);
+                    AlertUtil.alert(getContext(),new Notify(Notify.TOAST,msg));
+                }
+            }.onRespond(ResponseDto);
+        });
+    }
+    private void sendCaptcha(){
+        String email= binding.getEmail();
+        System.out.println(email);
+        if(email==null||email.isEmpty()){
+            tilEmail.setError("请输入邮箱");
+            return;
+        }
+        if(!InputValidator.isValidEmail(email)){
+            tilEmail.setError("邮箱格式不正确");
+            return;
+        }
+        tilEmail.setError(null);
+        viewModel.sendCaptcha(email);
+    }
+    private void initRegister(){
         tilPassword=binding.registerTilPassword;
         tilCaptcha=binding.registerTilCaptcha;
         tilPasswordConfirm=binding.registerTilConfirmPassword;
         btnRegister=binding.registerBtnRegister;
-        btnGetCaptcha=binding.registerBtnGetCaptcha;
-    }
-    private void initButtonListener(){
-        btnRegister.setOnClickListener(v->btnRegisterOnClick());
-        btnGetCaptcha.setOnClickListener(v->btnGetCaptchaOnClick());
-    }
+        btnRegister.setOnClickListener(v->register());
+        viewModel.getRegisterResponse().observe(getViewLifecycleOwner(),responseDto -> {
+            new ResponseOperation("Register",getContext()) {
+                @Override
+                public void onSuccess(ResponseDto response) {
+                    AlertUtil.alert(getContext(),new Notify(Notify.TOAST,"注册成功"));
+                    binding.setEmail(null);
+                    binding.setPassword(null);
+                    binding.setCaptcha(null);
+                    binding.setConfirmPassword(null);
+                    ((AuthorityActivity) getActivity()).changeToLogin();
+                }
 
-    //注册
-    private void btnRegisterOnClick(){
+                @Override
+                public void showError(String msg) {
+                    AlertUtil.alert(getContext(),new Notify(Notify.TOAST,msg));
+                }
+            }.onRespond(responseDto);
+        });
+    }
+    private void register(){
         String email= binding.getEmail();
         String password= binding.getPassword();
         String captcha= binding.getCaptcha();
@@ -139,60 +182,7 @@ public class RegisterFragment extends Fragment {
         tilCaptcha.setError(null);
         viewModel.register(binding.getEmail(),binding.getPassword(),binding.getCaptcha());
     }
-    private ResponseOperation registerOperation =new ResponseOperation("Register") {
-        @Override
-        public void onSuccess(ResponseDto response) {
-            AlertUtil.alert(getContext(),new Notify(Notify.TOAST,"注册成功"));
-            binding.setEmail(null);
-            binding.setPassword(null);
-            binding.setCaptcha(null);
-            binding.setConfirmPassword(null);
-            ((AuthorityActivity) getActivity()).changeToLogin();
-        }
 
-        @Override
-        public void showError(String msg) {
-            AlertUtil.alert(getContext(),new Notify(Notify.TOAST,msg));
-        }
-    };
-    private void initRegisterObserver(){
-        registerObserver=new Observer<ResponseDto>() {
-            @Override
-            public void onChanged(ResponseDto response) {
-                registerOperation.onRespond(response);
-            }
-        };
-        viewModel.getRegisterResponse().observe(getViewLifecycleOwner(),registerObserver);
-    }
-
-    //发送验证码
-    private void btnGetCaptchaOnClick(){
-        String email= binding.getEmail();
-        System.out.println(email);
-        if(email==null||email.isEmpty()){
-            tilEmail.setError("请输入邮箱");
-            return;
-        }
-        if(!InputValidator.isValidEmail(email)){
-            tilEmail.setError("邮箱格式不正确");
-            return;
-        }
-        tilEmail.setError(null);
-        viewModel.sendCaptcha(email);
-    }
-    private ResponseOperation sendCaptchaOperation =new ResponseOperation("SendCaptcha") {
-        @Override
-        public void onSuccess(ResponseDto response) {
-            AlertUtil.alert(getContext(),new Notify(Notify.TOAST,"验证码已发送"));
-            banBtnSendCaptcha();
-        }
-
-        @Override
-        public void showError(String msg) {
-            btnGetCaptcha.setEnabled(true);
-            AlertUtil.alert(getContext(),new Notify(Notify.TOAST,msg));
-        }
-    };
     private void banBtnSendCaptcha(){
         btnGetCaptcha.setEnabled(false);
         new Thread(()->{
@@ -212,16 +202,5 @@ public class RegisterFragment extends Fragment {
                 btnGetCaptcha.setEnabled(true);
             });
         }).start();
-    }
-
-
-    private void initSendCaptchaObserver(){
-        sendCaptchaObserver=new Observer<ResponseDto>() {
-            @Override
-            public void onChanged(ResponseDto response) {
-                sendCaptchaOperation.onRespond(response);
-            }
-        };
-        viewModel.getSendCaptchaResponse().observe(getViewLifecycleOwner(),sendCaptchaObserver);
     }
 }
